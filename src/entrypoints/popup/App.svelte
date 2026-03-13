@@ -1,42 +1,135 @@
 <script lang="ts">
-  import svelteLogo from '../../assets/svelte.svg'
-  import Counter from '../../lib/Counter.svelte'
+  import { onMount } from "svelte";
+  import { Plus, Archive, Folder, ChevronDown, Check } from "@lucide/svelte";
+  import { getAllUserGroups, getDefaultGroupId } from "~/utils/storage";
+  import type { UserGroup } from "~/utils/types";
+
+  let userGroups: UserGroup[] = $state([]);
+  let selectedGroupId: string = $state(getDefaultGroupId());
+  let showGroupDropdown = $state(false);
+  let loading = $state(true);
+
+  // Load user groups
+  async function loadGroups() {
+    try {
+      userGroups = await getAllUserGroups();
+    } catch (error) {
+      console.error("Failed to load groups:", error);
+    } finally {
+      loading = false;
+    }
+  }
+
+  // Save all tabs
+  async function collectTabs() {
+    await browser.runtime.sendMessage({
+      action: "collectTabs",
+      userGroupId: selectedGroupId,
+    });
+    window.close();
+  }
+
+  // Open manager page
+  async function openManager() {
+    const url = browser.runtime.getURL("/origintab.html");
+    const tabs = await browser.tabs.query({});
+    const existingTab = tabs.find((tab) => tab.url?.startsWith(url));
+
+    if (existingTab?.id) {
+      await browser.tabs.update(existingTab.id, { active: true });
+    } else {
+      await browser.tabs.create({ url });
+    }
+    window.close();
+  }
+
+  // Get selected group name
+  function getSelectedGroupName(): string {
+    const group = userGroups.find((g) => g.id === selectedGroupId);
+    return group?.name || "Default";
+  }
+
+  // Close dropdown when clicking outside
+  function handleClickOutside(e: MouseEvent) {
+    const target = e.target as HTMLElement;
+    if (!target.closest(".group-dropdown")) {
+      showGroupDropdown = false;
+    }
+  }
+
+  onMount(() => {
+    loadGroups();
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  });
 </script>
 
-<main>
-  <div>
-    <a href="https://wxt.dev" target="_blank" rel="noreferrer">
-      <img src="/wxt.svg" class="logo" alt="WXT Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
+<div class="p-4 w-[300px]">
+  <!-- Action buttons -->
+  <div class="space-y-2">
+    <!-- Group selector -->
+    <div class="group-dropdown relative">
+      <button
+        class="btn btn-ghost btn-sm btn-block justify-between"
+        onclick={() => (showGroupDropdown = !showGroupDropdown)}
+        disabled={loading}
+      >
+        <span class="flex items-center gap-2">
+          <Folder size={16} />
+          {#if loading}
+            <span class="loading loading-spinner loading-xs"></span>
+          {:else}
+            Save to: {getSelectedGroupName()}
+          {/if}
+        </span>
+        <ChevronDown
+          size={16}
+          class="transition-transform {showGroupDropdown ? 'rotate-180' : ''}"
+        />
+      </button>
+
+      <!-- Dropdown menu -->
+      {#if showGroupDropdown && !loading}
+        <div
+          class="absolute top-full left-0 right-0 mt-1 bg-base-100 border border-base-300 rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto"
+        >
+          {#each userGroups as group (group.id)}
+            <button
+              class="btn btn-ghost btn-sm btn-block justify-start rounded-none border-b border-base-200 last:border-b-0 {selectedGroupId ===
+              group.id
+                ? 'text-primary'
+                : ''}"
+              onclick={() => {
+                selectedGroupId = group.id;
+                showGroupDropdown = false;
+              }}
+            >
+              <span class="flex-1 text-left">{group.name}</span>
+              {#if selectedGroupId === group.id}
+                <Check size={14} />
+              {/if}
+            </button>
+          {/each}
+        </div>
+      {/if}
+    </div>
+
+    <!-- Save tabs button -->
+    <button
+      class="btn btn-primary btn-block justify-start"
+      onclick={collectTabs}
+      disabled={loading}
+    >
+      <Plus size={18} aria-hidden="true" />
+      Save all tabs
+    </button>
+
+    <!-- Open manager button -->
+    <button class="btn btn-ghost btn-block justify-start" onclick={openManager}>
+      <Archive size={18} aria-hidden="true" />
+      Open Tab Manager
+    </button>
   </div>
-  <h1>WXT + Svelte</h1>
-
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p class="read-the-docs">
-    Click on the WXT and Svelte logos to learn more
-  </p>
-</main>
-
-<style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #54bc4ae0);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
-</style>
+</div>
