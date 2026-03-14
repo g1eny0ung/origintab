@@ -1,69 +1,69 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { Plus, Archive, Folder, ChevronDown, Check } from "@lucide/svelte";
-  import { getAllUserGroups, getDefaultGroupId } from "~/utils/storage";
-  import type { UserGroup } from "~/utils/types";
+  import { onMount } from 'svelte'
+  import { Plus, Archive, Folder, ChevronDown, Check } from '@lucide/svelte'
+  import { getUserGroups, DEFAULT_GROUP_ID } from '~/store'
+  import type { UserGroup } from '~/utils/types'
 
-  let userGroups: UserGroup[] = $state([]);
-  let selectedGroupId: string = $state(getDefaultGroupId());
-  let showGroupDropdown = $state(false);
-  let loading = $state(true);
+  let userGroups: UserGroup[] = $state([])
+  let selectedGroupId: string = $state(DEFAULT_GROUP_ID)
+  let showGroupDropdown = $state(false)
+  let loading = $state(true)
 
   // Load user groups
   async function loadGroups() {
     try {
-      userGroups = await getAllUserGroups();
+      userGroups = await getUserGroups()
     } catch (error) {
-      console.error("Failed to load groups:", error);
+      console.error('Failed to load groups:', error)
     } finally {
-      loading = false;
+      loading = false
     }
   }
 
   // Save all tabs
   async function collectTabs() {
     await browser.runtime.sendMessage({
-      action: "collectTabs",
+      action: 'collectTabs',
       userGroupId: selectedGroupId,
-    });
-    window.close();
+    })
+    window.close()
   }
 
   // Open manager page
   async function openManager() {
-    const url = browser.runtime.getURL("/origintab.html");
-    const tabs = await browser.tabs.query({});
-    const existingTab = tabs.find((tab) => tab.url?.startsWith(url));
+    const url = browser.runtime.getURL('/origintab.html')
+    const tabs = await browser.tabs.query({})
+    const existingTab = tabs.find((tab) => tab.url?.startsWith(url))
 
     if (existingTab?.id) {
-      await browser.tabs.update(existingTab.id, { active: true });
+      await browser.tabs.update(existingTab.id, { active: true })
     } else {
-      await browser.tabs.create({ url });
+      await browser.tabs.create({ url })
     }
-    window.close();
+    window.close()
   }
 
   // Get selected group name
   function getSelectedGroupName(): string {
-    const group = userGroups.find((g) => g.id === selectedGroupId);
-    return group?.name || "Default";
+    const group = userGroups.find((g) => g.id === selectedGroupId)
+    return group?.name || 'Default'
   }
 
   // Close dropdown when clicking outside
   function handleClickOutside(e: MouseEvent) {
-    const target = e.target as HTMLElement;
-    if (!target.closest(".group-dropdown")) {
-      showGroupDropdown = false;
+    const target = e.target as HTMLElement
+    if (!target.closest('.group-dropdown')) {
+      showGroupDropdown = false
     }
   }
 
   onMount(() => {
-    loadGroups();
-    document.addEventListener("click", handleClickOutside);
+    loadGroups()
+    document.addEventListener('click', handleClickOutside)
     return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  });
+      document.removeEventListener('click', handleClickOutside)
+    }
+  })
 </script>
 
 <div class="p-4 w-[300px]">
@@ -81,7 +81,7 @@
           {#if loading}
             <span class="loading loading-spinner loading-xs"></span>
           {:else}
-            Save to: {getSelectedGroupName()}
+            {browser.i18n.getMessage('saveTo')} {getSelectedGroupName()}
           {/if}
         </span>
         <ChevronDown
@@ -102,8 +102,8 @@
                 ? 'text-primary'
                 : ''}"
               onclick={() => {
-                selectedGroupId = group.id;
-                showGroupDropdown = false;
+                selectedGroupId = group.id
+                showGroupDropdown = false
               }}
             >
               <span class="flex-1 text-left">{group.name}</span>
@@ -123,13 +123,13 @@
       disabled={loading}
     >
       <Plus size={18} aria-hidden="true" />
-      Save all tabs
+      {browser.i18n.getMessage('saveAllTabs')}
     </button>
 
     <!-- Open manager button -->
     <button class="btn btn-ghost btn-block justify-start" onclick={openManager}>
       <Archive size={18} aria-hidden="true" />
-      Open Tab Manager
+      {browser.i18n.getMessage('openTabManager')}
     </button>
   </div>
 </div>

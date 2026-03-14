@@ -1,34 +1,42 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte'
   import {
-    getAllUserGroups,
-    getAllTabGroups,
+    getUserGroups,
+    getTabGroups,
     createUserGroup,
     clearAllData,
-    getDefaultGroupId,
     exportToText,
     importFromText,
-  } from '~/utils/storage'
+    DEFAULT_GROUP_ID,
+  } from '~/store'
   import type { TabGroup, UserGroup } from '~/utils/types'
-  import UserGroupList from './components/UserGroupList.svelte'
-  import ImportModal from './components/ImportModal.svelte'
-  import { Trash2, Upload, Download, CheckCircle2, AlertCircle, Plus, Check, X } from '@lucide/svelte'
+  import UserGroupList from '../../components/UserGroupList.svelte'
+  import ImportModal from '../../components/ImportModal.svelte'
+  import {
+    Trash2,
+    Upload,
+    Download,
+    CircleCheck,
+    Plus,
+    Check,
+    X,
+    CircleX,
+  } from '@lucide/svelte'
   import { Archive } from '@lucide/svelte'
 
   // Data state
   let userGroups: UserGroup[] = $state([])
   let tabGroups: TabGroup[] = $state([])
-  let loading = $state(true)
-  let expandedGroups: Set<string> = $state(new Set([getDefaultGroupId()]))
+  let expandedGroups: Set<string> = $state(new Set([DEFAULT_GROUP_ID]))
 
   // Import modal
   let showImportModal = $state(false)
   let importText = $state('')
-  let importTargetGroupId = $state(getDefaultGroupId())
-  let importLoading = $state(false)
+  let importTargetGroupId = $state(DEFAULT_GROUP_ID)
 
   // Toasts
-  let toasts: { id: number; message: string; type: 'success' | 'error' }[] = $state([])
+  let toasts: { id: number; message: string; type: 'success' | 'error' }[] =
+    $state([])
 
   // New group input
   let showNewGroupInput = $state(false)
@@ -39,13 +47,11 @@
   async function loadData() {
     try {
       ;[userGroups, tabGroups] = await Promise.all([
-        getAllUserGroups(),
-        getAllTabGroups(),
+        getUserGroups(),
+        getTabGroups(),
       ])
     } catch (error) {
       showToast('Failed to load data', 'error')
-    } finally {
-      loading = false
     }
   }
 
@@ -58,7 +64,9 @@
   function showToast(message: string, type: 'success' | 'error' = 'success') {
     const id = Date.now()
     toasts = [...toasts, { id, message, type }]
-    setTimeout(() => { toasts = toasts.filter((t) => t.id !== id) }, 3000)
+    setTimeout(() => {
+      toasts = toasts.filter((t) => t.id !== id)
+    }, 3000)
   }
 
   // Toggle group expansion
@@ -75,12 +83,12 @@
     if (!name) return
     try {
       await createUserGroup(name)
-      showToast('Group created')
+      showToast(browser.i18n.getMessage('groupCreated'))
       await loadData()
       newGroupName = ''
       showNewGroupInput = false
     } catch (error) {
-      showToast('Failed to create group', 'error')
+      showToast(browser.i18n.getMessage('failedToCreateGroup'), 'error')
     }
   }
 
@@ -100,14 +108,16 @@
 
   // Clear all data
   async function handleClearAll() {
-    if (!confirm('Are you sure you want to clear all saved tabs? This cannot be undone.')) return
+    if (!confirm(browser.i18n.getMessage('clearAllConfirm'))) return
     try {
       await clearAllData()
-      userGroups = [{ id: getDefaultGroupId(), name: 'Default', createdAt: Date.now() }]
+      userGroups = [
+        { id: DEFAULT_GROUP_ID, name: 'Default', createdAt: Date.now() },
+      ]
       tabGroups = []
-      showToast('All tabs cleared')
+      showToast(browser.i18n.getMessage('allTabsCleared'))
     } catch (error) {
-      showToast('Failed to clear', 'error')
+      showToast(browser.i18n.getMessage('failedToClearAllTabs'), 'error')
     }
   }
 
@@ -122,33 +132,39 @@
       a.download = `origintab-export-${new Date().toISOString().slice(0, 10)}.txt`
       a.click()
       URL.revokeObjectURL(url)
-      showToast('Exported successfully')
+      showToast(browser.i18n.getMessage('exportedSuccessfully'))
     } catch (error) {
-      showToast('Export failed', 'error')
+      showToast(browser.i18n.getMessage('exportFailed'), 'error')
     }
   }
 
   // Import tabs
   async function handleImport() {
     if (!importText.trim()) {
-      showToast('Please enter data to import', 'error')
+      showToast(browser.i18n.getMessage('pleaseEnterDataToImport'), 'error')
       return
     }
-    importLoading = true
+
     try {
       const result = await importFromText(importText, importTargetGroupId)
       await loadData()
       showImportModal = false
       importText = ''
       if (result.errors.length > 0) {
-        showToast(`Imported ${result.imported} tabs, ${result.errors.length} errors`, 'error')
+        showToast(
+          browser.i18n.getMessage('importedTabsWithErrors', [
+            result.imported.toString(),
+            result.errors.length.toString(),
+          ]),
+          'error',
+        )
       } else {
-        showToast(`Imported ${result.imported} tabs`)
+        showToast(
+          browser.i18n.getMessage('importedTabs', [result.imported.toString()]),
+        )
       }
     } catch (error) {
-      showToast('Import failed', 'error')
-    } finally {
-      importLoading = false
+      showToast(browser.i18n.getMessage('importFailed'), 'error')
     }
   }
 
@@ -168,10 +184,19 @@
 </script>
 
 <!-- Toasts -->
-<div class="toast toast-end toast-top z-50">
+<div class="toast toast-center toast-top z-50">
   {#each toasts as toast (toast.id)}
-    <div class="alert alert-{toast.type === 'success' ? 'success' : 'error'} shadow-lg">
-      {#if toast.type === 'success'}<CheckCircle2 size={20} />{:else}<AlertCircle size={20} />{/if}
+    <div
+      role="alert"
+      class="alert alert-soft shadow-lg"
+      class:alert-success={toast.type === 'success'}
+      class:alert-error={toast.type === 'error'}
+    >
+      {#if toast.type === 'success'}
+        <CircleCheck size={16} />
+      {:else}
+        <CircleX size={16} />
+      {/if}
       <span>{toast.message}</span>
     </div>
   {/each}
@@ -182,33 +207,50 @@
   {userGroups}
   bind:importText
   bind:targetGroupId={importTargetGroupId}
-  loading={importLoading}
   onImport={handleImport}
   onCancel={cancelImport}
 />
 
 <div class="min-h-screen">
   <!-- Header -->
-  <header class="sticky top-0 z-40 bg-base-100/80 backdrop-blur border-b border-base-300">
+  <header
+    class="sticky top-0 z-40 bg-base-100/80 backdrop-blur border-b border-base-300"
+  >
     <div class="max-w-5xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-xl font-bold">OriginTab</h1>
-          <p class="text-sm text-base-content/60">Save tabs with one click and restore them at any time.</p>
+          <h1 class="text-xl font-bold">
+            {browser.i18n.getMessage('appTitle')}
+          </h1>
+          <p class="text-sm text-base-content/60">
+            {browser.i18n.getMessage('appDescription')}
+          </p>
         </div>
         <div class="flex items-center gap-2">
-          <button class="btn btn-ghost btn-sm gap-2" onclick={() => showImportModal = true}>
-            <Upload size={18} />
-            <span class="hidden sm:inline">Import</span>
+          <button
+            class="btn btn-ghost btn-sm"
+            onclick={() => (showImportModal = true)}
+          >
+            <Upload size={16} />
+            <span class="hidden sm:inline">
+              {browser.i18n.getMessage('import')}
+            </span>
           </button>
           {#if tabGroups.length > 0}
-            <button class="btn btn-ghost btn-sm gap-2" onclick={handleExport}>
-              <Download size={18} />
-              <span class="hidden sm:inline">Export</span>
+            <button class="btn btn-ghost btn-sm" onclick={handleExport}>
+              <Download size={16} />
+              <span class="hidden sm:inline">
+                {browser.i18n.getMessage('export')}
+              </span>
             </button>
-            <button class="btn btn-ghost btn-sm gap-2" onclick={handleClearAll}>
-              <Trash2 size={18} />
-              <span class="hidden sm:inline">Clear</span>
+            <button
+              class="btn btn-ghost btn-sm hover:btn-warning"
+              onclick={handleClearAll}
+            >
+              <Trash2 size={16} />
+              <span class="hidden sm:inline">
+                {browser.i18n.getMessage('clear')}
+              </span>
             </button>
           {/if}
         </div>
@@ -217,19 +259,17 @@
   </header>
 
   <main class="max-w-5xl mx-auto px-4 py-6">
-    {#if loading}
-      <div class="flex justify-center py-20">
-        <span class="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    {:else if userGroups.length === 1 && tabGroups.length === 0}
+    {#if userGroups.length === 1 && tabGroups.length === 0}
       <!-- Empty state -->
       <div class="flex flex-col items-center justify-center py-20 text-center">
-        <div class="bg-base-100 p-6 rounded-full mb-4">
-          <Archive size={48} class="text-base-content/40" />
+        <div class="p-6 rounded-full mb-4">
+          <Archive size={48} class="text-base-content/80" />
         </div>
-        <h2 class="text-xl font-semibold mb-2">No saved tabs</h2>
+        <h2 class="text-xl font-semibold mb-2">
+          {browser.i18n.getMessage('noSavedTabs')}
+        </h2>
         <p class="text-base-content/60 max-w-md">
-          Click the OriginTab icon in the browser toolbar to collect tabs in the current window
+          {browser.i18n.getMessage('emptyStateMessage')}
         </p>
       </div>
     {:else}
@@ -239,18 +279,26 @@
           <div class="flex items-center gap-2">
             <input
               type="text"
-              class="input input-bordered input-sm flex-1 max-w-xs"
-              placeholder="Group name"
+              class="input input-sm flex-1 max-w-xs"
+              placeholder={browser.i18n.getMessage('groupNamePlaceholder')}
               bind:value={newGroupName}
               bind:this={newGroupInputRef}
               onkeydown={handleNewGroupKeydown}
             />
-            <button class="btn btn-primary btn-sm" onclick={handleCreateGroup}><Check size={16} /></button>
-            <button class="btn btn-ghost btn-sm" onclick={cancelNewGroup}><X size={16} /></button>
+            <button class="btn btn-primary btn-sm" onclick={handleCreateGroup}>
+              <Check size={16} />
+            </button>
+            <button class="btn btn-ghost btn-sm" onclick={cancelNewGroup}>
+              <X size={16} />
+            </button>
           </div>
         {:else}
-          <button class="btn btn-ghost btn-sm gap-2" onclick={() => showNewGroupInput = true}>
-            <Plus size={16} /> New Group
+          <button
+            class="btn btn-ghost btn-sm"
+            onclick={() => (showNewGroupInput = true)}
+          >
+            <Plus size={16} />
+            {browser.i18n.getMessage('newGroup')}
           </button>
         {/if}
       </div>
@@ -265,8 +313,4 @@
       />
     {/if}
   </main>
-
-  <footer class="text-center py-6 text-sm text-base-content/40">
-    <p>OriginTab - Save Your Tabs</p>
-  </footer>
 </div>

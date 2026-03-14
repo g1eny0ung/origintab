@@ -1,0 +1,212 @@
+{
+  "confirm": {
+    "message": "确认"
+  },
+  "cancel": {
+    "message": "取消"
+  },
+  "extName": {
+    "message": "OriginTab - 保存你的标签页"
+  },
+  "extDescription": {
+    "message": "一键保存标签页，随时恢复。"
+  },
+  "appTitle": {
+    "message": "OriginTab"
+  },
+  "appDescription": {
+    "message": "一键保存标签页，随时恢复。"
+  },
+  "import": {
+    "message": "导入"
+  },
+  "export": {
+    "message": "导出"
+  },
+  "clear": {
+    "message": "清空"
+  },
+  "noSavedTabs": {
+    "message": "暂无保存的标签页"
+  },
+  "emptyStateMessage": {
+    "message": "点击浏览器工具栏中的 OriginTab 图标，收集当前窗口中的标签页"
+  },
+  "newGroup": {
+    "message": "新建分组"
+  },
+  "groupNamePlaceholder": {
+    "message": "分组名称"
+  },
+  "groupCreated": {
+    "message": "分组创建成功"
+  },
+  "failedToCreateGroup": {
+    "message": "创建分组失败"
+  },
+  "clearAllConfirm": {
+    "message": "确定要清空所有保存的标签页吗？此操作无法撤销。"
+  },
+  "allTabsCleared": {
+    "message": "所有标签页已清空"
+  },
+  "failedToClearAllTabs": {
+    "message": "清空标签页失败"
+  },
+  "exportedSuccessfully": {
+    "message": "导出成功"
+  },
+  "exportFailed": {
+    "message": "导出失败"
+  },
+  "pleaseEnterDataToImport": {
+    "message": "请输入要导入的数据"
+  },
+  "importedTabs": {
+    "message": "已导入 $1 个标签页"
+  },
+  "importedTabsWithErrors": {
+    "message": "已导入 $1 个标签页，$2 个错误"
+  },
+  "importFailed": {
+    "message": "导入失败"
+  },
+  "importTabs": {
+    "message": "导入标签页"
+  },
+  "targetGroup": {
+    "message": "目标分组"
+  },
+  "importPlaceholder": {
+    "message": "https://example.com | 示例标题\nhttps://another.com | 另一个标题"
+  },
+  "saveTo": {
+    "message": "保存到："
+  },
+  "saveAllTabs": {
+    "message": "保存所有标签页"
+  },
+  "openTabManager": {
+    "message": "打开标签页管理器"
+  },
+  "settings": {
+    "message": "设置"
+  },
+  "customizeOriginTab": {
+    "message": "自定义 OriginTab 行为"
+  },
+  "reset": {
+    "message": "重置"
+  },
+  "resetAllSettings": {
+    "message": "将所有设置重置为默认值？"
+  },
+  "autoOpenOnStartup": {
+    "message": "启动时自动打开"
+  },
+  "autoOpenDescription": {
+    "message": "浏览器启动时自动打开 OriginTab"
+  },
+  "confirmBeforeDelete": {
+    "message": "删除前确认"
+  },
+  "confirmDeleteDescription": {
+    "message": "删除标签页或分组时显示确认对话框"
+  },
+  "iconClickAction": {
+    "message": "图标点击操作"
+  },
+  "clickActionDescription": {
+    "message": "选择点击扩展图标时的操作"
+  },
+  "saveAll": {
+    "message": "保存所有标签页"
+  },
+  "saveAllDescription": {
+    "message": "将当前窗口中的所有标签页保存到 OriginTab"
+  },
+  "saveCurrent": {
+    "message": "仅保存当前标签页"
+  },
+  "saveCurrentDescription": {
+    "message": "仅将当前活动标签页保存到 OriginTab"
+  },
+  "showPopup": {
+    "message": "显示弹出菜单"
+  },
+  "showPopupDescription": {
+    "message": "打开带有选项的弹出菜单"
+  },
+  "aboutOriginTab": {
+    "message": "关于 OriginTab"
+  },
+  "version": {
+    "message": "版本："
+  },
+  "rename": {
+    "message": "重命名"
+  },
+  "delete": {
+    "message": "删除"
+  },
+  "deleteGroupConfirm": {
+    "message": "删除此分组？标签页将移至默认分组。"
+  },
+  "groupRenamed": {
+    "message": "分组已重命名"
+  },
+  "renameFailed": {
+    "message": "重命名失败"
+  },
+  "groupDeleted": {
+    "message": "分组已删除，标签页已移至默认分组"
+  },
+  "deleteFailed": {
+    "message": "删除失败"
+  },
+  "noTabsInGroup": {
+    "message": "此分组中没有标签页"
+  },
+  "restore": {
+    "message": "恢复"
+  },
+  "restoreAndDelete": {
+    "message": "恢复并删除"
+  },
+  "deleteCollection": {
+    "message": "删除此集合？"
+  },
+  "collectionDeleted": {
+    "message": "集合已删除"
+  },
+  "tabsRestored": {
+    "message": "标签页已恢复"
+  },
+  "tabsRestoredAndRemoved": {
+    "message": "标签页已恢复并移除"
+  },
+  "restoreFailed": {
+    "message": "恢复失败"
+  },
+  "tabRestored": {
+    "message": "标签页已恢复"
+  },
+  "tabDeleted": {
+    "message": "标签页已删除"
+  },
+  "untitled": {
+    "message": "无标题"
+  },
+  "open": {
+    "message": "打开"
+  },
+  "failedToLoadData": {
+    "message": "加载数据失败"
+  },
+  "failedToLoadSettings": {
+    "message": "加载设置失败"
+  },
+  "failedToLoadGroups": {
+    "message": "加载分组失败"
+  }
+}

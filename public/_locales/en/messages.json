@@ -1,0 +1,212 @@
+{
+  "confirm": {
+    "message": "Confirm"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "extName": {
+    "message": "OriginTab - Save Your Tabs"
+  },
+  "extDescription": {
+    "message": "Save tabs with one click and restore them at any time."
+  },
+  "appTitle": {
+    "message": "OriginTab"
+  },
+  "appDescription": {
+    "message": "Save tabs with one click and restore them at any time."
+  },
+  "import": {
+    "message": "Import"
+  },
+  "export": {
+    "message": "Export"
+  },
+  "clear": {
+    "message": "Clear"
+  },
+  "noSavedTabs": {
+    "message": "No saved tabs"
+  },
+  "emptyStateMessage": {
+    "message": "Click the OriginTab icon in the browser toolbar to collect tabs in the current window"
+  },
+  "newGroup": {
+    "message": "New Group"
+  },
+  "groupNamePlaceholder": {
+    "message": "Group name"
+  },
+  "groupCreated": {
+    "message": "Group created"
+  },
+  "failedToCreateGroup": {
+    "message": "Failed to create group"
+  },
+  "clearAllConfirm": {
+    "message": "Are you sure you want to clear all saved tabs? This cannot be undone."
+  },
+  "allTabsCleared": {
+    "message": "All tabs cleared"
+  },
+  "failedToClearAllTabs": {
+    "message": "Failed to clear all tabs"
+  },
+  "exportedSuccessfully": {
+    "message": "Exported successfully"
+  },
+  "exportFailed": {
+    "message": "Export failed"
+  },
+  "pleaseEnterDataToImport": {
+    "message": "Please enter data to import"
+  },
+  "importedTabs": {
+    "message": "Imported $1 tabs"
+  },
+  "importedTabsWithErrors": {
+    "message": "Imported $1 tabs, $2 errors"
+  },
+  "importFailed": {
+    "message": "Import failed"
+  },
+  "importTabs": {
+    "message": "Import Tabs"
+  },
+  "targetGroup": {
+    "message": "Target Group"
+  },
+  "importPlaceholder": {
+    "message": "https://example.com | Example Title\nhttps://another.com | Another Title"
+  },
+  "saveTo": {
+    "message": "Save to:"
+  },
+  "saveAllTabs": {
+    "message": "Save all tabs"
+  },
+  "openTabManager": {
+    "message": "Open Tab Manager"
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "customizeOriginTab": {
+    "message": "Customize OriginTab behavior"
+  },
+  "reset": {
+    "message": "Reset"
+  },
+  "resetAllSettings": {
+    "message": "Reset all settings to default?"
+  },
+  "autoOpenOnStartup": {
+    "message": "Auto-open on Startup"
+  },
+  "autoOpenDescription": {
+    "message": "Automatically open OriginTab when browser starts"
+  },
+  "confirmBeforeDelete": {
+    "message": "Confirm before delete"
+  },
+  "confirmDeleteDescription": {
+    "message": "Show confirmation dialog when deleting tabs or groups"
+  },
+  "iconClickAction": {
+    "message": "Icon Click Action"
+  },
+  "clickActionDescription": {
+    "message": "Choose what happens when you click the extension icon"
+  },
+  "saveAll": {
+    "message": "Save All Tabs"
+  },
+  "saveAllDescription": {
+    "message": "Save all tabs in current window to OriginTab"
+  },
+  "saveCurrent": {
+    "message": "Save Current Tab Only"
+  },
+  "saveCurrentDescription": {
+    "message": "Save only the currently active tab to OriginTab"
+  },
+  "showPopup": {
+    "message": "Show Popup Menu"
+  },
+  "showPopupDescription": {
+    "message": "Open a popup with options"
+  },
+  "aboutOriginTab": {
+    "message": "About OriginTab"
+  },
+  "version": {
+    "message": "Version:"
+  },
+  "rename": {
+    "message": "Rename"
+  },
+  "delete": {
+    "message": "Delete"
+  },
+  "deleteGroupConfirm": {
+    "message": "Delete this group? Tabs will move to Default."
+  },
+  "groupRenamed": {
+    "message": "Group renamed"
+  },
+  "renameFailed": {
+    "message": "Rename failed"
+  },
+  "groupDeleted": {
+    "message": "Group deleted, tabs moved to Default"
+  },
+  "deleteFailed": {
+    "message": "Delete failed"
+  },
+  "noTabsInGroup": {
+    "message": "No tabs in this group"
+  },
+  "restore": {
+    "message": "Restore"
+  },
+  "restoreAndDelete": {
+    "message": "Restore & Delete"
+  },
+  "deleteCollection": {
+    "message": "Delete this collection?"
+  },
+  "collectionDeleted": {
+    "message": "Collection deleted"
+  },
+  "tabsRestored": {
+    "message": "Tabs restored"
+  },
+  "tabsRestoredAndRemoved": {
+    "message": "Tabs restored and removed"
+  },
+  "restoreFailed": {
+    "message": "Restore failed"
+  },
+  "tabRestored": {
+    "message": "Tab restored"
+  },
+  "tabDeleted": {
+    "message": "Tab deleted"
+  },
+  "untitled": {
+    "message": "Untitled"
+  },
+  "open": {
+    "message": "Open"
+  },
+  "failedToLoadData": {
+    "message": "Failed to load data"
+  },
+  "failedToLoadSettings": {
+    "message": "Failed to load settings"
+  },
+  "failedToLoadGroups": {
+    "message": "Failed to load groups"
+  }
+}

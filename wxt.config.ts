@@ -7,9 +7,10 @@ export default defineConfig({
   srcDir: 'src',
   modules: ['@wxt-dev/module-svelte'],
   manifest: {
-    name: 'OriginTab - Save Your Tabs',
-    description: 'Save tabs with one click and restore them at any time.',
+    name: '__MSG_extName__',
+    description: '__MSG_extDescription__',
     version: '1.0.0',
+    default_locale: 'en',
     permissions: ['tabs', 'storage'],
   },
   vite: () => ({

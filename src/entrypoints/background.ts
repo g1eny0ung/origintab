@@ -1,6 +1,5 @@
-import { saveTabs, getDefaultGroupId } from '~/utils/storage'
+import { createTabGroup, DEFAULT_GROUP_ID } from '~/store'
 import type { TabItem, ClickAction } from '~/utils/types'
-import { storage } from '@wxt-dev/storage'
 
 // Get OriginTab page URL
 function getOriginTabUrl(): string {
@@ -8,7 +7,7 @@ function getOriginTabUrl(): string {
 }
 
 // Check if OriginTab page is already open
-async function findOriginTab(): Promise<number | undefined> {
+async function findOriginTab() {
   const tabs = await browser.tabs.query({})
   const originTabUrl = getOriginTabUrl()
   const originTab = tabs.find((tab) => tab.url?.startsWith(originTabUrl))
@@ -19,7 +18,7 @@ async function findOriginTab(): Promise<number | undefined> {
 async function notifyOriginTabUpdate(): Promise<void> {
   const tabs = await browser.tabs.query({})
   const originTabUrl = getOriginTabUrl()
-  
+
   for (const tab of tabs) {
     if (tab.url?.startsWith(originTabUrl) && tab.id) {
       try {
@@ -32,7 +31,7 @@ async function notifyOriginTabUpdate(): Promise<void> {
 }
 
 // Collect current tab only
-async function collectCurrentTab(userGroupId?: string): Promise<void> {
+async function collectCurrentTab(userGroupId?: string) {
   try {
     // Get current active tab
     const [activeTab] = await browser.tabs.query({
@@ -45,14 +44,6 @@ async function collectCurrentTab(userGroupId?: string): Promise<void> {
       return
     }
 
-    // Exclude extension pages and invalid URLs
-    if (
-      activeTab.url.startsWith('chrome-extension://') ||
-      activeTab.url.startsWith('moz-extension://')
-    ) {
-      console.error('Cannot collect extension page')
-      return
-    }
     if (activeTab.url.includes('/origintab.html')) {
       console.error('Cannot collect OriginTab page')
       return
@@ -68,7 +59,7 @@ async function collectCurrentTab(userGroupId?: string): Promise<void> {
 
     // Convert to storage format
     const tabItem: TabItem = {
-      id: '', // Will be generated in saveTabs
+      id: '', // Will be generated in createTabGroup
       title: activeTab.title || 'Untitled',
       url: activeTab.url,
       favicon: activeTab.favIconUrl,
@@ -76,7 +67,7 @@ async function collectCurrentTab(userGroupId?: string): Promise<void> {
     }
 
     // Save tab
-    await saveTabs([tabItem], userGroupId || getDefaultGroupId())
+    await createTabGroup([tabItem], userGroupId || DEFAULT_GROUP_ID)
 
     // Notify origintab pages to update
     await notifyOriginTabUpdate()
@@ -89,7 +80,7 @@ async function collectCurrentTab(userGroupId?: string): Promise<void> {
 }
 
 // Collect all tabs
-async function collectAllTabs(userGroupId?: string): Promise<void> {
+async function collectAllTabs(userGroupId?: string) {
   try {
     // Get all tabs in current window
     const tabs = await browser.tabs.query({ currentWindow: true })
@@ -99,22 +90,24 @@ async function collectAllTabs(userGroupId?: string): Promise<void> {
 
     // Filter out extension pages, invalid tabs, and existing OriginTab
     const validTabs = tabs.filter((tab) => {
-      if (!tab.url || !tab.id) return false
-      // Exclude extension pages
-      if (
-        tab.url.startsWith('chrome-extension://') ||
-        tab.url.startsWith('moz-extension://')
-      )
+      if (!tab.url || !tab.id) {
         return false
+      }
+
       // Exclude OriginTab page
-      if (tab.url.includes('/origintab.html')) return false
+      if (tab.url.includes('/origintab.html')) {
+        return false
+      }
+
       // Exclude new tab pages
       if (
         tab.url === 'chrome://newtab/' ||
         tab.url === 'about:newtab' ||
         tab.url === 'about:home'
-      )
+      ) {
         return false
+      }
+
       return true
     })
 
@@ -125,7 +118,7 @@ async function collectAllTabs(userGroupId?: string): Promise<void> {
 
     // Convert to storage format
     const tabItems: TabItem[] = validTabs.map((tab) => ({
-      id: '', // Will be generated in saveTabs
+      id: '', // Will be generated in createTabGroup
       title: tab.title || 'Untitled',
       url: tab.url!,
       favicon: tab.favIconUrl,
@@ -133,7 +126,7 @@ async function collectAllTabs(userGroupId?: string): Promise<void> {
     }))
 
     // Save tabs
-    await saveTabs(tabItems, userGroupId || getDefaultGroupId())
+    await createTabGroup(tabItems, userGroupId || DEFAULT_GROUP_ID)
 
     // Notify origintab pages to update
     await notifyOriginTabUpdate()
@@ -208,13 +201,15 @@ async function handleIconClick(): Promise<void> {
       (await storage.getItem<ClickAction>('local:clickAction')) ?? 'saveAll'
 
     switch (clickAction) {
-      case 'saveCurrent':
+      case 'saveCurrent': {
         await collectCurrentTab()
         break
+      }
       case 'saveAll':
-      default:
+      default: {
         await collectAllTabs()
         break
+      }
     }
   } catch (error) {
     console.error('Failed to handle icon click:', error)
@@ -223,8 +218,6 @@ async function handleIconClick(): Promise<void> {
 
 // Background script main entry
 export default defineBackground(() => {
-  console.log('OriginTab background script loaded')
-
   // Initialize action behavior
   updateActionBehavior()
 

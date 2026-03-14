@@ -1,72 +1,57 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { Settings, Info, RotateCcw, MousePointerClick } from "@lucide/svelte";
-  import type { ClickAction } from "~/utils/types";
+  import { onMount } from 'svelte'
+  import { Settings, Info, RotateCcw, MousePointerClick } from '@lucide/svelte'
+  import { ClickAction } from '~/utils/types'
+  import {
+    getSettings,
+    updateSettings,
+    resetSettings as resetAllSettings,
+  } from '~/store'
 
   // Settings state
-  let autoOpenOnStartup = $state(true);
-  let confirmBeforeDelete = $state(true);
-  let clickAction = $state<ClickAction>("saveAll");
-  let isLoading = $state(true);
+  let settings = $state({
+    autoOpenOnStartup: true,
+    confirmBeforeDelete: true,
+    clickAction: ClickAction.SaveAll,
+  })
+  let isLoading = $state(true)
 
   // Load settings on mount
   onMount(() => {
-    loadSettings();
-  });
+    loadSettings()
+  })
 
   async function loadSettings() {
     try {
-      const [autoOpen, confirmDelete, action] = await Promise.all([
-        storage.getItem<boolean>("local:autoOpenOnStartup"),
-        storage.getItem<boolean>("local:confirmBeforeDelete"),
-        storage.getItem<ClickAction>("local:clickAction"),
-      ]);
-
-      autoOpenOnStartup = autoOpen !== false; // default true
-      confirmBeforeDelete = confirmDelete !== false; // default true
-      clickAction = action ?? "saveAll"; // default 'saveAll'
+      settings = await getSettings()
     } catch (error) {
-      console.error("Failed to load settings:", error);
+      console.error('Failed to load settings:', error)
     } finally {
-      isLoading = false;
-    }
-  }
-
-  async function saveSetting(key: string, value: boolean | string) {
-    try {
-      await storage.setItem(`local:${key}`, value);
-    } catch (error) {
-      console.error("Failed to save setting:", error);
+      isLoading = false
     }
   }
 
   function handleAutoOpenChange(e: Event) {
-    const target = e.target as HTMLInputElement;
-    autoOpenOnStartup = target.checked;
-    saveSetting("autoOpenOnStartup", autoOpenOnStartup);
+    const target = e.target as HTMLInputElement
+    settings.autoOpenOnStartup = target.checked
+    updateSettings({ autoOpenOnStartup: settings.autoOpenOnStartup })
   }
 
   function handleConfirmDeleteChange(e: Event) {
-    const target = e.target as HTMLInputElement;
-    confirmBeforeDelete = target.checked;
-    saveSetting("confirmBeforeDelete", confirmBeforeDelete);
+    const target = e.target as HTMLInputElement
+    settings.confirmBeforeDelete = target.checked
+    updateSettings({ confirmBeforeDelete: settings.confirmBeforeDelete })
   }
 
   function handleClickActionChange(action: ClickAction) {
-    clickAction = action;
-    saveSetting("clickAction", action);
+    settings.clickAction = action
+    updateSettings({ clickAction: action })
   }
 
   async function resetSettings() {
-    if (confirm("Reset all settings to default?")) {
-      autoOpenOnStartup = true;
-      confirmBeforeDelete = true;
-      clickAction = "saveAll";
-      await Promise.all([
-        storage.setItem("local:autoOpenOnStartup", true),
-        storage.setItem("local:confirmBeforeDelete", true),
-        storage.setItem("local:clickAction", "saveAll"),
-      ]);
+    if (confirm(browser.i18n.getMessage('resetAllSettings'))) {
+      await resetAllSettings()
+      await loadSettings()
     }
   }
 </script>
@@ -78,15 +63,17 @@
       <div class="flex items-center gap-4">
         <Settings size={26} aria-hidden="true" />
         <div>
-          <h1 class="text-xl font-bold">Settings</h1>
+          <h1 class="text-xl font-bold">
+            {browser.i18n.getMessage('settings')}
+          </h1>
           <p class="text-sm text-base-content/60">
-            Customize OriginTab behavior
+            {browser.i18n.getMessage('customizeOriginTab')}
           </p>
         </div>
       </div>
       <button class="btn btn-ghost btn-sm gap-2" onclick={resetSettings}>
         <RotateCcw size={16} aria-hidden="true" />
-        Reset
+        {browser.i18n.getMessage('reset')}
       </button>
     </div>
 
@@ -102,17 +89,19 @@
           <div class="card-body">
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="font-medium">Auto-open on Startup</h3>
+                <h3 class="font-medium">
+                  {browser.i18n.getMessage('autoOpenOnStartup')}
+                </h3>
                 <p class="text-sm text-base-content/60">
-                  Automatically open OriginTab when browser starts
+                  {browser.i18n.getMessage('autoOpenDescription')}
                 </p>
               </div>
               <input
                 type="checkbox"
                 class="toggle toggle-primary"
-                checked={autoOpenOnStartup}
+                checked={settings.autoOpenOnStartup}
                 onchange={handleAutoOpenChange}
-                aria-label="Auto-open on Startup"
+                aria-label={browser.i18n.getMessage('autoOpenOnStartup')}
               />
             </div>
           </div>
@@ -123,17 +112,19 @@
           <div class="card-body">
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="font-medium">Confirm before delete</h3>
+                <h3 class="font-medium">
+                  {browser.i18n.getMessage('confirmBeforeDelete')}
+                </h3>
                 <p class="text-sm text-base-content/60">
-                  Show confirmation dialog when deleting tabs or groups
+                  {browser.i18n.getMessage('confirmDeleteDescription')}
                 </p>
               </div>
               <input
                 type="checkbox"
                 class="toggle toggle-primary"
-                checked={confirmBeforeDelete}
+                checked={settings.confirmBeforeDelete}
                 onchange={handleConfirmDeleteChange}
-                aria-label="Confirm before delete"
+                aria-label={browser.i18n.getMessage('confirmBeforeDelete')}
               />
             </div>
           </div>
@@ -142,12 +133,14 @@
         <!-- Icon Click Action -->
         <div class="card bg-base-100 shadow-sm border border-base-300">
           <div class="card-body">
-            <div class="flex items-center gap-2 mb-4">
+            <div class="flex items-center gap-2">
               <MousePointerClick size={18} aria-hidden="true" />
-              <h3 class="font-medium">Icon Click Action</h3>
+              <h3 class="font-medium">
+                {browser.i18n.getMessage('iconClickAction')}
+              </h3>
             </div>
             <p class="text-sm text-base-content/60 mb-4">
-              Choose what happens when you click the extension icon
+              {browser.i18n.getMessage('clickActionDescription')}
             </p>
             <div class="space-y-2">
               <label
@@ -158,15 +151,17 @@
                   type="radio"
                   name="clickAction"
                   id="clickAction-saveAll"
-                  class="radio radio-primary"
+                  class="radio radio-sm radio-primary"
                   value="saveAll"
-                  checked={clickAction === "saveAll"}
-                  onchange={() => handleClickActionChange("saveAll")}
+                  checked={settings.clickAction === ClickAction.SaveAll}
+                  onchange={() => handleClickActionChange(ClickAction.SaveAll)}
                 />
                 <div>
-                  <div class="font-medium">Save All Tabs</div>
+                  <div class="font-medium">
+                    {browser.i18n.getMessage('saveAll')}
+                  </div>
                   <div class="text-sm text-base-content/60">
-                    Save all tabs in current window to OriginTab
+                    {browser.i18n.getMessage('saveAllDescription')}
                   </div>
                 </div>
               </label>
@@ -178,15 +173,18 @@
                   type="radio"
                   name="clickAction"
                   id="clickAction-saveCurrent"
-                  class="radio radio-primary"
+                  class="radio radio-sm radio-primary"
                   value="saveCurrent"
-                  checked={clickAction === "saveCurrent"}
-                  onchange={() => handleClickActionChange("saveCurrent")}
+                  checked={settings.clickAction === ClickAction.SaveCurrent}
+                  onchange={() =>
+                    handleClickActionChange(ClickAction.SaveCurrent)}
                 />
                 <div>
-                  <div class="font-medium">Save Current Tab Only</div>
+                  <div class="font-medium">
+                    {browser.i18n.getMessage('saveCurrent')}
+                  </div>
                   <div class="text-sm text-base-content/60">
-                    Save only the currently active tab to OriginTab
+                    {browser.i18n.getMessage('saveCurrentDescription')}
                   </div>
                 </div>
               </label>
@@ -198,15 +196,18 @@
                   type="radio"
                   name="clickAction"
                   id="clickAction-showPopup"
-                  class="radio radio-primary"
+                  class="radio radio-sm radio-primary"
                   value="showPopup"
-                  checked={clickAction === "showPopup"}
-                  onchange={() => handleClickActionChange("showPopup")}
+                  checked={settings.clickAction === ClickAction.ShowPopup}
+                  onchange={() =>
+                    handleClickActionChange(ClickAction.ShowPopup)}
                 />
                 <div>
-                  <div class="font-medium">Show Popup Menu</div>
+                  <div class="font-medium">
+                    {browser.i18n.getMessage('showPopup')}
+                  </div>
                   <div class="text-sm text-base-content/60">
-                    Open a popup with options
+                    {browser.i18n.getMessage('showPopupDescription')}
                   </div>
                 </div>
               </label>
@@ -219,13 +220,18 @@
           <div class="card-body">
             <div class="flex items-center gap-2 mb-4">
               <Info size={18} aria-hidden="true" />
-              <h3 class="font-medium">About OriginTab</h3>
+              <h3 class="font-medium">
+                {browser.i18n.getMessage('aboutOriginTab')}
+              </h3>
             </div>
             <div class="space-y-2 text-sm text-base-content/60">
               <p>
-                <span class="font-medium text-base-content">Version:</span> 1.0.0
+                <span class="font-medium text-base-content">
+                  {browser.i18n.getMessage('version')}
+                </span>
+                1.0.0
               </p>
-              <p>Save tabs with one click and restore them at any time.</p>
+              <p>{browser.i18n.getMessage('appDescription')}</p>
             </div>
           </div>
         </div>
