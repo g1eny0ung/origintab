@@ -1,4 +1,4 @@
-import { userGroups, tabGroups, DEFAULT_GROUP_ID } from './base';
+import { userGroups, tabGroups, DEFAULT_GROUP_ID, generateId } from './base';
 import type { UserGroup } from '../utils/types';
 
 export async function getUserGroups() {
@@ -9,7 +9,7 @@ export async function createUserGroup(name: string) {
   const data = await userGroups.getValue();
 
   const newGroup: UserGroup = {
-    id: `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+    id: generateId(),
     name: name.trim(),
     createdAt: Date.now(),
   };

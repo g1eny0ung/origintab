@@ -34,3 +34,16 @@ export enum ClickAction {
   SaveCurrent = 'saveCurrent',
   ShowPopup = 'showPopup'
 }
+
+// URL display mode
+export enum UrlDisplayMode {
+  None = 'none',
+  Full = 'full',
+  Hostname = 'hostname'
+}
+
+// Restore tab action
+export enum RestoreAction {
+  OpenWithoutJump = 'openWithoutJump',
+  OpenAndJump = 'openAndJump'
+}

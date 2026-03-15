@@ -18,6 +18,7 @@
     "@tailwindcss/vite": "^4.2.1",
     "@tsconfig/svelte": "^5.0.8",
     "@types/luxon": "^3.7.1",
+    "@types/sortablejs": "^1.15.9",
     "@wxt-dev/module-svelte": "^2.0.4",
     "daisyui": "^5.5.19",
     "svelte": "^5.53.7",
@@ -28,6 +29,7 @@
     "wxt": "^0.20.18"
   },
   "dependencies": {
-    "luxon": "^3.7.2"
+    "luxon": "^3.7.2",
+    "sortablejs": "^1.15.7"
   }
 }

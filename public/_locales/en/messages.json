@@ -11,12 +11,6 @@
   "extDescription": {
     "message": "Save tabs with one click and restore them at any time."
   },
-  "appTitle": {
-    "message": "OriginTab"
-  },
-  "appDescription": {
-    "message": "Save tabs with one click and restore them at any time."
-  },
   "import": {
     "message": "Import"
   },
@@ -140,23 +134,11 @@
   "aboutOriginTab": {
     "message": "About OriginTab"
   },
-  "version": {
-    "message": "Version:"
-  },
-  "rename": {
-    "message": "Rename"
-  },
   "delete": {
     "message": "Delete"
   },
   "deleteGroupConfirm": {
     "message": "Delete this group? Tabs will move to Default."
-  },
-  "groupRenamed": {
-    "message": "Group renamed"
-  },
-  "renameFailed": {
-    "message": "Rename failed"
   },
   "groupDeleted": {
     "message": "Group deleted, tabs moved to Default"
@@ -170,26 +152,26 @@
   "restore": {
     "message": "Restore"
   },
-  "restoreAndDelete": {
-    "message": "Restore & Delete"
+  "restoreAndPreserve": {
+    "message": "Restore & Preserve"
   },
   "deleteCollection": {
     "message": "Delete this collection?"
   },
   "collectionDeleted": {
-    "message": "Collection deleted"
+    "message": "Tab collection deleted"
   },
   "tabsRestored": {
     "message": "Tabs restored"
-  },
-  "tabsRestoredAndRemoved": {
-    "message": "Tabs restored and removed"
   },
   "restoreFailed": {
     "message": "Restore failed"
   },
   "tabRestored": {
     "message": "Tab restored"
+  },
+  "deleteTabConfirm": {
+    "message": "Delete this tab?"
   },
   "tabDeleted": {
     "message": "Tab deleted"
@@ -208,5 +190,50 @@
   },
   "failedToLoadGroups": {
     "message": "Failed to load groups"
+  },
+  "urlDisplayMode": {
+    "message": "URL Display Mode"
+  },
+  "urlDisplayDescription": {
+    "message": "Choose how to display URLs in saved tabs"
+  },
+  "urlDisplayNone": {
+    "message": "Do not display"
+  },
+  "urlDisplayNoneDescription": {
+    "message": "Hide URLs in saved tabs"
+  },
+  "urlDisplayHostname": {
+    "message": "Hostname only"
+  },
+  "urlDisplayHostnameDescription": {
+    "message": "Show only the hostname (e.g., example.com)"
+  },
+  "urlDisplayFull": {
+    "message": "Full URL"
+  },
+  "urlDisplayFullDescription": {
+    "message": "Show the complete URL"
+  },
+  "restoreTabAction": {
+    "message": "Restore Tab Action"
+  },
+  "restoreActionDescription": {
+    "message": "Choose what happens when restoring tabs"
+  },
+  "openWithoutJump": {
+    "message": "Open and stay"
+  },
+  "openWithoutJumpDescription": {
+    "message": "Open tabs but don't switch to them"
+  },
+  "openAndJump": {
+    "message": "Open and jump"
+  },
+  "openAndJumpDescription": {
+    "message": "Open tabs and switch to them"
+  },
+  "justNow": {
+    "message": "Just now"
   }
 }

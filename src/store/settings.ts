@@ -1,17 +1,21 @@
-import { ClickAction } from '~/utils/types'
+import { ClickAction, UrlDisplayMode, RestoreAction } from '~/utils/types'
 
 export interface Settings {
   autoOpenOnStartup: boolean
   confirmBeforeDelete: boolean
   clickAction: ClickAction
+  urlDisplayMode: UrlDisplayMode
+  restoreAction: RestoreAction
 }
 
 const SETTINGS_KEY = 'local:settings'
 
-const defaultSettings: Settings = {
+export const defaultSettings: Settings = {
   autoOpenOnStartup: true,
   confirmBeforeDelete: true,
   clickAction: ClickAction.SaveAll,
+  urlDisplayMode: UrlDisplayMode.None,
+  restoreAction: RestoreAction.OpenWithoutJump,
 };
 
 const settings = storage.defineItem<Settings>(SETTINGS_KEY, {

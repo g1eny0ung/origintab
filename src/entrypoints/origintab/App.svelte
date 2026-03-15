@@ -8,10 +8,13 @@
     exportToText,
     importFromText,
     DEFAULT_GROUP_ID,
+    defaultData,
+    getSettings,
   } from '~/store'
-  import type { TabGroup, UserGroup } from '~/utils/types'
-  import UserGroupList from '../../components/UserGroupList.svelte'
-  import ImportModal from '../../components/ImportModal.svelte'
+  import type { Settings } from '~/store/settings'
+  import type { TabGroup, UserGroup } from '@/utils/types'
+  import UserGroupList from '@/components/UserGroupList.svelte'
+  import ImportModal from '@/components/ImportModal.svelte'
   import {
     Trash2,
     Upload,
@@ -27,10 +30,15 @@
   // Data state
   let userGroups: UserGroup[] = $state([])
   let tabGroups: TabGroup[] = $state([])
-  let expandedGroups: Set<string> = $state(new Set([DEFAULT_GROUP_ID]))
+  let settings: Settings = $state({
+    autoOpenOnStartup: true,
+    confirmBeforeDelete: true,
+    clickAction: undefined,
+    urlDisplayMode: undefined,
+  } as unknown as Settings)
 
   // Import modal
-  let showImportModal = $state(false)
+  let importModalId = 'import-modal'
   let importText = $state('')
   let importTargetGroupId = $state(DEFAULT_GROUP_ID)
 
@@ -46,9 +54,10 @@
   // Load data
   async function loadData() {
     try {
-      ;[userGroups, tabGroups] = await Promise.all([
+      ;[userGroups, tabGroups, settings] = await Promise.all([
         getUserGroups(),
         getTabGroups(),
+        getSettings(),
       ])
     } catch (error) {
       showToast('Failed to load data', 'error')
@@ -57,7 +66,9 @@
 
   // Listen for messages from background
   function handleMessage(message: any) {
-    if (message.action === 'dataUpdated') loadData()
+    if (message.action === 'dataUpdated') {
+      loadData()
+    }
   }
 
   // Show toast notification
@@ -69,55 +80,57 @@
     }, 3000)
   }
 
-  // Toggle group expansion
-  function toggleGroup(groupId: string) {
-    const newExpanded = new Set(expandedGroups)
-    if (newExpanded.has(groupId)) newExpanded.delete(groupId)
-    else newExpanded.add(groupId)
-    expandedGroups = newExpanded
-  }
-
   // Create new group
   async function handleCreateGroup() {
     const name = newGroupName.trim()
-    if (!name) return
+    if (!name) {
+      return
+    }
+
     try {
       await createUserGroup(name)
+
       showToast(browser.i18n.getMessage('groupCreated'))
-      await loadData()
-      newGroupName = ''
-      showNewGroupInput = false
+
+      userGroups = await getUserGroups()
+      clearNewGroup()
     } catch (error) {
       showToast(browser.i18n.getMessage('failedToCreateGroup'), 'error')
     }
   }
 
-  function cancelNewGroup() {
+  function clearNewGroup() {
     showNewGroupInput = false
     newGroupName = ''
   }
 
   function handleNewGroupKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter') handleCreateGroup()
-    else if (e.key === 'Escape') cancelNewGroup()
+    if (e.key === 'Enter') {
+      handleCreateGroup()
+    } else if (e.key === 'Escape') {
+      clearNewGroup()
+    }
   }
 
   $effect(() => {
-    if (showNewGroupInput && newGroupInputRef) newGroupInputRef.focus()
+    if (showNewGroupInput && newGroupInputRef) {
+      newGroupInputRef.focus()
+    }
   })
 
   // Clear all data
   async function handleClearAll() {
-    if (!confirm(browser.i18n.getMessage('clearAllConfirm'))) return
-    try {
-      await clearAllData()
-      userGroups = [
-        { id: DEFAULT_GROUP_ID, name: 'Default', createdAt: Date.now() },
-      ]
-      tabGroups = []
-      showToast(browser.i18n.getMessage('allTabsCleared'))
-    } catch (error) {
-      showToast(browser.i18n.getMessage('failedToClearAllTabs'), 'error')
+    if (confirm(browser.i18n.getMessage('clearAllConfirm'))) {
+      try {
+        await clearAllData()
+
+        userGroups = defaultData.userGroups
+        tabGroups = defaultData.tabGroups
+
+        showToast(browser.i18n.getMessage('allTabsCleared'))
+      } catch (error) {
+        showToast(browser.i18n.getMessage('failedToClearAllTabs'), 'error')
+      }
     }
   }
 
@@ -132,6 +145,7 @@
       a.download = `origintab-export-${new Date().toISOString().slice(0, 10)}.txt`
       a.click()
       URL.revokeObjectURL(url)
+
       showToast(browser.i18n.getMessage('exportedSuccessfully'))
     } catch (error) {
       showToast(browser.i18n.getMessage('exportFailed'), 'error')
@@ -148,8 +162,7 @@
     try {
       const result = await importFromText(importText, importTargetGroupId)
       await loadData()
-      showImportModal = false
-      importText = ''
+
       if (result.errors.length > 0) {
         showToast(
           browser.i18n.getMessage('importedTabsWithErrors', [
@@ -168,13 +181,13 @@
     }
   }
 
-  function cancelImport() {
-    showImportModal = false
+  function clearImport() {
     importText = ''
   }
 
   onMount(() => {
     loadData()
+
     browser.runtime.onMessage.addListener(handleMessage)
   })
 
@@ -182,34 +195,6 @@
     browser.runtime.onMessage.removeListener(handleMessage)
   })
 </script>
-
-<!-- Toasts -->
-<div class="toast toast-center toast-top z-50">
-  {#each toasts as toast (toast.id)}
-    <div
-      role="alert"
-      class="alert alert-soft shadow-lg"
-      class:alert-success={toast.type === 'success'}
-      class:alert-error={toast.type === 'error'}
-    >
-      {#if toast.type === 'success'}
-        <CircleCheck size={16} />
-      {:else}
-        <CircleX size={16} />
-      {/if}
-      <span>{toast.message}</span>
-    </div>
-  {/each}
-</div>
-
-<ImportModal
-  show={showImportModal}
-  {userGroups}
-  bind:importText
-  bind:targetGroupId={importTargetGroupId}
-  onImport={handleImport}
-  onCancel={cancelImport}
-/>
 
 <div class="min-h-screen">
   <!-- Header -->
@@ -219,17 +204,20 @@
     <div class="max-w-5xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-xl font-bold">
-            {browser.i18n.getMessage('appTitle')}
-          </h1>
+          <h1 class="text-xl font-bold">OriginTab</h1>
           <p class="text-sm text-base-content/60">
-            {browser.i18n.getMessage('appDescription')}
+            {browser.i18n.getMessage('extDescription')}
           </p>
         </div>
         <div class="flex items-center gap-2">
           <button
             class="btn btn-ghost btn-sm"
-            onclick={() => (showImportModal = true)}
+            onclick={() => {
+              const dialog = document.getElementById(
+                importModalId,
+              ) as HTMLDialogElement
+              dialog.showModal()
+            }}
           >
             <Upload size={16} />
             <span class="hidden sm:inline">
@@ -288,7 +276,7 @@
             <button class="btn btn-primary btn-sm" onclick={handleCreateGroup}>
               <Check size={16} />
             </button>
-            <button class="btn btn-ghost btn-sm" onclick={cancelNewGroup}>
+            <button class="btn btn-ghost btn-sm" onclick={clearNewGroup}>
               <X size={16} />
             </button>
           </div>
@@ -306,11 +294,38 @@
       <UserGroupList
         {userGroups}
         {tabGroups}
-        {expandedGroups}
+        {settings}
         onReload={loadData}
         onToast={showToast}
-        onToggleGroup={toggleGroup}
       />
     {/if}
   </main>
+</div>
+
+<ImportModal
+  id={importModalId}
+  {userGroups}
+  bind:importText
+  bind:targetGroupId={importTargetGroupId}
+  onImport={handleImport}
+  onCancel={clearImport}
+/>
+
+<!-- Toasts -->
+<div class="toast toast-center toast-top z-50">
+  {#each toasts as toast (toast.id)}
+    <div
+      role="alert"
+      class="alert alert-soft shadow-lg"
+      class:alert-success={toast.type === 'success'}
+      class:alert-error={toast.type === 'error'}
+    >
+      {#if toast.type === 'success'}
+        <CircleCheck size={16} />
+      {:else}
+        <CircleX size={16} />
+      {/if}
+      <span>{toast.message}</span>
+    </div>
+  {/each}
 </div>

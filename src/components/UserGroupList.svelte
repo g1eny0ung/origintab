@@ -1,20 +1,20 @@
 <script lang="ts">
   import type { UserGroup, TabGroup } from '~/utils/types'
+  import type { Settings } from '~/store/settings'
   import UserGroupItem from './UserGroupItem.svelte'
 
   interface Props {
     userGroups: UserGroup[]
     tabGroups: TabGroup[]
-    expandedGroups: Set<string>
+    settings: Settings
     onReload: () => void
     onToast: (message: string, type?: 'success' | 'error') => void
-    onToggleGroup: (groupId: string) => void
   }
 
-  let { userGroups, tabGroups, expandedGroups, onReload, onToast, onToggleGroup }: Props = $props()
+  let { userGroups, tabGroups, settings, onReload, onToast }: Props = $props()
 
   function getTabGroups(userGroupId: string) {
-    return tabGroups.filter(tg => tg.userGroupId === userGroupId)
+    return tabGroups.filter((tg) => tg.userGroupId === userGroupId)
   }
 </script>
 
@@ -23,8 +23,7 @@
     <UserGroupItem
       {userGroup}
       tabGroups={getTabGroups(userGroup.id)}
-      isExpanded={expandedGroups.has(userGroup.id)}
-      onToggle={() => onToggleGroup(userGroup.id)}
+      {settings}
       {onReload}
       {onToast}
     />

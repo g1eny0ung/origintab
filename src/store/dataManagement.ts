@@ -1,4 +1,4 @@
-import { userGroups, tabGroups, defaultData } from './base';
+import { userGroups, tabGroups, defaultData, generateId } from './base';
 import type { TabItem } from '../utils/types';
 
 export async function clearAllData() {
@@ -42,13 +42,13 @@ export async function importFromText(
       continue;
     }
 
-    tabs.push({ id: `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`, url, title, createdAt: Date.now() });
+    tabs.push({ id: generateId(), url, title, createdAt: Date.now() });
   }
 
   if (tabs.length > 0) {
     const data = await tabGroups.getValue();
     data.unshift({
-      id: `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+      id: generateId(),
       tabs,
       createdAt: Date.now(),
       userGroupId,

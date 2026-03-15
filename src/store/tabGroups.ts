@@ -1,8 +1,8 @@
-import { tabGroups, DEFAULT_GROUP_ID } from './base';
-import type { TabItem, TabGroup } from '../utils/types';
+import { tabGroups, DEFAULT_GROUP_ID, generateId } from './base'
+import type { TabItem, TabGroup } from '../utils/types'
 
 export async function getTabGroups() {
-  return tabGroups.getValue();
+  return tabGroups.getValue()
 }
 
 export async function createTabGroup(
@@ -10,29 +10,42 @@ export async function createTabGroup(
   userGroupId: string = DEFAULT_GROUP_ID,
 ) {
   if (tabs.length === 0) {
-    throw new Error('No tabs to save');
+    throw new Error('No tabs to save')
   }
 
-  const data = await getTabGroups();
+  const data = await getTabGroups()
 
   const newGroup: TabGroup = {
-    id: `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
-    tabs: tabs.map((tab) => ({ ...tab, id: `${Date.now()}-${Math.random().toString(36).slice(2, 11)}` })),
+    id: generateId(),
+    tabs: tabs.map((tab) => ({ ...tab, id: generateId() })),
     createdAt: Date.now(),
     userGroupId,
-  };
+  }
 
-  data.unshift(newGroup);
+  data.unshift(newGroup)
 
-  await tabGroups.setValue(data);
+  await tabGroups.setValue(data)
 
-  return newGroup;
+  return newGroup
 }
 
 export async function deleteTabGroup(groupId: string) {
-  let data = await getTabGroups();
+  let data = await getTabGroups()
 
-  data = data.filter((g) => g.id !== groupId);
+  data = data.filter((g) => g.id !== groupId)
 
-  await tabGroups.setValue(data);
+  await tabGroups.setValue(data)
+}
+
+export async function updateTabGroup(
+  groupId: string,
+  updates: Partial<TabGroup>,
+) {
+  const data = await getTabGroups()
+  const index = data.findIndex((g) => g.id === groupId)
+
+  if (index !== -1) {
+    data[index] = { ...data[index], ...updates }
+    await tabGroups.setValue(data)
+  }
 }

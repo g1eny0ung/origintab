@@ -85,3 +85,4 @@ bun run check
 - Always run `bun run check` before committing
 - Keep lang="en" in all HTML files
 - Prefer simple, direct solutions over complex ones
+- All `if` `else` statements should have curly braces

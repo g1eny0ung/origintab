@@ -1,4 +1,9 @@
-import { createTabGroup, DEFAULT_GROUP_ID } from '~/store'
+import {
+  createTabGroup,
+  DEFAULT_GROUP_ID,
+  getSettings,
+  Settings,
+} from '~/store'
 import type { TabItem, ClickAction } from '~/utils/types'
 
 // Get OriginTab page URL
@@ -45,9 +50,9 @@ async function collectCurrentTab(userGroupId?: string) {
     }
 
     if (activeTab.url.includes('/origintab.html')) {
-      console.error('Cannot collect OriginTab page')
       return
     }
+
     if (
       activeTab.url === 'chrome://newtab/' ||
       activeTab.url === 'about:newtab' ||
@@ -145,31 +150,30 @@ async function collectAllTabs(userGroupId?: string) {
   }
 }
 
+async function openOriginTab() {
+  return browser.tabs.create({
+    url: getOriginTabUrl(),
+    active: false,
+    pinned: true,
+    index: 0, // Place at leftmost
+  })
+}
+
 // Open OriginTab page on browser startup based on settings
-async function openOriginTabOnStartup(): Promise<void> {
+async function openOriginTabOnStartup() {
   try {
-    // Check if auto-open is enabled
-    const autoOpen = await storage.getItem<boolean>('local:autoOpenOnStartup')
+    const autoOpen = (await getSettings()).autoOpenOnStartup
     if (autoOpen === false) {
-      return // Disabled, do nothing
+      return
     }
 
-    const existingTabId = await findOriginTab()
+    const originTab = await findOriginTab()
 
-    if (existingTabId) {
+    if (originTab) {
       // If exists, pin it
-      await browser.tabs.update(existingTabId, { pinned: true })
+      await browser.tabs.update(originTab, { pinned: true })
     } else {
-      // Create new tab and pin it
-      const tab = await browser.tabs.create({
-        url: getOriginTabUrl(),
-        pinned: true,
-        index: 0, // Place at leftmost
-      })
-      // Ensure active
-      if (tab.id) {
-        await browser.tabs.update(tab.id, { active: true })
-      }
+      await openOriginTab()
     }
   } catch (error) {
     console.error('Failed to open OriginTab on startup:', error)
@@ -177,10 +181,9 @@ async function openOriginTabOnStartup(): Promise<void> {
 }
 
 // Update action behavior based on settings
-async function updateActionBehavior(): Promise<void> {
+async function updateActionBehavior() {
   try {
-    const clickAction =
-      (await storage.getItem<ClickAction>('local:clickAction')) ?? 'saveAll'
+    const clickAction = (await getSettings()).clickAction
 
     if (clickAction === 'showPopup') {
       // Show popup when clicked
@@ -195,21 +198,23 @@ async function updateActionBehavior(): Promise<void> {
 }
 
 // Handle icon click based on settings
-async function handleIconClick(): Promise<void> {
+async function handleIconClick() {
+  const originTab = await findOriginTab()
+  if (!originTab) {
+    await openOriginTab()
+  }
+
   try {
-    const clickAction =
-      (await storage.getItem<ClickAction>('local:clickAction')) ?? 'saveAll'
+    const clickAction = (await getSettings()).clickAction
 
     switch (clickAction) {
-      case 'saveCurrent': {
+      case 'saveCurrent':
         await collectCurrentTab()
         break
-      }
       case 'saveAll':
-      default: {
+      default:
         await collectAllTabs()
         break
-      }
     }
   } catch (error) {
     console.error('Failed to handle icon click:', error)
@@ -222,8 +227,9 @@ export default defineBackground(() => {
   updateActionBehavior()
 
   // Listen for settings changes
-  storage.watch<ClickAction>('local:clickAction', () => {
+  storage.watch<Settings>('local:settings', () => {
     updateActionBehavior()
+    notifyOriginTabUpdate()
   })
 
   // Listen for extension icon click (only when popup is not set)
