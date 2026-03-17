@@ -24,6 +24,7 @@
     Check,
     X,
     CircleX,
+    SettingsIcon,
   } from '@lucide/svelte'
   import { Archive } from '@lucide/svelte'
 
@@ -241,6 +242,17 @@
               </span>
             </button>
           {/if}
+          <button
+            class="btn btn-ghost btn-sm"
+            onclick={() => {
+              browser.runtime.openOptionsPage()
+            }}
+          >
+            <SettingsIcon size={16} />
+            <span class="hidden sm:inline">
+              {browser.i18n.getMessage('settings')}
+            </span>
+          </button>
         </div>
       </div>
     </div>

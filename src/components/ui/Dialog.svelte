@@ -7,7 +7,7 @@
     onClose,
   }: {
     id: string
-    children: any
+    children: () => any
     disableConfirm?: boolean
     onConfirm?: () => void
     onClose?: () => void
