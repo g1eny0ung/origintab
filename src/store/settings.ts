@@ -9,7 +9,7 @@ export interface Settings {
   openGroupInNewWindow: boolean
 }
 
-const SETTINGS_KEY = 'local:settings'
+const SETTINGS_KEY = 'sync:settings'
 
 export const defaultSettings: Settings = {
   autoOpenOnStartup: true,
@@ -18,24 +18,22 @@ export const defaultSettings: Settings = {
   urlDisplayMode: UrlDisplayMode.None,
   restoreAction: RestoreAction.OpenWithoutJump,
   openGroupInNewWindow: true,
-};
+}
 
 const settings = storage.defineItem<Settings>(SETTINGS_KEY, {
   fallback: defaultSettings,
 })
 
-export async function getSettings(): Promise<Settings> {
+export async function getSettings() {
   return settings.getValue()
 }
 
-export async function updateSettings(
-  updates: Partial<Settings>,
-): Promise<void> {
+export async function updateSettings(updates: Partial<Settings>) {
   const currentSettings = await getSettings()
   const newSettings = { ...currentSettings, ...updates }
   await settings.setValue(newSettings)
 }
 
-export async function resetSettings(): Promise<void> {
+export async function resetSettings() {
   await settings.setValue(defaultSettings)
 }

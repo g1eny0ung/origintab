@@ -4,7 +4,7 @@ import {
   getSettings,
   Settings,
 } from '~/store'
-import type { TabItem, ClickAction } from '~/utils/types'
+import { ClickAction, type TabItem } from '~/utils/types'
 
 // Get OriginTab page URL
 function getOriginTabUrl(): string {
@@ -19,19 +19,12 @@ async function findOriginTab() {
   return originTab?.id
 }
 
-// Notify all origintab pages to refresh
-async function notifyOriginTabUpdate(): Promise<void> {
-  const tabs = await browser.tabs.query({})
-  const originTabUrl = getOriginTabUrl()
+// Notify all origintab pages to refresh (for settings changes)
+async function notifyOriginTabUpdate() {
+  const originTabId = await findOriginTab()
 
-  for (const tab of tabs) {
-    if (tab.url?.startsWith(originTabUrl) && tab.id) {
-      try {
-        await browser.tabs.sendMessage(tab.id, { action: 'dataUpdated' })
-      } catch {
-        // Tab may not have content script loaded yet, ignore
-      }
-    }
+  if (originTabId) {
+    await browser.tabs.sendMessage(originTabId, { action: 'dataUpdated' })
   }
 }
 
@@ -77,9 +70,6 @@ async function collectCurrentTab() {
 
     // Save tab
     await createTabGroup([tabItem], DEFAULT_GROUP_ID)
-
-    // Notify origintab pages to update
-    await notifyOriginTabUpdate()
 
     // Close the original tab
     await browser.tabs.remove(activeTab.id)
@@ -132,9 +122,6 @@ async function collectAllTabs(userGroupId?: string) {
 
     // Save tabs
     await createTabGroup(tabItems, userGroupId || DEFAULT_GROUP_ID)
-
-    // Notify origintab pages to update
-    await notifyOriginTabUpdate()
 
     // Close collected tabs (exclude existing OriginTab if it was open)
     const tabIdsToClose = validTabs.map((tab) => tab.id!)
@@ -208,10 +195,10 @@ async function handleIconClick() {
     const clickAction = (await getSettings()).clickAction
 
     switch (clickAction) {
-      case 'saveCurrent':
+      case ClickAction.SaveCurrent:
         await collectCurrentTab()
         break
-      case 'saveAll':
+      case ClickAction.SaveAll:
       default:
         await collectAllTabs()
         break
@@ -233,8 +220,8 @@ export default defineBackground(() => {
   })
 
   // Listen for extension icon click (only when popup is not set)
-  browser.action.onClicked.addListener(async () => {
-    await handleIconClick()
+  browser.action.onClicked.addListener(() => {
+    handleIconClick()
   })
 
   // Listen for messages from popup
@@ -256,7 +243,7 @@ export default defineBackground(() => {
   })
 
   // Open OriginTab on browser startup (respects user settings)
-  browser.runtime.onStartup.addListener(async () => {
-    await openOriginTabOnStartup()
+  browser.runtime.onStartup.addListener(() => {
+    openOriginTabOnStartup()
   })
 })

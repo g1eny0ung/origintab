@@ -1,54 +1,40 @@
-import { userGroups, tabGroups, DEFAULT_GROUP_ID, generateId } from './base';
-import type { UserGroup } from '../utils/types';
+import { db, DEFAULT_GROUP_ID, generateId } from './base'
+import type { UserGroup } from '../utils/types'
 
 export async function getUserGroups() {
-  return userGroups.getValue();
+  return db.userGroups.toArray()
 }
 
 export async function createUserGroup(name: string) {
-  const data = await userGroups.getValue();
-
   const newGroup: UserGroup = {
     id: generateId(),
     name: name.trim(),
     createdAt: Date.now(),
-  };
-
-  data.unshift(newGroup);
-
-  await userGroups.setValue(data);
-
-  return newGroup;
-}
-
-export async function updateUserGroup(groupId: string, name: string) {
-  const data = await userGroups.getValue();
-  const group = data.find((g) => g.id === groupId);
-
-  if (!group) {
-    throw new Error('Group not found');
   }
 
-  group.name = name.trim();
+  await db.userGroups.add(newGroup)
 
-  await userGroups.setValue(data);
+  return newGroup
+}
+
+export async function updateUserGroup(
+  groupId: string,
+  name: string,
+) {
+  await db.userGroups.update(groupId, { name: name.trim() })
 }
 
 export async function deleteUserGroup(groupId: string) {
   if (groupId === DEFAULT_GROUP_ID) {
-    throw new Error('Cannot delete default group');
+    throw new Error('Cannot delete default group')
   }
 
-  let _userGroups = await userGroups.getValue();
-  const _tabGroups = await tabGroups.getValue();
-
-  _userGroups = _userGroups.filter((g) => g.id !== groupId);
-  _tabGroups.forEach((tg) => {
-    if (tg.userGroupId === groupId) {
-      tg.userGroupId = DEFAULT_GROUP_ID;
-    }
-  });
-
-  await userGroups.setValue(_userGroups);
-  await tabGroups.setValue(_tabGroups);
+  await db.transaction('rw', db.userGroups, db.tabGroups, async () => {
+    await db.userGroups.delete(groupId)
+    // Cascade update: move tabs to default group
+    await db.tabGroups
+      .where('userGroupId')
+      .equals(groupId)
+      .modify({ userGroupId: DEFAULT_GROUP_ID })
+  })
 }

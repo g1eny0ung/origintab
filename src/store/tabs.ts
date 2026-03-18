@@ -1,19 +1,21 @@
-import { tabGroups } from './base';
+import { db } from './base'
+import { deleteTabGroup } from './tabGroups'
 
-export async function removeTabFromGroup(groupId: string, tabId: string) {
-  let data = await tabGroups.getValue();
-  const groupIndex = data.findIndex((g) => g.id === groupId);
+export async function removeTabFromGroup(
+  groupId: string,
+  tabId: string,
+) {
+  const group = await db.tabGroups.get(groupId)
 
-  if (groupIndex === -1) {
-    return;
+  if (!group) {
+    return
   }
 
-  const group = data[groupIndex];
-  group.tabs = group.tabs.filter((t) => t.id !== tabId);
+  const newTabs = group.tabs.filter((t) => t.id !== tabId)
 
-  if (group.tabs.length === 0) {
-    data.splice(groupIndex, 1);
+  if (newTabs.length === 0) {
+    await deleteTabGroup(groupId)
+  } else {
+    await db.tabGroups.update(groupId, { tabs: newTabs })
   }
-
-  await tabGroups.setValue(data);
 }

@@ -19,11 +19,10 @@
   interface Props {
     tabGroup: TabGroup
     settings: Settings
-    onReload: () => void
     onToast: (message: string, type?: 'success' | 'error') => void
   }
 
-  let { tabGroup, settings, onReload, onToast }: Props = $props()
+  let { tabGroup, settings, onToast }: Props = $props()
   let tabsContainer: HTMLDivElement
 
   function formatTime(ts: number) {
@@ -54,7 +53,6 @@
       }
 
       onToast(browser.i18n.getMessage('tabsRestored'))
-      onReload()
     } catch {
       onToast(browser.i18n.getMessage('restoreFailed'), 'error')
     }
@@ -70,7 +68,6 @@
       await deleteTabGroup(tabGroup.id)
 
       onToast(browser.i18n.getMessage('collectionDeleted'))
-      onReload()
     } catch {
       onToast(browser.i18n.getMessage('deleteFailed'), 'error')
     }
@@ -104,7 +101,6 @@
       }
 
       onToast(browser.i18n.getMessage('tabRestored'))
-      onReload()
     } catch {
       onToast(browser.i18n.getMessage('restoreFailed'), 'error')
     }
@@ -120,7 +116,6 @@
       await removeTabFromGroup(tabGroup.id, tabId)
 
       onToast(browser.i18n.getMessage('tabDeleted'))
-      onReload()
     } catch {
       onToast(browser.i18n.getMessage('deleteFailed'), 'error')
     }
@@ -132,8 +127,6 @@
     newTabs.splice(newIndex, 0, movedTab)
 
     await updateTabGroup(tabGroup.id, { tabs: newTabs })
-
-    onReload()
   }
 
   onMount(() => {

@@ -1,4 +1,4 @@
-import { tabGroups } from './base'
+import { db } from './base'
 import { deleteTabGroup } from './tabGroups'
 import { removeTabFromGroup } from './tabs'
 
@@ -38,8 +38,7 @@ export async function restoreGroup(
   options: RestoreOptions = {},
 ) {
   const { active = false, newWindow = false } = options
-  const data = await tabGroups.getValue()
-  const group = data.find((g) => g.id === groupId)
+  const group = await db.tabGroups.get(groupId)
 
   if (!group || group.tabs.length === 0) {
     throw new Error('Group not found or empty')
@@ -79,9 +78,8 @@ export async function restoreTab(
   options: RestoreOptions = {},
 ) {
   const { active = false } = options
-  const data = await tabGroups.getValue()
+  const group = await db.tabGroups.get(groupId)
 
-  const group = data.find((g) => g.id === groupId)
   if (!group) {
     throw new Error('Group not found')
   }

@@ -9,11 +9,10 @@
     userGroup: UserGroup
     tabGroups: TabGroup[]
     settings: Settings
-    onReload: () => void
     onToast: (message: string, type?: 'success' | 'error') => void
   }
 
-  let { userGroup, tabGroups, settings, onReload, onToast }: Props = $props()
+  let { userGroup, tabGroups, settings, onToast }: Props = $props()
 
   let isExpanded = $state(true)
 
@@ -33,7 +32,6 @@
     try {
       await deleteUserGroup(userGroup.id)
       onToast(browser.i18n.getMessage('groupDeleted'))
-      onReload()
     } catch {
       onToast(browser.i18n.getMessage('deleteFailed'), 'error')
     }
@@ -94,7 +92,7 @@
         </div>
       {:else}
         {#each tabGroups as tabGroup (tabGroup.id)}
-          <TabGroupItem {tabGroup} {settings} {onReload} {onToast} />
+          <TabGroupItem {tabGroup} {settings} {onToast} />
         {/each}
       {/if}
     </div>

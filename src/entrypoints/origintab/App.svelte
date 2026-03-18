@@ -1,18 +1,17 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte'
+  import { liveQuery } from 'dexie'
+  import { db, initDefaultGroup } from '~/store/base'
   import {
-    getUserGroups,
-    getTabGroups,
     createUserGroup,
     clearAllData,
     exportToText,
     importFromText,
     DEFAULT_GROUP_ID,
-    defaultData,
     getSettings,
   } from '~/store'
   import type { Settings } from '~/store/settings'
-  import type { TabGroup, UserGroup } from '@/utils/types'
+
   import UserGroupList from '@/components/UserGroupList.svelte'
   import ImportModal from '@/components/ImportModal.svelte'
   import {
@@ -25,12 +24,17 @@
     X,
     CircleX,
     SettingsIcon,
+    Archive,
   } from '@lucide/svelte'
-  import { Archive } from '@lucide/svelte'
 
-  // Data state
-  let userGroups: UserGroup[] = $state([])
-  let tabGroups: TabGroup[] = $state([])
+  // Use liveQuery for reactive data fetching
+  let userGroups = liveQuery(() =>
+    db.userGroups.orderBy('createdAt').reverse().toArray(),
+  )
+  let tabGroups = liveQuery(() =>
+    db.tabGroups.orderBy('createdAt').reverse().toArray(),
+  )
+
   let settings: Settings = $state({
     autoOpenOnStartup: true,
     confirmBeforeDelete: true,
@@ -52,23 +56,12 @@
   let newGroupName = $state('')
   let newGroupInputRef: HTMLInputElement | null = $state(null)
 
-  // Load data
-  async function loadData() {
+  // Load settings only
+  async function loadSettings() {
     try {
-      ;[userGroups, tabGroups, settings] = await Promise.all([
-        getUserGroups(),
-        getTabGroups(),
-        getSettings(),
-      ])
+      settings = await getSettings()
     } catch (error) {
-      showToast('Failed to load data', 'error')
-    }
-  }
-
-  // Listen for messages from background
-  function handleMessage(message: any) {
-    if (message.action === 'dataUpdated') {
-      loadData()
+      showToast('Failed to load settings', 'error')
     }
   }
 
@@ -81,7 +74,7 @@
     }, 3000)
   }
 
-  // Create new group
+  // Create new group - liveQuery will auto-refresh
   async function handleCreateGroup() {
     const name = newGroupName.trim()
     if (!name) {
@@ -93,7 +86,6 @@
 
       showToast(browser.i18n.getMessage('groupCreated'))
 
-      userGroups = await getUserGroups()
       clearNewGroup()
     } catch (error) {
       showToast(browser.i18n.getMessage('failedToCreateGroup'), 'error')
@@ -119,14 +111,11 @@
     }
   })
 
-  // Clear all data
+  // Clear all data - liveQuery will auto-refresh
   async function handleClearAll() {
     if (confirm(browser.i18n.getMessage('clearAllConfirm'))) {
       try {
         await clearAllData()
-
-        userGroups = defaultData.userGroups
-        tabGroups = defaultData.tabGroups
 
         showToast(browser.i18n.getMessage('allTabsCleared'))
       } catch (error) {
@@ -153,7 +142,7 @@
     }
   }
 
-  // Import tabs
+  // Import tabs - liveQuery will auto-refresh
   async function handleImport() {
     if (!importText.trim()) {
       showToast(browser.i18n.getMessage('pleaseEnterDataToImport'), 'error')
@@ -162,7 +151,6 @@
 
     try {
       const result = await importFromText(importText, importTargetGroupId)
-      await loadData()
 
       if (result.errors.length > 0) {
         showToast(
@@ -186,9 +174,16 @@
     importText = ''
   }
 
-  onMount(() => {
-    loadData()
+  // Listen for messages from background (settings changes)
+  function handleMessage(message: any) {
+    if (message.action === 'dataUpdated') {
+      loadSettings()
+    }
+  }
 
+  onMount(() => {
+    initDefaultGroup()
+    loadSettings()
     browser.runtime.onMessage.addListener(handleMessage)
   })
 
@@ -225,7 +220,7 @@
               {browser.i18n.getMessage('import')}
             </span>
           </button>
-          {#if tabGroups.length > 0}
+          {#if $tabGroups && $tabGroups.length > 0}
             <button class="btn btn-ghost btn-sm" onclick={handleExport}>
               <Download size={16} />
               <span class="hidden sm:inline">
@@ -259,7 +254,7 @@
   </header>
 
   <main class="max-w-5xl mx-auto px-4 py-6">
-    {#if userGroups.length === 1 && tabGroups.length === 0}
+    {#if !$userGroups || ($userGroups.length === 1 && (!$tabGroups || $tabGroups.length === 0))}
       <!-- Empty state -->
       <div class="flex flex-col items-center justify-center py-20 text-center">
         <div class="p-6 rounded-full mb-4">
@@ -304,10 +299,9 @@
       </div>
 
       <UserGroupList
-        {userGroups}
-        {tabGroups}
+        userGroups={$userGroups || []}
+        tabGroups={$tabGroups || []}
         {settings}
-        onReload={loadData}
         onToast={showToast}
       />
     {/if}
@@ -316,7 +310,7 @@
 
 <ImportModal
   id={importModalId}
-  {userGroups}
+  userGroups={$userGroups || []}
   bind:importText
   bind:targetGroupId={importTargetGroupId}
   onImport={handleImport}

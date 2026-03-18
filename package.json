@@ -29,6 +29,7 @@
     "wxt": "^0.20.18"
   },
   "dependencies": {
+    "dexie": "^4.3.0",
     "luxon": "^3.7.2",
     "sortablejs": "^1.15.7"
   }
