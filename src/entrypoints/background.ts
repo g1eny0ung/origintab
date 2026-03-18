@@ -36,7 +36,7 @@ async function notifyOriginTabUpdate(): Promise<void> {
 }
 
 // Collect current tab only
-async function collectCurrentTab(userGroupId?: string) {
+async function collectCurrentTab() {
   try {
     // Get current active tab
     const [activeTab] = await browser.tabs.query({
@@ -44,21 +44,25 @@ async function collectCurrentTab(userGroupId?: string) {
       currentWindow: true,
     })
 
-    if (!activeTab || !activeTab.url || !activeTab.id) {
-      console.error('No active tab found')
+    if (!activeTab || !activeTab.id || !activeTab.url) {
+      console.info('No active tab found')
       return
     }
 
-    if (activeTab.url.includes('/origintab.html')) {
+    if (activeTab.url === getOriginTabUrl()) {
       return
     }
 
     if (
       activeTab.url === 'chrome://newtab/' ||
-      activeTab.url === 'about:newtab' ||
-      activeTab.url === 'about:home'
+      activeTab.url === 'about:blank'
     ) {
-      console.error('Cannot collect new tab page')
+      console.info('Cannot collect new tab page')
+      return
+    }
+
+    if (activeTab.pinned) {
+      console.info('Skip pinned tab')
       return
     }
 
@@ -72,7 +76,7 @@ async function collectCurrentTab(userGroupId?: string) {
     }
 
     // Save tab
-    await createTabGroup([tabItem], userGroupId || DEFAULT_GROUP_ID)
+    await createTabGroup([tabItem], DEFAULT_GROUP_ID)
 
     // Notify origintab pages to update
     await notifyOriginTabUpdate()
@@ -95,20 +99,16 @@ async function collectAllTabs(userGroupId?: string) {
 
     // Filter out extension pages, invalid tabs, and existing OriginTab
     const validTabs = tabs.filter((tab) => {
-      if (!tab.url || !tab.id) {
-        return false
-      }
-
       // Exclude OriginTab page
-      if (tab.url.includes('/origintab.html')) {
-        return false
-      }
-
       // Exclude new tab pages
+      // Exclude pinned tabs
       if (
+        !tab.id ||
+        !tab.url ||
+        tab.id === existingOriginTabId ||
         tab.url === 'chrome://newtab/' ||
-        tab.url === 'about:newtab' ||
-        tab.url === 'about:home'
+        tab.url === 'about:blank' ||
+        tab.pinned
       ) {
         return false
       }

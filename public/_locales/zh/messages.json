@@ -231,9 +231,27 @@
     "message": "打开并跳转"
   },
   "openAndJumpDescription": {
-    "message": "打开标签页并切换到它们"
+    "message": "打开标签页并切换到它们（当使用Ctrl/Command/Shift点击时，会遵从浏览器的默认行为）"
   },
   "justNow": {
     "message": "刚刚"
+  },
+  "openGroupInNewWindow": {
+    "message": "打开分组位置"
+  },
+  "openGroupInNewWindowDescription": {
+    "message": "选择在何处打开标签页组"
+  },
+  "openInCurrentWindow": {
+    "message": "当前窗口"
+  },
+  "openInCurrentWindowDescription": {
+    "message": "在当前窗口中打开标签页组"
+  },
+  "openInNewWindow": {
+    "message": "新窗口"
+  },
+  "openInNewWindowDescription": {
+    "message": "在新窗口中打开标签页组"
   }
 }

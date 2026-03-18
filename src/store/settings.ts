@@ -6,6 +6,7 @@ export interface Settings {
   clickAction: ClickAction
   urlDisplayMode: UrlDisplayMode
   restoreAction: RestoreAction
+  openGroupInNewWindow: boolean
 }
 
 const SETTINGS_KEY = 'local:settings'
@@ -16,6 +17,7 @@ export const defaultSettings: Settings = {
   clickAction: ClickAction.SaveAll,
   urlDisplayMode: UrlDisplayMode.None,
   restoreAction: RestoreAction.OpenWithoutJump,
+  openGroupInNewWindow: true,
 };
 
 const settings = storage.defineItem<Settings>(SETTINGS_KEY, {

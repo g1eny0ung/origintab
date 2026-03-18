@@ -231,9 +231,27 @@
     "message": "Open and jump"
   },
   "openAndJumpDescription": {
-    "message": "Open tabs and switch to them"
+    "message": "Open tabs and switch to them (when using Ctrl/Command/Shift click, it will follow the browser's default behavior)"
   },
   "justNow": {
     "message": "Just now"
+  },
+  "openGroupInNewWindow": {
+    "message": "Open Group In"
+  },
+  "openGroupInNewWindowDescription": {
+    "message": "Choose where to open tab groups"
+  },
+  "openInCurrentWindow": {
+    "message": "Current Window"
+  },
+  "openInCurrentWindowDescription": {
+    "message": "Open tab groups in the current window"
+  },
+  "openInNewWindow": {
+    "message": "New Window"
+  },
+  "openInNewWindowDescription": {
+    "message": "Open tab groups in a new window"
   }
 }

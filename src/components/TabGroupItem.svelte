@@ -27,8 +27,6 @@
   let tabsContainer: HTMLDivElement
 
   function formatTime(ts: number) {
-    console.log(DateTime.fromMillis(ts).diffNow().as('seconds'))
-
     if (DateTime.fromMillis(ts).diffNow().as('seconds') > -10) {
       return browser.i18n.getMessage('justNow')
     }
@@ -47,11 +45,12 @@
   async function handleRestoreGroup(remove: boolean) {
     try {
       const active = settings.restoreAction === RestoreAction.OpenAndJump
+      const newWindow = settings.openGroupInNewWindow
 
       if (remove) {
-        await restoreAndDeleteGroup(tabGroup.id, { active })
+        await restoreAndDeleteGroup(tabGroup.id, { active, newWindow })
       } else {
-        await restoreGroup(tabGroup.id, { active })
+        await restoreGroup(tabGroup.id, { active, newWindow })
       }
 
       onToast(browser.i18n.getMessage('tabsRestored'))
@@ -198,8 +197,6 @@
             <img
               src={tab.favicon}
               alt=""
-              width="16"
-              height="16"
               onerror={(e) =>
                 ((e.target as HTMLImageElement).style.display = 'none')}
             />

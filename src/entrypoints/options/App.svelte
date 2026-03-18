@@ -66,6 +66,12 @@
     updateSettings({ restoreAction: action })
   }
 
+  function onOpenGroupInNewWindowChange(value: string) {
+    const boolValue = value === 'true'
+    settings.openGroupInNewWindow = boolValue
+    updateSettings({ openGroupInNewWindow: boolValue })
+  }
+
   async function resetSettings() {
     if (confirm(browser.i18n.getMessage('resetAllSettings'))) {
       await resetAllSettings()
@@ -223,6 +229,35 @@
           value={settings.restoreAction}
           checkedValue={RestoreAction.OpenAndJump}
           onChange={onRestoreActionChange}
+        />
+      </SettingItemRadioCard>
+
+      <!-- Open in new window -->
+      <SettingItemRadioCard
+        Icon={Link}
+        title={browser.i18n.getMessage('openGroupInNewWindow')}
+        description={browser.i18n.getMessage('openGroupInNewWindowDescription')}
+      >
+        <SettingItemRadio
+          id="openGroupInNewWindow-true"
+          name="openGroupInNewWindow"
+          title={browser.i18n.getMessage('openInNewWindow')}
+          description={browser.i18n.getMessage('openInNewWindowDescription')}
+          value={settings.openGroupInNewWindow.toString()}
+          checkedValue="true"
+          onChange={onOpenGroupInNewWindowChange}
+        />
+
+        <SettingItemRadio
+          id="openGroupInNewWindow-false"
+          name="openGroupInNewWindow"
+          title={browser.i18n.getMessage('openInCurrentWindow')}
+          description={browser.i18n.getMessage(
+            'openInCurrentWindowDescription',
+          )}
+          value={settings.openGroupInNewWindow.toString()}
+          checkedValue="false"
+          onChange={onOpenGroupInNewWindowChange}
         />
       </SettingItemRadioCard>
 

@@ -4,13 +4,40 @@ import { removeTabFromGroup } from './tabs'
 
 interface RestoreOptions {
   active?: boolean
+  newWindow?: boolean
+}
+
+function freezeTab(newTab: Browser.tabs.Tab) {
+  let title: string | undefined
+  let favIconUrl: string | undefined
+
+  const listener = (tabId: number, changeInfo: Browser.tabs.OnUpdatedInfo) => {
+    if (tabId === newTab.id && changeInfo.title) {
+      title = changeInfo.title
+    }
+
+    if (tabId === newTab.id && changeInfo.favIconUrl) {
+      favIconUrl = changeInfo.favIconUrl
+    }
+
+    if (title && favIconUrl) {
+      browser.tabs.discard(tabId)
+      browser.tabs.onUpdated.removeListener(listener)
+    }
+  }
+
+  browser.tabs.onUpdated.addListener(listener)
+}
+
+function createTabInGroup(tabInfo: { url: string; active: boolean }) {
+  return browser.tabs.create({ ...tabInfo }).then(freezeTab)
 }
 
 export async function restoreGroup(
   groupId: string,
   options: RestoreOptions = {},
 ) {
-  const { active = false } = options
+  const { active = false, newWindow = false } = options
   const data = await tabGroups.getValue()
   const group = data.find((g) => g.id === groupId)
 
@@ -18,10 +45,24 @@ export async function restoreGroup(
     throw new Error('Group not found or empty')
   }
 
-  await browser.windows.create({
-    url: group.tabs.map((t) => t.url),
-    focused: active,
-  })
+  const tabs = group.tabs.map((t) => t.url)
+  if (newWindow) {
+    browser.windows
+      .create({
+        url: tabs,
+        focused: active,
+      })
+      .then((win) => {
+        win?.tabs?.forEach(freezeTab)
+      })
+  } else {
+    tabs.map((url, i) => {
+      createTabInGroup({
+        url,
+        active: i === 0 ? active : false,
+      })
+    })
+  }
 }
 
 export async function restoreAndDeleteGroup(
