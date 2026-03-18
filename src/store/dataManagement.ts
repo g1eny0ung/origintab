@@ -1,5 +1,5 @@
-import { db, initDefaultGroup, generateId } from './base'
 import type { TabItem } from '../utils/types'
+import { db, generateId, initDefaultGroup } from './base'
 
 export async function clearAllData() {
   await db.transaction('rw', db.userGroups, db.tabGroups, async () => {

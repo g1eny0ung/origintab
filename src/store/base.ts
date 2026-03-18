@@ -1,5 +1,6 @@
 import Dexie, { type EntityTable } from 'dexie'
-import type { UserGroup, TabGroup } from '../utils/types'
+
+import type { TabGroup, UserGroup } from '../utils/types'
 
 export const DEFAULT_GROUP_ID = 'default'
 

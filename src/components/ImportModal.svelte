@@ -1,8 +1,9 @@
 <script lang="ts">
   import { Upload } from '@lucide/svelte'
   import type { UserGroup } from '~/utils/types'
-  import Fieldset from './ui/Fieldset.svelte'
+
   import Dialog from './ui/Dialog.svelte'
+  import Fieldset from './ui/Fieldset.svelte'
 
   interface Props {
     id: string

@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { Folder, ChevronDown, ChevronRight, X } from '@lucide/svelte'
-  import { deleteUserGroup, DEFAULT_GROUP_ID } from '~/store'
-  import type { UserGroup, TabGroup } from '~/utils/types'
+  import { ChevronDown, ChevronRight, Folder, X } from '@lucide/svelte'
+  import { DEFAULT_GROUP_ID, deleteUserGroup } from '~/store'
   import type { Settings } from '~/store/settings'
+  import type { TabGroup, UserGroup } from '~/utils/types'
+
   import TabGroupItem from './TabGroupItem.svelte'
 
   interface Props {

@@ -1,8 +1,8 @@
 import {
-  createTabGroup,
   DEFAULT_GROUP_ID,
-  getSettings,
   Settings,
+  createTabGroup,
+  getSettings,
 } from '~/store'
 import { ClickAction, type TabItem } from '~/utils/types'
 

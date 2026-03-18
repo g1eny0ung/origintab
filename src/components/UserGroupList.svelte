@@ -1,6 +1,7 @@
 <script lang="ts">
-  import type { UserGroup, TabGroup } from '~/utils/types'
   import type { Settings } from '~/store/settings'
+  import type { TabGroup, UserGroup } from '~/utils/types'
+
   import UserGroupItem from './UserGroupItem.svelte'
 
   interface Props {

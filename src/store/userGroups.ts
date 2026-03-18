@@ -1,5 +1,5 @@
-import { db, DEFAULT_GROUP_ID, generateId } from './base'
 import type { UserGroup } from '../utils/types'
+import { DEFAULT_GROUP_ID, db, generateId } from './base'
 
 export async function getUserGroups() {
   return db.userGroups.toArray()
@@ -17,10 +17,7 @@ export async function createUserGroup(name: string) {
   return newGroup
 }
 
-export async function updateUserGroup(
-  groupId: string,
-  name: string,
-) {
+export async function updateUserGroup(groupId: string, name: string) {
   await db.userGroups.update(groupId, { name: name.trim() })
 }
 

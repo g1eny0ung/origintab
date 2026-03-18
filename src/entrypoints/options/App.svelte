@@ -1,22 +1,22 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import {
-    Settings,
-    Info,
-    RotateCcw,
-    MousePointerClick,
-    Link,
-  } from '@lucide/svelte'
-  import { ClickAction, UrlDisplayMode, RestoreAction } from '~/utils/types'
-  import {
-    getSettings,
-    updateSettings,
-    resetSettings as resetAllSettings,
-    defaultSettings,
-  } from '~/store'
   import SettingItemCheckboxCard from '@/components/ui/SettingItemCheckboxCard.svelte'
   import SettingItemRadio from '@/components/ui/SettingItemRadio.svelte'
   import SettingItemRadioCard from '@/components/ui/SettingItemRadioCard.svelte'
+  import {
+    Info,
+    Link,
+    MousePointerClick,
+    RotateCcw,
+    Settings,
+  } from '@lucide/svelte'
+  import { onMount } from 'svelte'
+  import {
+    defaultSettings,
+    getSettings,
+    resetSettings as resetAllSettings,
+    updateSettings,
+  } from '~/store'
+  import { ClickAction, RestoreAction, UrlDisplayMode } from '~/utils/types'
 
   // Settings state
   let settings = $state(defaultSettings)

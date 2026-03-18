@@ -1,4 +1,4 @@
-import { ClickAction, UrlDisplayMode, RestoreAction } from '~/utils/types'
+import { ClickAction, RestoreAction, UrlDisplayMode } from '~/utils/types'
 
 export interface Settings {
   autoOpenOnStartup: boolean

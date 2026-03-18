@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { Archive, Check, ChevronDown, Folder, Plus } from '@lucide/svelte'
   import { onMount } from 'svelte'
-  import { Plus, Archive, Folder, ChevronDown, Check } from '@lucide/svelte'
-  import { getUserGroups, DEFAULT_GROUP_ID } from '~/store'
+  import { DEFAULT_GROUP_ID, getUserGroups } from '~/store'
   import type { UserGroup } from '~/utils/types'
 
   let userGroups: UserGroup[] = $state([])

@@ -1,10 +1,7 @@
 import { db } from './base'
 import { deleteTabGroup } from './tabGroups'
 
-export async function removeTabFromGroup(
-  groupId: string,
-  tabId: string,
-) {
+export async function removeTabFromGroup(groupId: string, tabId: string) {
   const group = await db.tabGroups.get(groupId)
 
   if (!group) {

@@ -4,17 +4,17 @@
   import Sortable from 'sortablejs'
   import { onMount } from 'svelte'
   import {
-    restoreGroup,
-    restoreAndDeleteGroup,
     deleteTabGroup,
-    restoreTab,
     removeTabFromGroup,
-    updateTabGroup,
+    restoreAndDeleteGroup,
     restoreAndDeleteTab,
+    restoreGroup,
+    restoreTab,
+    updateTabGroup,
   } from '~/store'
-  import type { TabGroup } from '~/utils/types'
   import type { Settings } from '~/store/settings'
-  import { UrlDisplayMode, RestoreAction } from '~/utils/types'
+  import type { TabGroup } from '~/utils/types'
+  import { RestoreAction, UrlDisplayMode } from '~/utils/types'
 
   interface Props {
     tabGroup: TabGroup

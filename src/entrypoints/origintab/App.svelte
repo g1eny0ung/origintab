@@ -1,31 +1,30 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte'
-  import { liveQuery } from 'dexie'
-  import { db, initDefaultGroup } from '~/store/base'
-  import {
-    createUserGroup,
-    clearAllData,
-    exportToText,
-    importFromText,
-    DEFAULT_GROUP_ID,
-    getSettings,
-  } from '~/store'
-  import type { Settings } from '~/store/settings'
-
-  import UserGroupList from '@/components/UserGroupList.svelte'
   import ImportModal from '@/components/ImportModal.svelte'
+  import UserGroupList from '@/components/UserGroupList.svelte'
   import {
+    Archive,
+    Check,
+    CircleCheck,
+    CircleX,
+    Download,
+    Plus,
+    SettingsIcon,
     Trash2,
     Upload,
-    Download,
-    CircleCheck,
-    Plus,
-    Check,
     X,
-    CircleX,
-    SettingsIcon,
-    Archive,
   } from '@lucide/svelte'
+  import { liveQuery } from 'dexie'
+  import { onDestroy, onMount } from 'svelte'
+  import {
+    DEFAULT_GROUP_ID,
+    clearAllData,
+    createUserGroup,
+    exportToText,
+    getSettings,
+    importFromText,
+  } from '~/store'
+  import { db, initDefaultGroup } from '~/store/base'
+  import type { Settings } from '~/store/settings'
 
   // Use liveQuery for reactive data fetching
   let userGroups = liveQuery(() =>

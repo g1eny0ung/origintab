@@ -1,5 +1,5 @@
-import { db, DEFAULT_GROUP_ID, generateId } from './base'
-import type { TabItem, TabGroup } from '../utils/types'
+import type { TabGroup, TabItem } from '../utils/types'
+import { DEFAULT_GROUP_ID, db, generateId } from './base'
 
 export async function getTabGroups() {
   return db.tabGroups.toArray()
