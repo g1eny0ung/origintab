@@ -1,6 +1,6 @@
 interface DraggedTabState {
   sourceGroupId: string
-  tabId: string
+  tabIds: string[]
 }
 
 let draggedTabState: DraggedTabState | null = null

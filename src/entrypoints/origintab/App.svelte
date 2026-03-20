@@ -4,6 +4,7 @@
   import {
     Archive,
     Check,
+    CircleAlert,
     CircleCheck,
     CircleX,
     Download,
@@ -47,8 +48,11 @@
   let importTargetGroupId = $state(DEFAULT_GROUP_ID)
 
   // Toasts
-  let toasts: { id: number; message: string; type: 'success' | 'error' }[] =
-    $state([])
+  let toasts: {
+    id: number
+    message: string
+    type: ToastType
+  }[] = $state([])
 
   // New group input
   let showNewGroupInput = $state(false)
@@ -65,7 +69,7 @@
   }
 
   // Show toast notification
-  function showToast(message: string, type: 'success' | 'error' = 'success') {
+  function showToast(message: string, type: ToastType = 'success') {
     const id = Date.now()
     toasts = [...toasts, { id, message, type }]
     setTimeout(() => {
@@ -323,10 +327,13 @@
       role="alert"
       class="alert alert-soft shadow-lg"
       class:alert-success={toast.type === 'success'}
+      class:alert-warning={toast.type === 'warning'}
       class:alert-error={toast.type === 'error'}
     >
       {#if toast.type === 'success'}
         <CircleCheck size={16} />
+      {:else if toast.type === 'warning'}
+        <CircleAlert size={16} />
       {:else}
         <CircleX size={16} />
       {/if}

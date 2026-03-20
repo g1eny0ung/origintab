@@ -3,8 +3,8 @@
   import {
     DEFAULT_GROUP_ID,
     deleteUserGroup,
-    moveTabBetweenGroups,
-    moveTabToNewGroupInUserGroup,
+    moveTabsBetweenGroups,
+    moveTabsToNewGroupInUserGroup,
   } from '~/store'
   import type { Settings } from '~/store/settings'
   import { clearDraggedTabState, getDraggedTabState } from '~/utils/tabDrag'
@@ -14,12 +14,13 @@
 
   interface Props {
     userGroup: UserGroup
+    userGroups: UserGroup[]
     tabGroups: TabGroup[]
     settings: Settings
-    onToast: (message: string, type?: 'success' | 'error') => void
+    onToast: (message: string, type?: ToastType) => void
   }
 
-  let { userGroup, tabGroups, settings, onToast }: Props = $props()
+  let { userGroup, userGroups, tabGroups, settings, onToast }: Props = $props()
 
   let isExpanded = $state(true)
   let activeDropTarget: 'header' | 'empty' | null = $state(null)
@@ -53,15 +54,18 @@
     }
   }
 
-  async function handleDropToUserGroup(sourceGroupId: string, tabId: string) {
+  async function handleDropToUserGroup(
+    sourceGroupId: string,
+    tabIds: string[],
+  ) {
     const firstTabGroup = tabGroups[0]
 
     if (firstTabGroup) {
-      await moveTabBetweenGroups(sourceGroupId, firstTabGroup.id, tabId, 0)
+      await moveTabsBetweenGroups(sourceGroupId, firstTabGroup.id, tabIds, 0)
       return
     }
 
-    await moveTabToNewGroupInUserGroup(sourceGroupId, userGroup.id, tabId)
+    await moveTabsToNewGroupInUserGroup(sourceGroupId, userGroup.id, tabIds)
   }
 
   function resolveDropTarget(target: EventTarget | null) {
@@ -85,7 +89,9 @@
   }
 
   function handleDragOver(event: DragEvent) {
-    if (!getDraggedTabState()) {
+    const draggedTab = getDraggedTabState()
+
+    if (!draggedTab || draggedTab.tabIds.length !== 1) {
       return
     }
 
@@ -115,7 +121,7 @@
 
   async function handleDrop(event: DragEvent) {
     const draggedTab = getDraggedTabState()
-    if (!draggedTab) {
+    if (!draggedTab || draggedTab.tabIds.length !== 1) {
       return
     }
 
@@ -125,8 +131,9 @@
     }
 
     event.preventDefault()
-    await handleDropToUserGroup(draggedTab.sourceGroupId, draggedTab.tabId)
+    await handleDropToUserGroup(draggedTab.sourceGroupId, draggedTab.tabIds)
     clearDraggedTabState()
+    activeDropTarget = null
   }
 </script>
 
@@ -139,10 +146,9 @@
   role="group"
   aria-label={userGroup.name}
 >
-  <!-- Header -->
   <div
     class={[
-      `card-body p-4 hover:bg-base-200/30 cursor-pointer focus-visible:outline-none`,
+      'card-body p-4 hover:bg-base-200/30 cursor-pointer focus-visible:outline-none',
       activeDropTarget === 'header' && 'bg-primary/10',
     ]}
     data-header-drop-zone
@@ -185,13 +191,12 @@
     </div>
   </div>
 
-  <!-- Tab groups -->
   {#if isExpanded}
     <div class="border-t border-base-200">
       {#if tabGroups.length === 0}
         <div
           class={[
-            `p-4 text-sm text-base-content/60 text-center rounded-box border-2 border-dashed border-base-300 m-4`,
+            'p-4 text-sm text-base-content/60 text-center rounded-box border-2 border-dashed border-base-300 m-4',
             activeDropTarget === 'empty' && 'border-primary bg-primary/10',
           ]}
           data-empty-drop-zone
@@ -200,12 +205,7 @@
         </div>
       {:else}
         {#each tabGroups as tabGroup (tabGroup.id)}
-          <TabGroupItem
-            {tabGroup}
-            userGroupId={userGroup.id}
-            {settings}
-            {onToast}
-          />
+          <TabGroupItem {tabGroup} {userGroups} {settings} {onToast} />
         {/each}
       {/if}
     </div>

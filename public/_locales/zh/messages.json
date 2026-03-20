@@ -176,6 +176,33 @@
   "tabDeleted": {
     "message": "标签页已删除"
   },
+  "select": {
+    "message": "选择"
+  },
+  "moveTo": {
+    "message": "移动到"
+  },
+  "moveTabs": {
+    "message": "移动标签页"
+  },
+  "moveSelectedTabsTo": {
+    "message": "将已选择的$1个$2移动到"
+  },
+  "tabSingular": {
+    "message": "标签页"
+  },
+  "tabPlural": {
+    "message": "标签页"
+  },
+  "selectTabsFirst": {
+    "message": "请至少选择一个标签页"
+  },
+  "tabsMoved": {
+    "message": "标签页已移动"
+  },
+  "moveTabsFailed": {
+    "message": "移动标签页失败"
+  },
   "untitled": {
     "message": "无标题"
   },

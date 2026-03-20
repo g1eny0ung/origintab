@@ -1,3 +1,6 @@
+// UI
+export type ToastType = 'success' | 'warning' | 'error'
+
 // Single tab item
 export interface TabItem {
   id: string

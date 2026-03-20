@@ -8,7 +8,7 @@
     userGroups: UserGroup[]
     tabGroups: TabGroup[]
     settings: Settings
-    onToast: (message: string, type?: 'success' | 'error') => void
+    onToast: (message: string, type?: ToastType) => void
   }
 
   let { userGroups, tabGroups, settings, onToast }: Props = $props()
@@ -22,6 +22,7 @@
   {#each userGroups as userGroup (userGroup.id)}
     <UserGroupItem
       {userGroup}
+      {userGroups}
       tabGroups={getTabGroups(userGroup.id)}
       {settings}
       {onToast}

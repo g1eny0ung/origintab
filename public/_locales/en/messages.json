@@ -176,6 +176,33 @@
   "tabDeleted": {
     "message": "Tab deleted"
   },
+  "select": {
+    "message": "Select"
+  },
+  "moveTo": {
+    "message": "Move To"
+  },
+  "moveTabs": {
+    "message": "Move Tabs"
+  },
+  "moveSelectedTabsTo": {
+    "message": "Move $1 selected $2 to"
+  },
+  "tabSingular": {
+    "message": "tab"
+  },
+  "tabPlural": {
+    "message": "tabs"
+  },
+  "selectTabsFirst": {
+    "message": "Please select at least one tab"
+  },
+  "tabsMoved": {
+    "message": "Tabs moved"
+  },
+  "moveTabsFailed": {
+    "message": "Failed to move tabs"
+  },
   "untitled": {
     "message": "Untitled"
   },
