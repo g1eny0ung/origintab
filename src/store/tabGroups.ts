@@ -25,6 +25,26 @@ export async function createTabGroup(
   return newGroup
 }
 
+export async function createTabGroupWithExistingTabs(
+  tabs: TabItem[],
+  userGroupId: string = DEFAULT_GROUP_ID,
+) {
+  if (tabs.length === 0) {
+    throw new Error('No tabs to save')
+  }
+
+  const newGroup: TabGroup = {
+    id: generateId(),
+    tabs,
+    createdAt: Date.now(),
+    userGroupId,
+  }
+
+  await db.tabGroups.add(newGroup)
+
+  return newGroup
+}
+
 export async function deleteTabGroup(groupId: string) {
   await db.tabGroups.delete(groupId)
 }

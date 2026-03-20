@@ -60,7 +60,7 @@
     "message": "已导入 $1 个标签页"
   },
   "importedTabsWithErrors": {
-    "message": "已导入 $1 个标签页，$2 个错误"
+    "message": "导入失败，请检查导入数据是否正确"
   },
   "importFailed": {
     "message": "导入失败"

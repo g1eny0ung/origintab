@@ -60,7 +60,7 @@
     "message": "Imported $1 tabs"
   },
   "importedTabsWithErrors": {
-    "message": "Imported $1 tabs, $2 errors"
+    "message": "Imported failed, please check the data you imported"
   },
   "importFailed": {
     "message": "Import failed"

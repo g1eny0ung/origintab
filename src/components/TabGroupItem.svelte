@@ -5,24 +5,26 @@
   import { onMount } from 'svelte'
   import {
     deleteTabGroup,
+    moveTabBetweenGroups,
     removeTabFromGroup,
     restoreAndDeleteGroup,
     restoreAndDeleteTab,
     restoreGroup,
     restoreTab,
-    updateTabGroup,
   } from '~/store'
   import type { Settings } from '~/store/settings'
+  import { clearDraggedTabState, setDraggedTabState } from '~/utils/tabDrag'
   import type { TabGroup } from '~/utils/types'
   import { RestoreAction, UrlDisplayMode } from '~/utils/types'
 
   interface Props {
     tabGroup: TabGroup
+    userGroupId: string
     settings: Settings
     onToast: (message: string, type?: 'success' | 'error') => void
   }
 
-  let { tabGroup, settings, onToast }: Props = $props()
+  let { tabGroup, userGroupId, settings, onToast }: Props = $props()
   let tabsContainer: HTMLDivElement
 
   function formatTime(ts: number) {
@@ -121,24 +123,60 @@
     }
   }
 
-  async function handleTabReorder(newIndex: number, oldIndex: number) {
-    const newTabs = [...tabGroup.tabs]
-    const [movedTab] = newTabs.splice(oldIndex, 1)
-    newTabs.splice(newIndex, 0, movedTab)
-
-    await updateTabGroup(tabGroup.id, { tabs: newTabs })
+  async function handleTabMove(
+    sourceGroupId: string,
+    targetGroupId: string,
+    tabId: string,
+    newIndex: number,
+  ) {
+    await moveTabBetweenGroups(sourceGroupId, targetGroupId, tabId, newIndex)
   }
 
   onMount(() => {
-    Sortable.create(tabsContainer, {
+    const sortable = Sortable.create(tabsContainer, {
       animation: 150,
+      group: 'tab-items',
       handle: '.drag-handle',
-      onEnd: (e) => {
-        if (e.oldIndex !== undefined && e.newIndex !== undefined) {
-          handleTabReorder(e.newIndex, e.oldIndex)
+      onStart: (e) => {
+        const tabId = e.item.dataset.tabId
+
+        if (tabId) {
+          setDraggedTabState({
+            sourceGroupId: tabGroup.id,
+            tabId,
+          })
         }
       },
+      onAdd: (e) => {
+        const sourceGroupId = e.from.dataset.tabGroupId
+        const targetGroupId = e.to.dataset.tabGroupId
+        const tabId = e.item.dataset.tabId
+
+        if (
+          sourceGroupId &&
+          targetGroupId &&
+          tabId &&
+          e.newIndex !== undefined
+        ) {
+          handleTabMove(sourceGroupId, targetGroupId, tabId, e.newIndex)
+        }
+      },
+      onUpdate: (e) => {
+        const targetGroupId = e.from.dataset.tabGroupId
+        const tabId = e.item.dataset.tabId
+
+        if (targetGroupId && tabId && e.newIndex !== undefined) {
+          handleTabMove(targetGroupId, targetGroupId, tabId, e.newIndex)
+        }
+      },
+      onEnd: () => {
+        clearDraggedTabState()
+      },
     })
+
+    return () => {
+      sortable.destroy()
+    }
   })
 </script>
 
@@ -180,10 +218,16 @@
   </div>
 
   <!-- Tabs -->
-  <div bind:this={tabsContainer} class="divide-y divide-base-200">
+  <div
+    bind:this={tabsContainer}
+    class="divide-y divide-base-200"
+    data-tab-group-id={tabGroup.id}
+    data-user-group-id={userGroupId}
+  >
     {#each tabGroup.tabs as tab (tab.id)}
       <div
-        class="drag-handle active:cursor-grabbing flex items-center gap-4 py-2.5 px-2 bg-base-100 group"
+        class="drag-handle active:cursor-grabbing flex items-center gap-4 py-2.5 px-2 bg-base-100"
+        data-tab-id={tab.id}
       >
         <div class="favicon-container">
           {#if tab.favicon}
