@@ -27,9 +27,30 @@ src/
 │   │   └── ...
 │   └── options/            # Settings page
 │       └── ...
+├── components/             # Shared Svelte components
+│   ├── ImportModal.svelte
+│   ├── TabGroupItem.svelte
+│   ├── UserGroupItem.svelte
+│   ├── UserGroupList.svelte
+│   └── ui/
+│       ├── Dialog.svelte
+│       ├── Fieldset.svelte
+│       ├── SettingItemCheckboxCard.svelte
+│       ├── SettingItemRadio.svelte
+│       └── SettingItemRadioCard.svelte
+├── store/                  # State management (Dexie + Svelte stores)
+│   ├── base.ts             # DB setup, DEFAULT_GROUP_ID, generateId
+│   ├── dataManagement.ts   # Import/export data
+│   ├── index.ts            # Re-exports all store modules
+│   ├── restore.ts          # Tab restoration logic
+│   ├── settings.ts         # Settings management
+│   ├── tabGroups.ts        # Tab group CRUD operations
+│   ├── tabs.ts             # Tab operations
+│   └── userGroups.ts       # User group CRUD operations
 ├── utils/
-│   ├── types.ts            # TypeScript interfaces
-│   └── storage.ts          # Storage operations
+│   ├── helpers.ts          # Utility functions
+│   ├── tabDrag.ts          # Drag and drop utilities
+│   └── types.ts            # TypeScript interfaces
 public/                     # Static assets
 ```
 
@@ -43,9 +64,10 @@ public/                     # Static assets
 
 ### Storage
 
-- `storage` from `@wxt-dev/storage` is auto-imported by WXT, no need to manually import
-- Data structure: `{ userGroups: UserGroup[], tabGroups: TabGroup[] }`
-- Default group ID: `"default"`
+- **Dexie.js** for main data (userGroups, tabGroups) - configured in `src/store/base.ts`
+- `storage` from `@wxt-dev/storage` for settings only
+- Data structure: Dexie tables with `userGroups` and `tabGroups`
+- Default group ID: `"default"` (defined in `src/store/base.ts`)
 
 ### Background Script
 
@@ -76,8 +98,11 @@ bun run check
 
 ## Key Files
 
-- `src/utils/types.ts` - Type definitions
-- `src/utils/storage.ts` - All storage operations
+- `src/utils/types.ts` - Type definitions (TabItem, UserGroup, TabGroup, enums)
+- `src/store/base.ts` - Dexie database setup, DEFAULT_GROUP_ID, generateId
+- `src/store/settings.ts` - Settings management
+- `src/store/tabGroups.ts` - Tab group CRUD operations
+- `src/store/userGroups.ts` - User group CRUD operations
 - `src/entrypoints/background.ts` - Background logic
 
 ## Notes
