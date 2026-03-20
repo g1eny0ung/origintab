@@ -1,15 +1,15 @@
 {
-  "confirm": {
-    "message": "确认"
-  },
-  "cancel": {
-    "message": "取消"
-  },
   "extName": {
     "message": "OriginTab - 保存你的标签页"
   },
   "extDescription": {
     "message": "一键保存标签页，随时恢复。"
+  },
+  "confirm": {
+    "message": "确认"
+  },
+  "cancel": {
+    "message": "取消"
   },
   "import": {
     "message": "导入"

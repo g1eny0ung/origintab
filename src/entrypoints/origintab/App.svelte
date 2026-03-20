@@ -1,6 +1,4 @@
 <script lang="ts">
-  import ImportModal from '@/components/ImportModal.svelte'
-  import UserGroupList from '@/components/UserGroupList.svelte'
   import {
     Archive,
     Check,
@@ -16,6 +14,8 @@
   } from '@lucide/svelte'
   import { liveQuery } from 'dexie'
   import { onDestroy, onMount } from 'svelte'
+  import ImportModal from '~/components/ImportModal.svelte'
+  import UserGroupList from '~/components/UserGroupList.svelte'
   import {
     DEFAULT_GROUP_ID,
     clearAllData,

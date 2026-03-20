@@ -1,15 +1,15 @@
 {
-  "confirm": {
-    "message": "Confirm"
-  },
-  "cancel": {
-    "message": "Cancel"
-  },
   "extName": {
     "message": "OriginTab - Save Your Tabs"
   },
   "extDescription": {
     "message": "Save tabs with one click and restore them at any time."
+  },
+  "confirm": {
+    "message": "Confirm"
+  },
+  "cancel": {
+    "message": "Cancel"
   },
   "import": {
     "message": "Import"

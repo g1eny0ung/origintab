@@ -1,4 +1,4 @@
-import { clampIndex } from '@/utils/helpers'
+import { clampIndex } from '~/utils/helpers'
 
 import { db } from './base'
 import { createTabGroupWithExistingTabs, deleteTabGroup } from './tabGroups'

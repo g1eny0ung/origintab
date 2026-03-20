@@ -1,7 +1,4 @@
 <script lang="ts">
-  import SettingItemCheckboxCard from '@/components/ui/SettingItemCheckboxCard.svelte'
-  import SettingItemRadio from '@/components/ui/SettingItemRadio.svelte'
-  import SettingItemRadioCard from '@/components/ui/SettingItemRadioCard.svelte'
   import {
     Info,
     Link,
@@ -10,6 +7,9 @@
     Settings,
   } from '@lucide/svelte'
   import { onMount } from 'svelte'
+  import SettingItemCheckboxCard from '~/components/ui/SettingItemCheckboxCard.svelte'
+  import SettingItemRadio from '~/components/ui/SettingItemRadio.svelte'
+  import SettingItemRadioCard from '~/components/ui/SettingItemRadioCard.svelte'
   import {
     defaultSettings,
     getSettings,
