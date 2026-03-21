@@ -280,5 +280,23 @@
   },
   "openInNewWindowDescription": {
     "message": "在新窗口中打开标签页组"
+  },
+  "selectUserGroup": {
+    "message": "选择分组"
+  },
+  "allUserGroups": {
+    "message": "全部分组"
+  },
+  "preview": {
+    "message": "预览"
+  },
+  "noDataToExport": {
+    "message": "没有可导出的数据"
+  },
+  "copyToClipboard": {
+    "message": "复制到剪贴板"
+  },
+  "copied": {
+    "message": "已复制！"
   }
 }

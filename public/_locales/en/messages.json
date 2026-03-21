@@ -280,5 +280,23 @@
   },
   "openInNewWindowDescription": {
     "message": "Open tab groups in a new window"
+  },
+  "selectUserGroup": {
+    "message": "Select Group"
+  },
+  "allUserGroups": {
+    "message": "All Groups"
+  },
+  "preview": {
+    "message": "Preview"
+  },
+  "noDataToExport": {
+    "message": "No data to export"
+  },
+  "copyToClipboard": {
+    "message": "Copy to Clipboard"
+  },
+  "copied": {
+    "message": "Copied!"
   }
 }

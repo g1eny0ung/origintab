@@ -14,6 +14,7 @@
   } from '@lucide/svelte'
   import { liveQuery } from 'dexie'
   import { onDestroy, onMount } from 'svelte'
+  import ExportModal from '~/components/ExportModal.svelte'
   import ImportModal from '~/components/ImportModal.svelte'
   import UserGroupList from '~/components/UserGroupList.svelte'
   import {
@@ -46,6 +47,11 @@
   let importModalId = 'import-modal'
   let importText = $state('')
   let importTargetGroupId = $state(DEFAULT_GROUP_ID)
+
+  // Export modal
+  let exportModalId = 'export-modal'
+  let exportPreview = $state('')
+  let selectedUserGroupId = $state('all')
 
   // Toasts
   let toasts: {
@@ -127,10 +133,24 @@
     }
   }
 
-  // Export tabs
+  // Export tabs - open modal
+  function handleOpenExportModal() {
+    selectedUserGroupId = 'all'
+    exportPreview = ''
+    const dialog = document.getElementById(exportModalId) as HTMLDialogElement
+    dialog.showModal()
+  }
+
+  // Export tabs - download
   async function handleExport() {
     try {
-      const text = await exportToText()
+      const text = await exportToText(
+        selectedUserGroupId === 'all' ? undefined : selectedUserGroupId,
+      )
+      if (!text.trim()) {
+        showToast(browser.i18n.getMessage('noDataToExport'), 'warning')
+        return
+      }
       const blob = new Blob([text], { type: 'text/plain' })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -143,6 +163,11 @@
     } catch (error) {
       showToast(browser.i18n.getMessage('exportFailed'), 'error')
     }
+  }
+
+  function clearExport() {
+    exportPreview = ''
+    selectedUserGroupId = 'all'
   }
 
   // Import tabs - liveQuery will auto-refresh
@@ -224,7 +249,10 @@
             </span>
           </button>
           {#if $tabGroups && $tabGroups.length > 0}
-            <button class="btn btn-ghost btn-sm" onclick={handleExport}>
+            <button
+              class="btn btn-ghost btn-sm"
+              onclick={handleOpenExportModal}
+            >
               <Download size={16} />
               <span class="hidden sm:inline">
                 {browser.i18n.getMessage('export')}
@@ -318,6 +346,15 @@
   bind:targetGroupId={importTargetGroupId}
   onImport={handleImport}
   onCancel={clearImport}
+/>
+
+<ExportModal
+  id={exportModalId}
+  userGroups={$userGroups || []}
+  bind:exportPreview
+  bind:selectedUserGroupId
+  onExport={handleExport}
+  onCancel={clearExport}
 />
 
 <!-- Toasts -->

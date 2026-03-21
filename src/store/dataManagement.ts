@@ -9,8 +9,13 @@ export async function clearAllData() {
   })
 }
 
-export async function exportToText() {
-  const groups = await db.tabGroups.toArray()
+export async function exportToText(userGroupId?: string) {
+  let groups = await db.tabGroups.toArray()
+
+  if (userGroupId && userGroupId !== 'all') {
+    groups = groups.filter((tg) => tg.userGroupId === userGroupId)
+  }
+
   return groups
     .flatMap((tg) => tg.tabs.map((t) => `${t.url} | ${t.title}`))
     .join('\n')
