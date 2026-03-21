@@ -7,7 +7,7 @@ interface RestoreOptions {
   newWindow?: boolean
 }
 
-function freezeTab(newTab: Browser.tabs.Tab) {
+function waitForTabLoadThenDiscard(newTab: Browser.tabs.Tab) {
   let title: string | undefined
   let favIconUrl: string | undefined
 
@@ -27,10 +27,14 @@ function freezeTab(newTab: Browser.tabs.Tab) {
   }
 
   browser.tabs.onUpdated.addListener(listener)
+  // Set a timeout to remove listener if tab takes too long to load, give up discard it.
+  setTimeout(() => {
+    browser.tabs.onUpdated.removeListener(listener)
+  }, 10000)
 }
 
 function createTabInGroup(tabInfo: { url: string; active: boolean }) {
-  return browser.tabs.create({ ...tabInfo }).then(freezeTab)
+  return browser.tabs.create({ ...tabInfo }).then(waitForTabLoadThenDiscard)
 }
 
 export async function restoreGroup(
@@ -52,7 +56,7 @@ export async function restoreGroup(
         focused: active,
       })
       .then((win) => {
-        win?.tabs?.forEach(freezeTab)
+        win?.tabs?.forEach(waitForTabLoadThenDiscard)
       })
   } else {
     tabs.map((url, i) => {

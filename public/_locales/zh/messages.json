@@ -74,14 +74,29 @@
   "importPlaceholder": {
     "message": "https://example.com | 示例标题\nhttps://another.com | 另一个标题"
   },
-  "saveTo": {
-    "message": "保存到："
+  "openOriginTab": {
+    "message": "打开OriginTab"
   },
   "saveAllTabs": {
     "message": "保存所有标签页"
   },
-  "openTabManager": {
-    "message": "打开标签页管理器"
+  "saveCurrentTab": {
+    "message": "保存当前标签页"
+  },
+  "save": {
+    "message": "保存"
+  },
+  "allTabs": {
+    "message": "所有标签页"
+  },
+  "currentTab": {
+    "message": "当前标签页"
+  },
+  "to": {
+    "message": "到"
+  },
+  "saveToTip": {
+    "message": "点击切换保存目标"
   },
   "settings": {
     "message": "设置"

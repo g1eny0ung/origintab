@@ -1,135 +1,133 @@
 <script lang="ts">
-  import { Archive, Check, ChevronDown, Folder, Plus } from '@lucide/svelte'
+  import {
+    AppWindow,
+    ArrowUpDown,
+    Bookmark,
+    ListPlus,
+    SettingsIcon,
+  } from '@lucide/svelte'
   import { onMount } from 'svelte'
-  import { DEFAULT_GROUP_ID, getUserGroups } from '~/store'
+  import { getUserGroups } from '~/store'
   import type { UserGroup } from '~/utils/types'
 
   let userGroups: UserGroup[] = $state([])
-  let selectedGroupId: string = $state(DEFAULT_GROUP_ID)
-  let showGroupDropdown = $state(false)
-  let loading = $state(true)
+  let switchSaveTo = $state<'all' | 'current'>('all')
+  let selectedUserGroupId = $state('')
 
-  // Load user groups
   async function loadGroups() {
     try {
       userGroups = await getUserGroups()
+      selectedUserGroupId = userGroups[0].id
     } catch (error) {
       console.error('Failed to load groups:', error)
-    } finally {
-      loading = false
     }
   }
 
-  // Save all tabs
-  async function collectTabs() {
+  async function collectCurrentTab(userGroupId?: string) {
+    await browser.runtime.sendMessage({
+      action: 'collectCurrentTab',
+      userGroupId,
+    })
+  }
+
+  async function collectTabs(userGroupId?: string) {
     await browser.runtime.sendMessage({
       action: 'collectTabs',
-      userGroupId: selectedGroupId,
+      userGroupId,
     })
-    window.close()
   }
 
-  // Open manager page
   async function openManager() {
-    const url = browser.runtime.getURL('/origintab.html')
-    const tabs = await browser.tabs.query({})
-    const existingTab = tabs.find((tab) => tab.url?.startsWith(url))
-
-    if (existingTab?.id) {
-      await browser.tabs.update(existingTab.id, { active: true })
-    } else {
-      await browser.tabs.create({ url })
-    }
-    window.close()
-  }
-
-  // Get selected group name
-  function getSelectedGroupName(): string {
-    const group = userGroups.find((g) => g.id === selectedGroupId)
-    return group?.name || 'Default'
-  }
-
-  // Close dropdown when clicking outside
-  function handleClickOutside(e: MouseEvent) {
-    const target = e.target as HTMLElement
-    if (!target.closest('.group-dropdown')) {
-      showGroupDropdown = false
-    }
+    await browser.runtime.sendMessage({ action: 'openOriginTab' })
   }
 
   onMount(() => {
     loadGroups()
-    document.addEventListener('click', handleClickOutside)
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
   })
 </script>
 
-<div class="p-4 w-[300px]">
-  <!-- Action buttons -->
-  <div class="space-y-2">
-    <!-- Group selector -->
-    <div class="group-dropdown relative">
-      <button
-        class="btn btn-ghost btn-sm btn-block justify-between"
-        onclick={() => (showGroupDropdown = !showGroupDropdown)}
-        disabled={loading}
-      >
-        <span class="flex items-center gap-2">
-          <Folder size={16} />
-          {#if loading}
-            <span class="loading loading-spinner loading-xs"></span>
-          {:else}
-            {browser.i18n.getMessage('saveTo')} {getSelectedGroupName()}
-          {/if}
-        </span>
-        <ChevronDown
-          size={16}
-          class="transition-transform {showGroupDropdown ? 'rotate-180' : ''}"
-        />
-      </button>
-
-      <!-- Dropdown menu -->
-      {#if showGroupDropdown && !loading}
-        <div
-          class="absolute top-full left-0 right-0 mt-1 bg-base-100 border border-base-300 rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto"
-        >
-          {#each userGroups as group (group.id)}
-            <button
-              class="btn btn-ghost btn-sm btn-block justify-start rounded-none border-b border-base-200 last:border-b-0 {selectedGroupId ===
-              group.id
-                ? 'text-primary'
-                : ''}"
-              onclick={() => {
-                selectedGroupId = group.id
-                showGroupDropdown = false
-              }}
-            >
-              <span class="flex-1 text-left">{group.name}</span>
-              {#if selectedGroupId === group.id}
-                <Check size={14} />
-              {/if}
-            </button>
-          {/each}
-        </div>
-      {/if}
-    </div>
-
-    <!-- Save tabs button -->
-    <button
-      class="btn btn-primary btn-block justify-start"
-      onclick={collectTabs}
-      disabled={loading}
-    >
-      <Plus size={18} aria-hidden="true" />
-      {browser.i18n.getMessage('saveAllTabs')}
+<div class="w-[300px] divide-y divide-base-200">
+  <div class="flex justify-between items-center p-2">
+    <button class="btn btn-ghost btn-sm" onclick={openManager}>
+      {browser.i18n.getMessage('openOriginTab')}
     </button>
-
-    <!-- Open manager button -->
-    <button class="btn btn-ghost btn-block justify-start" onclick={openManager}>
-      <Archive size={18} aria-hidden="true" />
-      {browser.i18n.getMessage('openTabManager')}
+    <button
+      class="btn btn-ghost btn-sm btn-square"
+      onclick={() => {
+        browser.runtime.openOptionsPage()
+      }}
+      title={browser.i18n.getMessage('settings')}
+    >
+      <SettingsIcon size={16} />
     </button>
   </div>
+  <ul class="menu w-full bg-base-100">
+    <li>
+      <button onclick={() => collectTabs()}>
+        <AppWindow size={16} />
+        {browser.i18n.getMessage('saveAllTabs')}
+      </button>
+    </li>
+    <li>
+      <button onclick={() => collectCurrentTab()}>
+        <Bookmark size={16} />
+        {browser.i18n.getMessage('saveCurrentTab')}
+      </button>
+    </li>
+  </ul>
+  <ul class="menu w-full bg-base-100">
+    <li>
+      <button
+        onclick={() => {
+          switchSaveTo = switchSaveTo === 'all' ? 'current' : 'all'
+        }}
+      >
+        <ListPlus size={16} />
+        <span class="inline-flex items-center gap-1">
+          {browser.i18n.getMessage('save')}
+          <span
+            class="badge badge-sm tooltip"
+            data-tip={browser.i18n.getMessage('saveToTip')}
+          >
+            <ArrowUpDown size={12} />
+            {browser.i18n.getMessage(
+              switchSaveTo === 'all' ? 'allTabs' : 'currentTab',
+            )}
+          </span>
+          {browser.i18n.getMessage('to')}
+        </span>
+      </button>
+      <ul>
+        {#each userGroups as group (group.id)}
+          <li>
+            <label for={group.id}>
+              <input
+                type="radio"
+                id={group.id}
+                class="radio radio-xs"
+                class:radio-primary={selectedUserGroupId === group.id}
+                value={group.id}
+                checked={selectedUserGroupId === group.id}
+                onchange={() => (selectedUserGroupId = group.id)}
+              />
+              {group.name}
+            </label>
+          </li>
+        {/each}
+      </ul>
+    </li>
+
+    <button
+      class="btn btn-sm btn-block mt-2 hover:btn-primary"
+      onclick={() => {
+        if (switchSaveTo === 'all') {
+          collectTabs(selectedUserGroupId)
+        } else {
+          collectCurrentTab(selectedUserGroupId)
+        }
+      }}
+    >
+      {browser.i18n.getMessage('save')}
+    </button>
+  </ul>
 </div>

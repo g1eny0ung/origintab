@@ -9,7 +9,6 @@
   interface Props {
     id: string
     userGroups: UserGroup[]
-    exportPreview: string
     selectedUserGroupId: string
     onExport: () => void
     onCancel: () => void
@@ -18,17 +17,18 @@
   let {
     id,
     userGroups,
-    exportPreview = $bindable(),
     selectedUserGroupId = $bindable('all'),
     onExport,
     onCancel,
   }: Props = $props()
 
-  let copied = $state(false)
+  let exportPreview = $state('')
+
+  let hasCopiedToClipboard = $state(false)
 
   let hasMultipleGroups = $derived(userGroups.length > 1)
 
-  async function handleUserGroupChange(userGroupId: string) {
+  async function loadExportPreview(userGroupId: string) {
     exportPreview = await exportToText(
       userGroupId === 'all' ? undefined : userGroupId,
     )
@@ -36,16 +36,16 @@
 
   $effect(() => {
     if (selectedUserGroupId) {
-      handleUserGroupChange(selectedUserGroupId)
+      loadExportPreview(selectedUserGroupId)
     }
   })
 
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(exportPreview)
-      copied = true
+      hasCopiedToClipboard = true
       setTimeout(() => {
-        copied = false
+        hasCopiedToClipboard = false
       }, 2000)
     } catch (error) {
       console.error('Failed to copy:', error)
@@ -53,7 +53,7 @@
   }
 
   function handleClose() {
-    copied = false
+    hasCopiedToClipboard = false
     onCancel()
   }
 </script>
@@ -112,7 +112,7 @@
       onclick={handleCopy}
       disabled={!exportPreview.trim()}
     >
-      {#if copied}
+      {#if hasCopiedToClipboard}
         <Copy size={16} />
         {browser.i18n.getMessage('copied')}
       {:else}

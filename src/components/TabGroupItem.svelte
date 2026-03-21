@@ -1,8 +1,8 @@
 <script lang="ts">
   import {
-    CircleCheckBig,
     ExternalLink,
     FolderOutput,
+    ListTodo,
     RotateCcw,
     X,
   } from '@lucide/svelte'
@@ -296,7 +296,7 @@
         </div>
       {:else}
         <button class="btn btn-ghost btn-xs" onclick={enterSelectionMode}>
-          <CircleCheckBig size={14} />
+          <ListTodo size={14} />
           <span class="hidden sm:inline">
             {browser.i18n.getMessage('select')}
           </span>

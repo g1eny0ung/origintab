@@ -31,7 +31,8 @@
     type="radio"
     {id}
     {name}
-    class="radio radio-sm radio-primary"
+    class="radio radio-sm"
+    class:radio-primary={value === checkedValue}
     value={checkedValue}
     checked={value === checkedValue}
     onchange={handleOnChange}

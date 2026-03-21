@@ -2,7 +2,11 @@ import type { UserGroup } from '../utils/types'
 import { DEFAULT_GROUP_ID, db, generateId } from './base'
 
 export async function getUserGroups() {
-  return db.userGroups.toArray()
+  return db.userGroups.orderBy('createdAt').reverse().toArray()
+}
+
+export async function getLastUserGroup() {
+  return db.userGroups.orderBy('createdAt').last()
 }
 
 export async function createUserGroup(name: string) {

@@ -1,5 +1,6 @@
 <script lang="ts">
   import {
+    Folder,
     Info,
     Link,
     MousePointerClick,
@@ -110,7 +111,7 @@
       >
         <input
           type="checkbox"
-          class="toggle toggle-primary"
+          class="toggle toggle-sm toggle-primary"
           checked={settings.autoOpenOnStartup}
           onchange={handleAutoOpenChange}
           aria-label={browser.i18n.getMessage('autoOpenOnStartup')}
@@ -124,7 +125,7 @@
       >
         <input
           type="checkbox"
-          class="toggle toggle-primary"
+          class="toggle toggle-sm toggle-primary"
           checked={settings.confirmBeforeDelete}
           onchange={handleConfirmDeleteChange}
           aria-label={browser.i18n.getMessage('confirmBeforeDelete')}
@@ -234,7 +235,7 @@
 
       <!-- Open in new window -->
       <SettingItemRadioCard
-        Icon={Link}
+        Icon={Folder}
         title={browser.i18n.getMessage('openGroupInNewWindow')}
         description={browser.i18n.getMessage('openGroupInNewWindowDescription')}
       >
@@ -262,7 +263,7 @@
       </SettingItemRadioCard>
 
       <!-- About Section -->
-      <div class="card bg-base-100 shadow-sm border border-base-300 mt-8">
+      <div class="card bg-base-100 shadow-sm border border-base-200 mt-8">
         <div class="card-body">
           <div class="flex items-center gap-2 mb-4">
             <Info size={16} aria-hidden="true" />

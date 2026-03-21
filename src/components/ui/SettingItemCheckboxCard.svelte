@@ -6,7 +6,7 @@
   }: { title: string; description: string; children: () => any } = $props()
 </script>
 
-<div class="card bg-base-100 shadow-sm border border-base-300">
+<div class="card bg-base-100 shadow-sm border border-base-200">
   <div class="card-body">
     <div class="flex items-center justify-between">
       <div>

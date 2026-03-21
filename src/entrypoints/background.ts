@@ -1,23 +1,16 @@
 import {
-  DEFAULT_GROUP_ID,
   Settings,
   createTabGroup,
+  getLastUserGroup,
   getSettings,
 } from '~/store'
+import {
+  createOriginTab,
+  findOriginTab,
+  getOriginTabUrl,
+  openOriginTab,
+} from '~/utils/helpers'
 import { ClickAction, type TabItem } from '~/utils/types'
-
-// Get OriginTab page URL
-function getOriginTabUrl(): string {
-  return browser.runtime.getURL('/origintab.html')
-}
-
-// Check if OriginTab page is already open
-async function findOriginTab() {
-  const tabs = await browser.tabs.query({})
-  const originTabUrl = getOriginTabUrl()
-  const originTab = tabs.find((tab) => tab.url?.startsWith(originTabUrl))
-  return originTab?.id
-}
 
 // Notify all origintab pages to refresh (for settings changes)
 async function notifyOriginTabUpdate() {
@@ -29,7 +22,7 @@ async function notifyOriginTabUpdate() {
 }
 
 // Collect current tab only
-async function collectCurrentTab() {
+async function collectCurrentTab(userGroupId?: string) {
   try {
     // Get current active tab
     const [activeTab] = await browser.tabs.query({
@@ -46,10 +39,7 @@ async function collectCurrentTab() {
       return
     }
 
-    if (
-      activeTab.url === 'chrome://newtab/' ||
-      activeTab.url === 'about:blank'
-    ) {
+    if (activeTab.url === 'about:newtab' || activeTab.url === 'about:blank') {
       console.info('Cannot collect new tab page')
       return
     }
@@ -69,7 +59,10 @@ async function collectCurrentTab() {
     }
 
     // Save tab
-    await createTabGroup([tabItem], DEFAULT_GROUP_ID)
+    await createTabGroup(
+      [tabItem],
+      userGroupId || (await getLastUserGroup())?.id,
+    )
 
     // Close the original tab
     await browser.tabs.remove(activeTab.id)
@@ -96,7 +89,7 @@ async function collectAllTabs(userGroupId?: string) {
         !tab.id ||
         !tab.url ||
         tab.id === existingOriginTabId ||
-        tab.url === 'chrome://newtab/' ||
+        tab.url === 'about:newtab' ||
         tab.url === 'about:blank' ||
         tab.pinned
       ) {
@@ -121,49 +114,22 @@ async function collectAllTabs(userGroupId?: string) {
     }))
 
     // Save tabs
-    await createTabGroup(tabItems, userGroupId || DEFAULT_GROUP_ID)
+    await createTabGroup(
+      tabItems,
+      userGroupId || (await getLastUserGroup())?.id,
+    )
 
     // Close collected tabs (exclude existing OriginTab if it was open)
-    const tabIdsToClose = validTabs.map((tab) => tab.id!)
-    const idsToClose = existingOriginTabId
-      ? tabIdsToClose.filter((id) => id !== existingOriginTabId)
-      : tabIdsToClose
+    const collectedTabIds = validTabs.map((tab) => tab.id!)
+    const tabsToClose = existingOriginTabId
+      ? collectedTabIds.filter((id) => id !== existingOriginTabId)
+      : collectedTabIds
 
-    if (idsToClose.length > 0) {
-      await browser.tabs.remove(idsToClose)
+    if (tabsToClose.length > 0) {
+      await browser.tabs.remove(tabsToClose)
     }
   } catch (error) {
     console.error('Failed to collect tabs:', error)
-  }
-}
-
-async function openOriginTab() {
-  return browser.tabs.create({
-    url: getOriginTabUrl(),
-    active: false,
-    pinned: true,
-    index: 0, // Place at leftmost
-  })
-}
-
-// Open OriginTab page on browser startup based on settings
-async function openOriginTabOnStartup() {
-  try {
-    const autoOpen = (await getSettings()).autoOpenOnStartup
-    if (autoOpen === false) {
-      return
-    }
-
-    const originTab = await findOriginTab()
-
-    if (originTab) {
-      // If exists, pin it
-      await browser.tabs.update(originTab, { pinned: true })
-    } else {
-      await openOriginTab()
-    }
-  } catch (error) {
-    console.error('Failed to open OriginTab on startup:', error)
   }
 }
 
@@ -188,7 +154,7 @@ async function updateActionBehavior() {
 async function handleIconClick() {
   const originTab = await findOriginTab()
   if (!originTab) {
-    await openOriginTab()
+    await createOriginTab()
   }
 
   try {
@@ -214,7 +180,7 @@ export default defineBackground(() => {
   updateActionBehavior()
 
   // Listen for settings changes
-  storage.watch<Settings>('local:settings', () => {
+  storage.watch<Settings>('sync:settings', () => {
     updateActionBehavior()
     notifyOriginTabUpdate()
   })
@@ -225,11 +191,23 @@ export default defineBackground(() => {
   })
 
   // Listen for messages from popup
-  browser.runtime.onMessage.addListener(async (message) => {
-    if (message.action === 'collectTabs') {
-      await collectAllTabs(message.userGroupId)
-    }
-  })
+  browser.runtime.onMessage.addListener(
+    async (message: { action: string; userGroupId?: string }) => {
+      switch (message.action) {
+        case 'collectTabs':
+          await collectAllTabs(message.userGroupId)
+          break
+        case 'collectCurrentTab':
+          await collectCurrentTab(message.userGroupId)
+          break
+        case 'openOriginTab':
+          await openOriginTab()
+          break
+        default:
+          break
+      }
+    },
+  )
 
   // Open management page on install and update behavior
   browser.runtime.onInstalled.addListener(async (details) => {
@@ -238,12 +216,12 @@ export default defineBackground(() => {
 
     if (details.reason === 'install') {
       // On first install, open with default settings (auto-open and auto-pin enabled)
-      await openOriginTabOnStartup()
+      await openOriginTab()
     }
   })
 
   // Open OriginTab on browser startup (respects user settings)
   browser.runtime.onStartup.addListener(() => {
-    openOriginTabOnStartup()
+    openOriginTab()
   })
 })

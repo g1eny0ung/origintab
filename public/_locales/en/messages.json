@@ -74,14 +74,29 @@
   "importPlaceholder": {
     "message": "https://example.com | Example Title\nhttps://another.com | Another Title"
   },
-  "saveTo": {
-    "message": "Save to:"
+  "openOriginTab": {
+    "message": "Open OriginTab"
   },
   "saveAllTabs": {
     "message": "Save all tabs"
   },
-  "openTabManager": {
-    "message": "Open Tab Manager"
+  "saveCurrentTab": {
+    "message": "Save current tab"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "allTabs": {
+    "message": "all tabs"
+  },
+  "currentTab": {
+    "message": "current tab"
+  },
+  "to": {
+    "message": "To"
+  },
+  "saveToTip": {
+    "message": "Click to switch save target"
   },
   "settings": {
     "message": "Settings"

@@ -21,12 +21,12 @@
     DEFAULT_GROUP_ID,
     clearAllData,
     createUserGroup,
+    defaultSettings,
     exportToText,
     getSettings,
     importFromText,
   } from '~/store'
   import { db, initDefaultGroup } from '~/store/base'
-  import type { Settings } from '~/store/settings'
 
   // Use liveQuery for reactive data fetching
   let userGroups = liveQuery(() =>
@@ -36,12 +36,7 @@
     db.tabGroups.orderBy('createdAt').reverse().toArray(),
   )
 
-  let settings: Settings = $state({
-    autoOpenOnStartup: true,
-    confirmBeforeDelete: true,
-    clickAction: undefined,
-    urlDisplayMode: undefined,
-  } as unknown as Settings)
+  let settings = $state(defaultSettings)
 
   // Import modal
   let importModalId = 'import-modal'
@@ -50,7 +45,6 @@
 
   // Export modal
   let exportModalId = 'export-modal'
-  let exportPreview = $state('')
   let selectedUserGroupId = $state('all')
 
   // Toasts
@@ -70,7 +64,7 @@
     try {
       settings = await getSettings()
     } catch (error) {
-      showToast('Failed to load settings', 'error')
+      showToast(browser.i18n.getMessage('failedToLoadSettings'), 'error')
     }
   }
 
@@ -136,7 +130,6 @@
   // Export tabs - open modal
   function handleOpenExportModal() {
     selectedUserGroupId = 'all'
-    exportPreview = ''
     const dialog = document.getElementById(exportModalId) as HTMLDialogElement
     dialog.showModal()
   }
@@ -166,7 +159,6 @@
   }
 
   function clearExport() {
-    exportPreview = ''
     selectedUserGroupId = 'all'
   }
 
@@ -223,7 +215,7 @@
 <div class="min-h-screen">
   <!-- Header -->
   <header
-    class="sticky top-0 z-40 bg-base-100/80 backdrop-blur border-b border-base-300"
+    class="sticky top-0 z-40 bg-base-100/80 backdrop-blur border-b border-base-200"
   >
     <div class="max-w-5xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
@@ -351,7 +343,6 @@
 <ExportModal
   id={exportModalId}
   userGroups={$userGroups || []}
-  bind:exportPreview
   bind:selectedUserGroupId
   onExport={handleExport}
   onCancel={clearExport}

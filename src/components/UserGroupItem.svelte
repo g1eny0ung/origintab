@@ -196,7 +196,7 @@
       {#if tabGroups.length === 0}
         <div
           class={[
-            'p-4 text-sm text-base-content/60 text-center rounded-box border-2 border-dashed border-base-300 m-4',
+            'p-4 text-sm text-base-content/60 text-center rounded-box border-2 border-dashed border-base-200 m-4',
             activeDropTarget === 'empty' && 'border-primary bg-primary/10',
           ]}
           data-empty-drop-zone
