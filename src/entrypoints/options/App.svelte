@@ -266,7 +266,7 @@
       <div class="card bg-base-100 shadow-sm border border-base-200 mt-8">
         <div class="card-body">
           <div class="flex items-center gap-2 mb-4">
-            <Info size={16} aria-hidden="true" />
+            <img src="/origintab.svg" alt="OriginTab" class="w-6 h-6" />
             <h3 class="font-medium">
               {browser.i18n.getMessage('aboutOriginTab')}
             </h3>

@@ -24,7 +24,7 @@
     "message": "No saved tabs"
   },
   "emptyStateMessage": {
-    "message": "Click the OriginTab icon in the browser toolbar to collect tabs in the current window"
+    "message": "Click the OriginTab icon in the browser toolbar to save tabs in the current window"
   },
   "newGroup": {
     "message": "New Group"

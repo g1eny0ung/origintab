@@ -24,7 +24,7 @@
     "message": "暂无保存的标签页"
   },
   "emptyStateMessage": {
-    "message": "点击浏览器工具栏中的 OriginTab 图标，收集当前窗口中的标签页"
+    "message": "点击浏览器工具栏中的OriginTab图标，保存当前窗口中的标签页"
   },
   "newGroup": {
     "message": "新建分组"
@@ -102,7 +102,7 @@
     "message": "设置"
   },
   "customizeOriginTab": {
-    "message": "自定义 OriginTab 行为"
+    "message": "自定义OriginTab行为"
   },
   "reset": {
     "message": "重置"

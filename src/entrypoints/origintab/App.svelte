@@ -219,11 +219,14 @@
   >
     <div class="max-w-5xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
-        <div>
-          <h1 class="text-xl font-bold">OriginTab</h1>
-          <p class="text-sm text-base-content/60">
-            {browser.i18n.getMessage('extDescription')}
-          </p>
+        <div class="flex items-center gap-2">
+          <img src="/origintab.svg" alt="OriginTab" class="w-12 h-12" />
+          <div>
+            <h1 class="text-xl font-bold">OriginTab</h1>
+            <p class="text-sm text-base-content/60">
+              {browser.i18n.getMessage('extDescription')}
+            </p>
+          </div>
         </div>
         <div class="flex items-center gap-2">
           <button

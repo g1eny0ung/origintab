@@ -28,6 +28,7 @@ src/
 │   └── options/            # Settings page
 │       └── ...
 ├── components/             # Shared Svelte components
+│   ├── ExportModal.svelte
 │   ├── ImportModal.svelte
 │   ├── TabGroupItem.svelte
 │   ├── UserGroupItem.svelte
@@ -49,6 +50,7 @@ src/
 │   └── userGroups.ts       # User group CRUD operations
 ├── utils/
 │   ├── helpers.ts          # Utility functions
+│   ├── localize.ts         # i18n localization
 │   ├── tabDrag.ts          # Drag and drop utilities
 │   └── types.ts            # TypeScript interfaces
 public/                     # Static assets
@@ -103,6 +105,7 @@ bun run check
 - `src/store/settings.ts` - Settings management
 - `src/store/tabGroups.ts` - Tab group CRUD operations
 - `src/store/userGroups.ts` - User group CRUD operations
+- `src/store/dataManagement.ts` - Import/export data operations
 - `src/entrypoints/background.ts` - Background logic
 
 ## Notes

@@ -10,6 +10,7 @@ interface RestoreOptions {
 function waitForTabLoadThenDiscard(newTab: Browser.tabs.Tab) {
   let title: string | undefined
   let favIconUrl: string | undefined
+  let timeoutId: number | undefined
 
   const listener = (tabId: number, changeInfo: Browser.tabs.OnUpdatedInfo) => {
     if (tabId === newTab.id && changeInfo.title) {
@@ -23,12 +24,13 @@ function waitForTabLoadThenDiscard(newTab: Browser.tabs.Tab) {
     if (title && favIconUrl) {
       browser.tabs.discard(tabId)
       browser.tabs.onUpdated.removeListener(listener)
+      clearTimeout(timeoutId)
     }
   }
 
   browser.tabs.onUpdated.addListener(listener)
   // Set a timeout to remove listener if tab takes too long to load, give up discard it.
-  setTimeout(() => {
+  timeoutId = window.setTimeout(() => {
     browser.tabs.onUpdated.removeListener(listener)
   }, 10000)
 }
