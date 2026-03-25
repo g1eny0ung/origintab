@@ -11,7 +11,7 @@ export default defineConfig({
     description: '__MSG_extDescription__',
     version: '3.0.0',
     default_locale: 'en',
-    permissions: ['tabs', 'storage'],
+    permissions: ['tabs', 'storage', 'contextMenus'],
     browser_specific_settings: {
       gecko: {
         id: 'origintab@app.g1en.dev',

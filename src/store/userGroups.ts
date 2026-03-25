@@ -9,6 +9,14 @@ export async function getLastUserGroup() {
   return db.userGroups.orderBy('createdAt').last()
 }
 
+async function notifyContextMenusRefresh() {
+  try {
+    await browser.runtime.sendMessage({ action: 'refreshContextMenus' })
+  } catch {
+    // Ignore errors (e.g., background not ready)
+  }
+}
+
 export async function createUserGroup(name: string) {
   const newGroup: UserGroup = {
     id: generateId(),
@@ -17,12 +25,14 @@ export async function createUserGroup(name: string) {
   }
 
   await db.userGroups.add(newGroup)
+  await notifyContextMenusRefresh()
 
   return newGroup
 }
 
 export async function updateUserGroup(groupId: string, name: string) {
   await db.userGroups.update(groupId, { name: name.trim() })
+  await notifyContextMenusRefresh()
 }
 
 export async function deleteUserGroup(groupId: string) {
@@ -38,4 +48,5 @@ export async function deleteUserGroup(groupId: string) {
       .equals(groupId)
       .modify({ userGroupId: DEFAULT_GROUP_ID })
   })
+  await notifyContextMenusRefresh()
 }
