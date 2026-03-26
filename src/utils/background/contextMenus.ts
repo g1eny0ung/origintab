@@ -9,6 +9,14 @@ const MENU_SEPARATOR = 'separator-1'
 const MENU_SAVE_ALL_TO_GROUP = 'save-all-to-group'
 const MENU_SAVE_CURRENT_TO_GROUP = 'save-current-to-group'
 
+export async function notifyContextMenusRefresh() {
+  try {
+    await browser.runtime.sendMessage({ action: 'refreshContextMenus' })
+  } catch {
+    // Ignore errors (e.g., background not ready)
+  }
+}
+
 function createStaticMenus() {
   browser.contextMenus.create({
     id: MENU_ROOT,
@@ -54,20 +62,6 @@ function createSaveToGroupMenus() {
   })
 }
 
-async function removeSaveToGroupMenus() {
-  for (const id of [
-    MENU_SEPARATOR,
-    MENU_SAVE_ALL_TO_GROUP,
-    MENU_SAVE_CURRENT_TO_GROUP,
-  ]) {
-    try {
-      await browser.contextMenus.remove(id)
-    } catch {
-      // Ignore if doesn't exist
-    }
-  }
-}
-
 function createGroupSubmenus(groups: { id: string; name: string }[]) {
   for (const group of groups) {
     browser.contextMenus.create({
@@ -83,6 +77,20 @@ function createGroupSubmenus(groups: { id: string; name: string }[]) {
       title: group.name,
       contexts: ['page'],
     })
+  }
+}
+
+async function removeSaveToGroupMenus() {
+  for (const id of [
+    MENU_SEPARATOR,
+    MENU_SAVE_ALL_TO_GROUP,
+    MENU_SAVE_CURRENT_TO_GROUP,
+  ]) {
+    try {
+      await browser.contextMenus.remove(id)
+    } catch {
+      // Ignore if doesn't exist
+    }
   }
 }
 
@@ -106,8 +114,7 @@ export async function refreshContextMenus() {
   try {
     const groups = await getUserGroups()
 
-    // Only default group exists
-    if (groups.length === 1) {
+    if (groups.length <= 1) {
       await removeSaveToGroupMenus()
       return
     }

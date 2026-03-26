@@ -1,4 +1,4 @@
-import { Settings, getSettings } from '~/store'
+import { Settings, getSettings, initDefaultGroup } from '~/store'
 import {
   createContextMenus,
   handleContextMenuClick,
@@ -57,10 +57,13 @@ async function handleIconClick() {
 }
 
 export default defineBackground(() => {
-  updateActionBehavior()
-  createContextMenus()
+  initDefaultGroup().then(() => {
+    createContextMenus()
+  })
 
   browser.contextMenus.onClicked.addListener(handleContextMenuClick)
+
+  updateActionBehavior()
 
   storage.watch<Settings>('sync:settings', () => {
     updateActionBehavior()

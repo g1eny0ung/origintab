@@ -1,3 +1,5 @@
+import { notifyContextMenusRefresh } from '@/utils/background/contextMenus'
+
 import type { UserGroup } from '../utils/types'
 import { DEFAULT_GROUP_ID, db, generateId } from './base'
 
@@ -7,14 +9,6 @@ export async function getUserGroups() {
 
 export async function getLastUserGroup() {
   return db.userGroups.orderBy('createdAt').last()
-}
-
-async function notifyContextMenusRefresh() {
-  try {
-    await browser.runtime.sendMessage({ action: 'refreshContextMenus' })
-  } catch {
-    // Ignore errors (e.g., background not ready)
-  }
 }
 
 export async function createUserGroup(name: string) {
