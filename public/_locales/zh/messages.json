@@ -74,6 +74,15 @@
   "importPlaceholder": {
     "message": "https://example.com | 示例标题\nhttps://another.com | 另一个标题"
   },
+  "importFile": {
+    "message": "导入文件"
+  },
+  "importFileHint": {
+    "message": "上传符合“URL | 标题”格式的文本文件，内容会自动填入下方文本框。你也可以直接粘贴数据。"
+  },
+  "failedToReadImportFile": {
+    "message": "读取导入文件失败"
+  },
   "openOriginTab": {
     "message": "打开OriginTab"
   },

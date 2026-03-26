@@ -22,13 +22,43 @@
     onImport,
     onCancel,
   }: Props = $props()
+
+  let fileInputRef: HTMLInputElement | null = $state(null)
+  let fileReadError = $state('')
+
+  async function handleFileChange(event: Event) {
+    const input = event.currentTarget as HTMLInputElement
+    const file = input.files?.[0]
+
+    if (!file) {
+      return
+    }
+
+    try {
+      importText = await file.text()
+      fileReadError = ''
+    } catch {
+      fileReadError = browser.i18n.getMessage('failedToReadImportFile')
+      input.value = ''
+    }
+  }
+
+  function handleClose() {
+    fileReadError = ''
+
+    if (fileInputRef) {
+      fileInputRef.value = ''
+    }
+
+    onCancel()
+  }
 </script>
 
 <Dialog
   {id}
   disableConfirm={!importText.trim()}
   onConfirm={onImport}
-  onClose={onCancel}
+  onClose={handleClose}
 >
   <h3 class="font-bold text-lg flex items-center gap-2">
     <Upload size={18} aria-hidden="true" />
@@ -46,6 +76,20 @@
           <option value={group.id}>{group.name}</option>
         {/each}
       </select>
+    </Fieldset>
+
+    <Fieldset
+      legend={browser.i18n.getMessage('importFile')}
+      hint={browser.i18n.getMessage('importFileHint')}
+      error={fileReadError}
+    >
+      <input
+        bind:this={fileInputRef}
+        type="file"
+        class="file-input"
+        accept=".csv,text/plain"
+        onchange={handleFileChange}
+      />
     </Fieldset>
 
     <textarea

@@ -74,6 +74,15 @@
   "importPlaceholder": {
     "message": "https://example.com | Example Title\nhttps://another.com | Another Title"
   },
+  "importFile": {
+    "message": "Import File"
+  },
+  "importFileHint": {
+    "message": "Upload a text file in the same \"URL | Title\" format. Uploaded content will fill the text area below. You can also paste the data directly."
+  },
+  "failedToReadImportFile": {
+    "message": "Failed to read import file"
+  },
   "openOriginTab": {
     "message": "Open OriginTab"
   },
