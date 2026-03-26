@@ -11,6 +11,15 @@ import {
 import { createOriginTab, findOriginTab, openOriginTab } from '~/utils/helpers'
 import { ClickAction } from '~/utils/types'
 
+interface BackgroundMessage {
+  action: string
+  userGroupId?: string
+}
+
+interface BackgroundResponse {
+  ok: boolean
+}
+
 async function notifyOriginTabUpdate() {
   const originTabId = await findOriginTab()
 
@@ -56,54 +65,64 @@ async function handleIconClick() {
   }
 }
 
+async function initializeBackground() {
+  try {
+    await initDefaultGroup()
+    await updateActionBehavior()
+    await createContextMenus()
+  } catch (error) {
+    console.error('Failed to initialize background:', error)
+  }
+}
+
+async function handleSettingsChange() {
+  try {
+    await updateActionBehavior()
+    await notifyOriginTabUpdate()
+  } catch (error) {
+    console.error('Failed to handle settings change:', error)
+  }
+}
+
+async function handleRuntimeMessage(
+  message: BackgroundMessage,
+): Promise<BackgroundResponse> {
+  switch (message.action) {
+    case 'collectTabs':
+      await collectAllTabs(message.userGroupId)
+      return { ok: true }
+    case 'collectCurrentTab':
+      await collectCurrentTab(message.userGroupId)
+      return { ok: true }
+    case 'openOriginTab':
+      await openOriginTab()
+      return { ok: true }
+    case 'refreshContextMenus':
+      await refreshContextMenus()
+      return { ok: true }
+    default:
+      return { ok: false }
+  }
+}
+
 export default defineBackground(() => {
-  initDefaultGroup().then(() => {
-    createContextMenus()
-  })
+  initializeBackground()
 
   browser.contextMenus.onClicked.addListener(handleContextMenuClick)
 
-  updateActionBehavior()
+  storage.watch<Settings>('sync:settings', () => handleSettingsChange())
 
-  storage.watch<Settings>('sync:settings', () => {
-    updateActionBehavior()
-    notifyOriginTabUpdate()
-  })
+  browser.action.onClicked.addListener(handleIconClick)
 
-  browser.action.onClicked.addListener(() => {
-    handleIconClick()
-  })
-
-  browser.runtime.onMessage.addListener(
-    async (message: { action: string; userGroupId?: string }) => {
-      switch (message.action) {
-        case 'collectTabs':
-          await collectAllTabs(message.userGroupId)
-          break
-        case 'collectCurrentTab':
-          await collectCurrentTab(message.userGroupId)
-          break
-        case 'openOriginTab':
-          await openOriginTab()
-          break
-        case 'refreshContextMenus':
-          await refreshContextMenus()
-          break
-        default:
-          break
-      }
-    },
-  )
+  browser.runtime.onMessage.addListener(handleRuntimeMessage)
 
   browser.runtime.onInstalled.addListener(async (details) => {
-    await updateActionBehavior()
-
     if (details.reason === 'install') {
       await openOriginTab()
     }
   })
 
-  browser.runtime.onStartup.addListener(() => {
-    openOriginTab()
+  browser.runtime.onStartup.addListener(async () => {
+    await openOriginTab()
   })
 })

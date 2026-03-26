@@ -129,18 +129,20 @@ export async function refreshContextMenus() {
   }
 }
 
-export function handleContextMenuClick(info: { menuItemId: string | number }) {
+export async function handleContextMenuClick(info: {
+  menuItemId: string | number
+}) {
   const { menuItemId } = info
 
   if (menuItemId === MENU_SAVE_ALL) {
-    collectAllTabs()
+    await collectAllTabs()
   } else if (menuItemId === MENU_SAVE_CURRENT) {
-    collectCurrentTab()
+    await collectCurrentTab()
   } else if (typeof menuItemId === 'string') {
     if (menuItemId.startsWith(`${MENU_SAVE_ALL_TO_GROUP}:`)) {
-      collectAllTabs(menuItemId.split(':')[1])
+      await collectAllTabs(menuItemId.split(':')[1])
     } else if (menuItemId.startsWith(`${MENU_SAVE_CURRENT_TO_GROUP}:`)) {
-      collectCurrentTab(menuItemId.split(':')[1])
+      await collectCurrentTab(menuItemId.split(':')[1])
     }
   }
 }

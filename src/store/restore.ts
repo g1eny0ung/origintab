@@ -35,7 +35,7 @@ function waitForTabLoadThenDiscard(newTab: Browser.tabs.Tab) {
   }, 10000)
 }
 
-function createTabInGroup(tabInfo: { url: string; active: boolean }) {
+async function createTabInGroup(tabInfo: { url: string; active: boolean }) {
   return browser.tabs.create({ ...tabInfo }).then(waitForTabLoadThenDiscard)
 }
 
@@ -43,7 +43,7 @@ export async function restoreGroup(
   groupId: string,
   options: RestoreOptions = {},
 ) {
-  const { active = false, newWindow = false } = options
+  const { newWindow = false } = options
   const group = await db.tabGroups.get(groupId)
 
   if (!group || group.tabs.length === 0) {
@@ -55,7 +55,7 @@ export async function restoreGroup(
     browser.windows
       .create({
         url: tabs,
-        focused: active,
+        focused: true,
       })
       .then((win) => {
         win?.tabs?.forEach(waitForTabLoadThenDiscard)
@@ -64,7 +64,7 @@ export async function restoreGroup(
     tabs.map((url, i) => {
       createTabInGroup({
         url,
-        active: i === 0 ? active : false,
+        active: i === 0 ? true : false,
       })
     })
   }
