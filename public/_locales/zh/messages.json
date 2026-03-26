@@ -95,6 +95,12 @@
   "to": {
     "message": "到"
   },
+  "saveAllTabsToGroup": {
+    "message": "保存所有标签页到分组"
+  },
+  "saveCurrentTabToGroup": {
+    "message": "保存当前标签页到分组"
+  },
   "saveToTip": {
     "message": "点击切换保存目标"
   },

@@ -95,6 +95,12 @@
   "to": {
     "message": "To"
   },
+  "saveAllTabsToGroup": {
+    "message": "Save all tabs to group"
+  },
+  "saveCurrentTabToGroup": {
+    "message": "Save current tab to group"
+  },
   "saveToTip": {
     "message": "Click to switch save target"
   },

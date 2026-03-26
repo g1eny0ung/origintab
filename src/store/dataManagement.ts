@@ -1,3 +1,5 @@
+import { notifyContextMenusRefresh } from '@/utils/background/contextMenus'
+
 import type { TabItem } from '../utils/types'
 import { db, generateId, initDefaultGroup } from './base'
 
@@ -7,6 +9,7 @@ export async function clearAllData() {
     await db.tabGroups.clear()
     await initDefaultGroup()
   })
+  await notifyContextMenusRefresh()
 }
 
 export async function exportToText(userGroupId?: string) {

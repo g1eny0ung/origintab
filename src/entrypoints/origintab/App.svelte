@@ -26,7 +26,7 @@
     getSettings,
     importFromText,
   } from '~/store'
-  import { db, initDefaultGroup } from '~/store/base'
+  import { db } from '~/store/base'
 
   // Use liveQuery for reactive data fetching
   let userGroups = liveQuery(() =>
@@ -202,7 +202,6 @@
   }
 
   onMount(() => {
-    initDefaultGroup()
     loadSettings()
     browser.runtime.onMessage.addListener(handleMessage)
   })
