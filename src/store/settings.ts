@@ -14,7 +14,7 @@ const SETTINGS_KEY = 'sync:settings'
 export const defaultSettings: Settings = {
   autoOpenOnStartup: true,
   confirmBeforeDelete: true,
-  clickAction: ClickAction.SaveAll,
+  clickAction: ClickAction.ShowPopup,
   urlDisplayMode: UrlDisplayMode.None,
   restoreAction: RestoreAction.OpenWithoutJump,
   openGroupInNewWindow: true,

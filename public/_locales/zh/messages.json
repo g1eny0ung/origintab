@@ -86,6 +86,9 @@
   "openOriginTab": {
     "message": "打开OriginTab"
   },
+  "returnOriginTab": {
+    "message": "返回OriginTab"
+  },
   "saveAllTabs": {
     "message": "保存所有标签页"
   },

@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { returnOriginTab } from '@/utils/helpers'
   import {
     Folder,
-    Info,
     Link,
     MousePointerClick,
     RotateCcw,
@@ -96,10 +96,15 @@
           </p>
         </div>
       </div>
-      <button class="btn btn-ghost btn-sm gap-2" onclick={resetSettings}>
-        <RotateCcw size={16} aria-hidden="true" />
-        {browser.i18n.getMessage('reset')}
-      </button>
+      <div class="flex gap-2">
+        <button class="btn btn-ghost btn-sm" onclick={() => returnOriginTab()}>
+          {browser.i18n.getMessage('returnOriginTab')}
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick={resetSettings}>
+          <RotateCcw size={16} aria-hidden="true" />
+          {browser.i18n.getMessage('reset')}
+        </button>
+      </div>
     </div>
 
     <!-- Settings List -->
@@ -139,6 +144,16 @@
         description={browser.i18n.getMessage('clickActionDescription')}
       >
         <SettingItemRadio
+          id="clickAction-showPopup"
+          name="clickAction"
+          title={browser.i18n.getMessage('showPopup')}
+          description={browser.i18n.getMessage('showPopupDescription')}
+          value={settings.clickAction}
+          checkedValue={ClickAction.ShowPopup}
+          onChange={onClickActionChange}
+        />
+
+        <SettingItemRadio
           id="clickAction-saveAll"
           name="clickAction"
           title={browser.i18n.getMessage('saveAll')}
@@ -155,16 +170,6 @@
           description={browser.i18n.getMessage('saveCurrentDescription')}
           value={settings.clickAction}
           checkedValue={ClickAction.SaveCurrent}
-          onChange={onClickActionChange}
-        />
-
-        <SettingItemRadio
-          id="clickAction-showPopup"
-          name="clickAction"
-          title={browser.i18n.getMessage('showPopup')}
-          description={browser.i18n.getMessage('showPopupDescription')}
-          value={settings.clickAction}
-          checkedValue={ClickAction.ShowPopup}
           onChange={onClickActionChange}
         />
       </SettingItemRadioCard>

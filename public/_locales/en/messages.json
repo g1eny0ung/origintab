@@ -86,6 +86,9 @@
   "openOriginTab": {
     "message": "Open OriginTab"
   },
+  "returnOriginTab": {
+    "message": "Return OriginTab"
+  },
   "saveAllTabs": {
     "message": "Save all tabs"
   },

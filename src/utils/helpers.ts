@@ -45,3 +45,17 @@ export async function openOriginTab() {
     console.error('Failed to open OriginTab on startup:', error)
   }
 }
+
+export async function returnOriginTab() {
+  try {
+    const originTab = await findOriginTab()
+
+    if (originTab) {
+      await browser.tabs.update(originTab, { active: true })
+    } else {
+      await createOriginTab()
+    }
+  } catch (error) {
+    console.error('Failed to return OriginTab:', error)
+  }
+}
