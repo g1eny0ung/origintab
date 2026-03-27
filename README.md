@@ -29,7 +29,7 @@ That's why I created it.
 
 ## Some default settings
 
-- OriginTab allows duplicates tabs (most of the time you don't care about duplicates).
+- OriginTab allows duplicate tabs (most of the time, you don't care about duplicates).
 - OriginTab doesn't save fixed tabs (it assumes they are permanent).
 - When restoring tab groups, OriginTab freezes them to reduce memory usage.
 

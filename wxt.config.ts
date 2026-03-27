@@ -9,12 +9,17 @@ export default defineConfig({
   manifest: {
     name: '__MSG_extName__',
     description: '__MSG_extDescription__',
-    version: '1.0.2',
+    version: '1.0.3',
     default_locale: 'en',
     permissions: ['tabs', 'storage', 'contextMenus'],
     browser_specific_settings: {
       gecko: {
         id: 'origintab@app.g1en.dev',
+        // https://github.com/wxt-dev/wxt/issues/1975
+        // @ts-ignore
+        data_collection_permissions: {
+          required: ['none'],
+        },
       },
     },
   },
