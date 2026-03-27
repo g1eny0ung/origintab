@@ -117,7 +117,7 @@ export default defineBackground(() => {
   browser.runtime.onMessage.addListener(handleRuntimeMessage)
 
   browser.runtime.onInstalled.addListener(async (details) => {
-    if (details.reason === 'install') {
+    if (details.reason === 'install' || details.reason === 'update') {
       await openOriginTab()
     }
   })

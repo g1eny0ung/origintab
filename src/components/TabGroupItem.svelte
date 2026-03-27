@@ -39,6 +39,8 @@
   let sortable: Sortable | null = null
   let isSelectionMode = $state(false)
   let selectedTabIds: string[] = $state([])
+  let lastSelectedTabIndex = $state<number | null>(null)
+  let shiftKeyPressed = $state(false)
   let moveTargetUserGroupId = $state('')
   let moveModalId = $derived(`move-tabs-${tabGroup.id}`)
 
@@ -148,16 +150,34 @@
   function resetSelectionMode() {
     isSelectionMode = false
     selectedTabIds = []
+    lastSelectedTabIndex = null
     moveTargetUserGroupId = ''
   }
 
-  function handleSelectionChange(tabId: string, checked: boolean) {
-    if (checked) {
-      selectedTabIds = [...selectedTabIds, tabId]
-      return
-    }
+  function handleSelectionChange(
+    tabId: string,
+    checked: boolean,
+    isShiftClick: boolean = false,
+  ) {
+    const currentIndex = tabGroup.tabs.findIndex((t) => t.id === tabId)
 
-    selectedTabIds = selectedTabIds.filter((id) => id !== tabId)
+    if (checked) {
+      if (
+        isShiftClick &&
+        lastSelectedTabIndex !== null &&
+        currentIndex !== -1
+      ) {
+        const start = Math.min(lastSelectedTabIndex, currentIndex)
+        const end = Math.max(lastSelectedTabIndex, currentIndex)
+        const rangeIds = tabGroup.tabs.slice(start, end + 1).map((t) => t.id)
+        selectedTabIds = [...new Set([...selectedTabIds, ...rangeIds])]
+      } else {
+        selectedTabIds = [...selectedTabIds, tabId]
+      }
+      lastSelectedTabIndex = currentIndex
+    } else {
+      selectedTabIds = selectedTabIds.filter((id) => id !== tabId)
+    }
   }
 
   function openMoveModal() {
@@ -341,6 +361,7 @@
       <div
         class={[
           'group flex items-center gap-3 py-2.5 px-2 bg-base-100',
+          isSelectionMode && 'select-none',
           !isSelectionMode && 'drag-handle active:cursor-grabbing',
         ]}
         data-tab-id={tab.id}
@@ -354,11 +375,13 @@
             aria-label={`Select ${tab.title || browser.i18n.getMessage('untitled')}`}
             onclick={(e) => {
               e.stopPropagation()
+              shiftKeyPressed = e.shiftKey
             }}
             onchange={(e) => {
               handleSelectionChange(
                 tab.id,
                 (e.currentTarget as HTMLInputElement).checked,
+                shiftKeyPressed,
               )
             }}
           />

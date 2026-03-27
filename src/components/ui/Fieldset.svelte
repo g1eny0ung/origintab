@@ -33,6 +33,6 @@
   {#if error}
     <p class="label text-error">{error}</p>
   {:else if hint}
-    <p class="label">{hint}</p>
+    <p class="label text-wrap">{hint}</p>
   {/if}
 </fieldset>
