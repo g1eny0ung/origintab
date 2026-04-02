@@ -13,9 +13,9 @@ export async function clearAllData() {
 }
 
 export async function exportToText(userGroupId?: string) {
-  let groups = await db.tabGroups.toArray()
+  let groups = await db.tabGroups.orderBy('createdAt').reverse().toArray()
 
-  if (userGroupId && userGroupId !== 'all') {
+  if (userGroupId) {
     groups = groups.filter((tg) => tg.userGroupId === userGroupId)
   }
 
