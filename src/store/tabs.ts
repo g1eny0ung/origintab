@@ -1,6 +1,7 @@
 import { clampIndex } from '~/utils/helpers'
+import type { SelectedTabRef, TabGroup, TabItem } from '~/utils/types'
 
-import { db } from './base'
+import { db, generateId } from './base'
 import { createTabGroupWithExistingTabs, deleteTabGroup } from './tabGroups'
 
 export async function removeTabFromGroup(groupId: string, tabId: string) {
@@ -33,7 +34,7 @@ export async function moveTabBetweenGroups(
   )
 }
 
-function getTabsByIdsInSourceOrder<
+function getTabsByIds<
   T extends {
     id: string
   },
@@ -61,7 +62,7 @@ export async function moveTabsBetweenGroups(
       return
     }
 
-    const movedTabs = getTabsByIdsInSourceOrder(sourceGroup.tabs, tabIds)
+    const movedTabs = getTabsByIds(sourceGroup.tabs, tabIds)
 
     if (movedTabs.length === 0) {
       return
@@ -98,14 +99,6 @@ export async function moveTabsBetweenGroups(
   })
 }
 
-export async function moveTabToNewGroupInUserGroup(
-  sourceGroupId: string,
-  userGroupId: string,
-  tabId: string,
-) {
-  await moveTabsToNewGroupInUserGroup(sourceGroupId, userGroupId, [tabId])
-}
-
 export async function moveTabsToNewGroupInUserGroup(
   sourceGroupId: string,
   userGroupId: string,
@@ -122,7 +115,7 @@ export async function moveTabsToNewGroupInUserGroup(
       return
     }
 
-    const movedTabs = getTabsByIdsInSourceOrder(sourceGroup.tabs, tabIds)
+    const movedTabs = getTabsByIds(sourceGroup.tabs, tabIds)
 
     if (movedTabs.length === 0) {
       return
@@ -143,28 +136,100 @@ export async function moveTabsToNewGroupInUserGroup(
   })
 }
 
-export async function moveTabsToUserGroup(
-  sourceGroupId: string,
+export async function moveSelectedTabsToUserGroup(
+  selectedTabs: SelectedTabRef[],
   userGroupId: string,
-  tabIds: string[],
 ) {
-  if (tabIds.length === 0) {
+  if (selectedTabs.length === 0) {
     return
   }
 
-  const targetGroups = await db.tabGroups
-    .where('userGroupId')
-    .equals(userGroupId)
-    .toArray()
+  await db.transaction('rw', db.tabGroups, async () => {
+    const sourceGroupsById = new Map<string, TabGroup>()
 
-  targetGroups.sort((a, b) => b.createdAt - a.createdAt)
+    for (const groupId of new Set(selectedTabs.map((tab) => tab.tabGroupId))) {
+      const sourceGroup = await db.tabGroups.get(groupId)
 
-  const firstGroup = targetGroups[0]
+      if (!sourceGroup) {
+        continue
+      }
 
-  if (firstGroup) {
-    await moveTabsBetweenGroups(sourceGroupId, firstGroup.id, tabIds, 0)
+      sourceGroupsById.set(groupId, sourceGroup)
+    }
+
+    const movedTabs: TabItem[] = []
+
+    for (const { tabGroupId, tabId } of selectedTabs) {
+      const sourceGroup = sourceGroupsById.get(tabGroupId)
+
+      if (!sourceGroup) {
+        continue
+      }
+
+      const movedTab = sourceGroup.tabs.find((tab) => tab.id === tabId)
+
+      if (!movedTab) {
+        continue
+      }
+
+      movedTabs.push(movedTab)
+
+      // Remove this tab from source group
+      sourceGroup.tabs = sourceGroup.tabs.filter((tab) => tab.id !== tabId)
+      sourceGroupsById.set(tabGroupId, sourceGroup)
+    }
+
+    if (movedTabs.length === 0) {
+      return
+    }
+
+    for (const [id, group] of sourceGroupsById) {
+      if (group.tabs.length === 0) {
+        // No remaining tabs in this group, delete it
+        await db.tabGroups.delete(id)
+      } else {
+        await db.tabGroups.update(id, { tabs: group.tabs })
+      }
+    }
+
+    await db.tabGroups.add({
+      id: generateId(),
+      tabs: movedTabs,
+      createdAt: Date.now(),
+      userGroupId,
+    })
+  })
+}
+
+export async function removeSelectedTabs(selectedTabs: SelectedTabRef[]) {
+  if (selectedTabs.length === 0) {
     return
   }
 
-  await moveTabsToNewGroupInUserGroup(sourceGroupId, userGroupId, tabIds)
+  await db.transaction('rw', db.tabGroups, async () => {
+    const selectedTabIdsByGroupId = new Map<string, Set<string>>()
+
+    for (const { tabGroupId, tabId } of selectedTabs) {
+      const selectedTabIds = selectedTabIdsByGroupId.get(tabGroupId)
+
+      if (!selectedTabIds) {
+        selectedTabIdsByGroupId.set(tabGroupId, new Set([tabId]))
+      } else {
+        selectedTabIds.add(tabId)
+      }
+    }
+
+    for (const [groupId, selectedTabIds] of selectedTabIdsByGroupId) {
+      const sourceGroup = (await db.tabGroups.get(groupId))!
+      const remainingTabs = sourceGroup.tabs.filter(
+        (tab) => !selectedTabIds.has(tab.id),
+      )
+
+      if (remainingTabs.length === 0) {
+        await db.tabGroups.delete(groupId)
+      } else {
+        await db.tabGroups.update(groupId, { tabs: remainingTabs })
+      }
+    }
+  })
 }

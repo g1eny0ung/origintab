@@ -22,7 +22,6 @@
   {#each userGroups as userGroup (userGroup.id)}
     <UserGroupItem
       {userGroup}
-      {userGroups}
       tabGroups={getTabGroups(userGroup.id)}
       {settings}
       {onToast}

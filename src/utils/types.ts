@@ -10,6 +10,11 @@ export interface TabItem {
   createdAt: number
 }
 
+export interface SelectedTabRef {
+  tabGroupId: string
+  tabId: string
+}
+
 // User-defined group (category)
 export interface UserGroup {
   id: string

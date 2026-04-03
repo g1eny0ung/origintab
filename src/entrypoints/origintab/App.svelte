@@ -6,7 +6,10 @@
     CircleCheck,
     CircleX,
     Download,
+    ExternalLink,
+    FolderOutput,
     Plus,
+    RotateCcw,
     SettingsIcon,
     Trash2,
     Upload,
@@ -17,6 +20,11 @@
   import ExportModal from '~/components/ExportModal.svelte'
   import ImportModal from '~/components/ImportModal.svelte'
   import UserGroupList from '~/components/UserGroupList.svelte'
+  import Dialog from '~/components/ui/Dialog.svelte'
+  import {
+    createTabSelectionController,
+    setTabSelectionContext,
+  } from '~/entrypoints/origintab/selection.svelte'
   import {
     DEFAULT_GROUP_ID,
     clearAllData,
@@ -25,8 +33,12 @@
     exportToText,
     getSettings,
     importFromText,
+    moveSelectedTabsToUserGroup,
+    removeSelectedTabs,
+    restoreSelectedTabs,
   } from '~/store'
   import { db } from '~/store/base'
+  import { RestoreAction } from '~/utils/types'
 
   // Use liveQuery for reactive data fetching
   let userGroups = liveQuery(() =>
@@ -47,6 +59,8 @@
   let exportModalId = 'export-modal'
   let selectedUserGroupId = $state('all')
 
+  let selectModalId = 'select-tabs-modal'
+
   // Toasts
   let toasts: {
     id: number
@@ -58,6 +72,16 @@
   let showNewGroupInput = $state(false)
   let newGroupName = $state('')
   let newGroupInputRef: HTMLInputElement | null = $state(null)
+  const selection = setTabSelectionContext(createTabSelectionController())
+  let orderedTabGroupsByPage = $derived.by(() => {
+    // Keep a single flattened view so batch actions can run in visual page order.
+    const nextUserGroups = $userGroups || []
+    const nextTabGroups = $tabGroups || []
+
+    return nextUserGroups.flatMap((userGroup) =>
+      nextTabGroups.filter((tabGroup) => tabGroup.userGroupId === userGroup.id),
+    )
+  })
 
   // Load settings only
   async function loadSettings() {
@@ -114,6 +138,11 @@
     }
   })
 
+  $effect(() => {
+    // Trim stale selections whenever liveQuery data changes underneath the page.
+    selection.reconcile(orderedTabGroupsByPage)
+  })
+
   // Clear all data - liveQuery will auto-refresh
   async function handleClearAll() {
     if (confirm(browser.i18n.getMessage('clearAllConfirm'))) {
@@ -160,6 +189,75 @@
 
   function clearExport() {
     selectedUserGroupId = 'all'
+  }
+
+  function openSelectModal() {
+    if (
+      !selection.moveTargetUserGroupId &&
+      $userGroups &&
+      $userGroups.length > 0
+    ) {
+      selection.setMoveTargetUserGroupId($userGroups[0].id)
+    }
+
+    const dialog = document.getElementById(selectModalId) as HTMLDialogElement
+    dialog.showModal()
+  }
+
+  async function handleMoveSelectedTabs() {
+    const orderedSelection = selection.getOrderedSelection(
+      orderedTabGroupsByPage,
+    )
+
+    if (orderedSelection.length === 0) {
+      return null
+    }
+
+    try {
+      await moveSelectedTabsToUserGroup(
+        orderedSelection,
+        selection.moveTargetUserGroupId,
+      )
+      selection.clear()
+      showToast(browser.i18n.getMessage('tabsMoved'))
+    } catch {
+      showToast(browser.i18n.getMessage('moveTabsFailed'), 'error')
+      return null
+    }
+  }
+
+  async function handleRestoreSelectedTabs(remove: boolean) {
+    const orderedSelection = selection.getOrderedSelection(
+      orderedTabGroupsByPage,
+    )
+
+    try {
+      await restoreSelectedTabs(orderedSelection, {
+        remove,
+        active: settings.restoreAction === RestoreAction.OpenAndJump,
+      })
+      selection.clear()
+      showToast(browser.i18n.getMessage('tabsRestored'))
+    } catch {
+      showToast(browser.i18n.getMessage('restoreFailed'), 'error')
+    }
+  }
+
+  async function handleDeleteSelectedTabs() {
+    if (
+      settings.confirmBeforeDelete &&
+      !confirm(browser.i18n.getMessage('deleteSelectedTabsConfirm'))
+    ) {
+      return
+    }
+
+    try {
+      await removeSelectedTabs(selection.selectedTabs)
+      selection.clear()
+      showToast(browser.i18n.getMessage('tabDeleted'))
+    } catch {
+      showToast(browser.i18n.getMessage('deleteFailed'), 'error')
+    }
   }
 
   // Import tabs - liveQuery will auto-refresh
@@ -278,7 +376,12 @@
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto px-4 py-6">
+  <main
+    class={[
+      'max-w-5xl mx-auto px-4 py-6',
+      selection.selectedCount > 0 && 'pb-32',
+    ]}
+  >
     {#if !$userGroups || ($userGroups.length === 1 && (!$tabGroups || $tabGroups.length === 0))}
       <!-- Empty state -->
       <div class="flex flex-col items-center justify-center py-20 text-center">
@@ -350,6 +453,39 @@
   onCancel={clearExport}
 />
 
+<Dialog
+  id={selectModalId}
+  disableConfirm={!selection.moveTargetUserGroupId ||
+    selection.selectedCount === 0}
+  onConfirm={handleMoveSelectedTabs}
+>
+  <h3 class="font-bold text-lg">{browser.i18n.getMessage('moveTabs')}</h3>
+
+  <div class="my-4 space-y-3">
+    <p class="text-sm text-base-content/70">
+      {browser.i18n.getMessage('moveSelectedTabsTo', [
+        selection.selectedCount.toString(),
+        browser.i18n.getMessage(
+          selection.selectedCount === 1 ? 'tabSingular' : 'tabPlural',
+        ),
+      ])}
+    </p>
+
+    <select
+      class="select"
+      value={selection.moveTargetUserGroupId}
+      onchange={(e) =>
+        selection.setMoveTargetUserGroupId(
+          (e.currentTarget as HTMLSelectElement).value,
+        )}
+    >
+      {#each $userGroups as group (group.id)}
+        <option value={group.id}>{group.name}</option>
+      {/each}
+    </select>
+  </div>
+</Dialog>
+
 <!-- Toasts -->
 <div class="toast toast-center toast-top z-50">
   {#each toasts as toast (toast.id)}
@@ -371,3 +507,67 @@
     </div>
   {/each}
 </div>
+
+{#if selection.selectedCount > 0}
+  <div
+    class="fixed bottom-8 left-1/2 z-40 px-4 space-y-2 -translate-x-1/2 transition-transform enter-screen"
+  >
+    <div
+      class="flex flex-wrap gap-1 bg-base-100 rounded-box border border-base-200 p-2 shadow-xl"
+    >
+      <button class="btn btn-sm btn-ghost" onclick={openSelectModal}>
+        <FolderOutput size={14} />
+        {browser.i18n.getMessage('moveTo')}
+      </button>
+
+      <button
+        class="btn btn-sm btn-ghost"
+        onclick={() => handleRestoreSelectedTabs(true)}
+      >
+        <RotateCcw size={14} />
+        {browser.i18n.getMessage('restore')}
+      </button>
+
+      <button
+        class="btn btn-sm btn-ghost"
+        onclick={() => handleRestoreSelectedTabs(false)}
+      >
+        <ExternalLink size={14} />
+        {browser.i18n.getMessage('restoreAndPreserve')}
+      </button>
+
+      <button
+        class="btn btn-sm btn-ghost hover:btn-error hover:text-white"
+        onclick={handleDeleteSelectedTabs}
+      >
+        <Trash2 size={14} />
+        {browser.i18n.getMessage('delete')}
+      </button>
+
+      <div class="tooltip" data-tip={browser.i18n.getMessage('cancel')}>
+        <button
+          class="btn btn-sm btn-ghost btn-square"
+          onclick={selection.clear}
+        >
+          <X size={14} />
+        </button>
+      </div>
+    </div>
+  </div>
+{/if}
+
+<style>
+  @keyframes enter {
+    0% {
+      transform: translateY(10vh);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .enter-screen {
+    animation: enter 0.3s ease-in-out;
+  }
+</style>

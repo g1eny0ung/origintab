@@ -1,3 +1,5 @@
+import type { SelectedTabRef, TabGroup } from '~/utils/types'
+
 import { db } from './base'
 import { deleteTabGroup } from './tabGroups'
 import { removeTabFromGroup } from './tabs'
@@ -105,4 +107,63 @@ export async function restoreAndDeleteTab(
 ) {
   await restoreTab(groupId, tabId, options)
   await removeTabFromGroup(groupId, tabId)
+}
+
+export async function restoreSelectedTabs(
+  selectedTabs: SelectedTabRef[],
+  options: RestoreOptions & { remove?: boolean } = {},
+) {
+  if (selectedTabs.length === 0) {
+    return
+  }
+
+  const { active = false, remove = false } = options
+  const sourceGroupsById = new Map<string, TabGroup>()
+
+  for (const groupId of new Set(selectedTabs.map((tab) => tab.tabGroupId))) {
+    sourceGroupsById.set(groupId, (await db.tabGroups.get(groupId))!)
+  }
+
+  // Open tabs sequentially so the first restored tab can reliably become active.
+  for (const [index, { tabGroupId, tabId }] of selectedTabs.entries()) {
+    const sourceGroup = sourceGroupsById.get(tabGroupId)!
+    const tab = sourceGroup.tabs.find((sourceTab) => sourceTab.id === tabId)!
+
+    await browser.tabs.create({
+      url: tab.url,
+      active: active && index === 0,
+    })
+  }
+
+  if (!remove) {
+    return
+  }
+
+  await db.transaction('rw', db.tabGroups, async () => {
+    // Delete only after restore succeeds, so a failed restore does not lose data.
+    const selectedTabIdsByGroupId = new Map<string, Set<string>>()
+
+    for (const { tabGroupId, tabId } of selectedTabs) {
+      const selectedTabIds = selectedTabIdsByGroupId.get(tabGroupId)
+
+      if (!selectedTabIds) {
+        selectedTabIdsByGroupId.set(tabGroupId, new Set([tabId]))
+      } else {
+        selectedTabIds.add(tabId)
+      }
+    }
+
+    for (const [groupId, selectedTabIds] of selectedTabIdsByGroupId) {
+      const sourceGroup = sourceGroupsById.get(groupId)!
+      const remainingTabs = sourceGroup.tabs.filter(
+        (tab) => !selectedTabIds.has(tab.id),
+      )
+
+      if (remainingTabs.length === 0) {
+        await db.tabGroups.delete(groupId)
+      } else {
+        await db.tabGroups.update(groupId, { tabs: remainingTabs })
+      }
+    }
+  })
 }

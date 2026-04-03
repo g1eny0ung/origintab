@@ -9,7 +9,7 @@
     id: string
     children: () => any
     disableConfirm?: boolean
-    onConfirm?: () => void
+    onConfirm?: () => void | null | Promise<void | null>
     onClose?: () => void
   } = $props()
 
@@ -31,8 +31,8 @@
       <button
         class="btn btn-primary"
         disabled={disableConfirm}
-        onclick={() => {
-          const result = onConfirm?.()
+        onclick={async () => {
+          const result = await onConfirm?.()
           if (result === null) {
             return
           }
