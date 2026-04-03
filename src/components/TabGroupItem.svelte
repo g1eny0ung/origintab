@@ -1,18 +1,12 @@
 <script lang="ts">
-  import {
-    ExternalLink,
-    FolderOutput,
-    ListTodo,
-    RotateCcw,
-    X,
-  } from '@lucide/svelte'
+  import { ExternalLink, RotateCcw, Trash2, X } from '@lucide/svelte'
   import { DateTime } from 'luxon'
   import Sortable from 'sortablejs'
   import { onMount } from 'svelte'
+  import { getTabSelectionContext } from '~/entrypoints/origintab/selection.svelte'
   import {
     deleteTabGroup,
     moveTabBetweenGroups,
-    moveTabsToUserGroup,
     removeTabFromGroup,
     restoreAndDeleteGroup,
     restoreAndDeleteTab,
@@ -21,28 +15,21 @@
   } from '~/store'
   import type { Settings } from '~/store/settings'
   import { clearDraggedTabState, setDraggedTabState } from '~/utils/tabDrag'
-  import type { TabGroup, UserGroup } from '~/utils/types'
+  import type { TabGroup } from '~/utils/types'
   import { RestoreAction, UrlDisplayMode } from '~/utils/types'
-
-  import Dialog from './ui/Dialog.svelte'
 
   interface Props {
     tabGroup: TabGroup
-    userGroups: UserGroup[]
     settings: Settings
     onToast: (message: string, type?: ToastType) => void
   }
 
-  let { tabGroup, userGroups, settings, onToast }: Props = $props()
+  let { tabGroup, settings, onToast }: Props = $props()
 
   let tabsContainer: HTMLDivElement
   let sortable: Sortable | null = null
-  let isSelectionMode = $state(false)
-  let selectedTabIds: string[] = $state([])
-  let lastSelectedTabIndex = $state<number | null>(null)
   let shiftKeyPressed = $state(false)
-  let moveTargetUserGroupId = $state('')
-  let moveModalId = $derived(`move-tabs-${tabGroup.id}`)
+  const selection = getTabSelectionContext()
 
   function formatTime(ts: number) {
     if (DateTime.fromMillis(ts).diffNow().as('seconds') > -10) {
@@ -97,27 +84,24 @@
     const asDefault = e.ctrlKey || e.metaKey || e.shiftKey
     if (!asDefault) {
       e.preventDefault()
-    }
 
-    handleRestoreTab(tabId, {
-      remove: true,
-      asDefault,
-    })
+      handleRestoreTab(tabId, {
+        remove: true,
+      })
+    }
   }
 
   async function handleRestoreTab(
     tabId: string,
-    options?: { remove: boolean; asDefault?: boolean },
+    options?: { remove: boolean },
   ) {
     try {
-      if (!options?.asDefault) {
-        const active = settings.restoreAction === RestoreAction.OpenAndJump
+      const active = settings.restoreAction === RestoreAction.OpenAndJump
 
-        if (options?.remove) {
-          await restoreAndDeleteTab(tabGroup.id, tabId, { active })
-        } else {
-          await restoreTab(tabGroup.id, tabId, { active })
-        }
+      if (options?.remove) {
+        await restoreAndDeleteTab(tabGroup.id, tabId, { active })
+      } else {
+        await restoreTab(tabGroup.id, tabId, { active })
       }
 
       onToast(browser.i18n.getMessage('tabRestored'))
@@ -142,79 +126,6 @@
     }
   }
 
-  function enterSelectionMode() {
-    isSelectionMode = true
-    moveTargetUserGroupId = userGroups[0]?.id || ''
-  }
-
-  function resetSelectionMode() {
-    isSelectionMode = false
-    selectedTabIds = []
-    lastSelectedTabIndex = null
-    moveTargetUserGroupId = ''
-  }
-
-  function handleSelectionChange(
-    tabId: string,
-    checked: boolean,
-    isShiftClick: boolean = false,
-  ) {
-    const currentIndex = tabGroup.tabs.findIndex((t) => t.id === tabId)
-
-    if (checked) {
-      if (
-        isShiftClick &&
-        lastSelectedTabIndex !== null &&
-        currentIndex !== -1
-      ) {
-        const start = Math.min(lastSelectedTabIndex, currentIndex)
-        const end = Math.max(lastSelectedTabIndex, currentIndex)
-        const rangeIds = tabGroup.tabs.slice(start, end + 1).map((t) => t.id)
-        selectedTabIds = [...new Set([...selectedTabIds, ...rangeIds])]
-      } else {
-        selectedTabIds = [...selectedTabIds, tabId]
-      }
-      lastSelectedTabIndex = currentIndex
-    } else {
-      selectedTabIds = selectedTabIds.filter((id) => id !== tabId)
-    }
-  }
-
-  function openMoveModal() {
-    if (selectedTabIds.length === 0) {
-      onToast(browser.i18n.getMessage('selectTabsFirst'), 'warning')
-      return
-    }
-
-    if (!moveTargetUserGroupId) {
-      moveTargetUserGroupId = userGroups[0]?.id || ''
-    }
-
-    const dialog = document.getElementById(
-      moveModalId,
-    ) as HTMLDialogElement | null
-    dialog?.showModal()
-  }
-
-  async function handleMoveTabs() {
-    if (!moveTargetUserGroupId || selectedTabIds.length === 0) {
-      return null
-    }
-
-    try {
-      await moveTabsToUserGroup(
-        tabGroup.id,
-        moveTargetUserGroupId,
-        selectedTabIds,
-      )
-      resetSelectionMode()
-      onToast(browser.i18n.getMessage('tabsMoved'))
-    } catch {
-      onToast(browser.i18n.getMessage('moveTabsFailed'), 'error')
-      return null
-    }
-  }
-
   async function handleTabMove(
     sourceGroupId: string,
     targetGroupId: string,
@@ -225,21 +136,7 @@
   }
 
   $effect(() => {
-    const availableTabIdSet = new Set(tabGroup.tabs.map((tab) => tab.id))
-    const nextSelectedTabIds = selectedTabIds.filter((tabId) =>
-      availableTabIdSet.has(tabId),
-    )
-
-    if (
-      nextSelectedTabIds.length !== selectedTabIds.length ||
-      nextSelectedTabIds.some((tabId, index) => tabId !== selectedTabIds[index])
-    ) {
-      selectedTabIds = nextSelectedTabIds
-    }
-  })
-
-  $effect(() => {
-    sortable?.option('disabled', isSelectionMode)
+    sortable?.option('disabled', selection.selectedCount > 0)
   })
 
   onMount(() => {
@@ -299,29 +196,6 @@
       {formatTime(tabGroup.createdAt)}
     </div>
     <div class="flex items-center gap-1">
-      {#if isSelectionMode}
-        <div class="join">
-          <button class="btn btn-xs join-item" onclick={openMoveModal}>
-            <FolderOutput size={14} />
-            <span class="hidden sm:inline">
-              {browser.i18n.getMessage('moveTo')}
-            </span>
-          </button>
-          <button class="btn btn-xs join-item" onclick={resetSelectionMode}>
-            <X size={14} />
-            <span class="hidden sm:inline">
-              {browser.i18n.getMessage('cancel')}
-            </span>
-          </button>
-        </div>
-      {:else}
-        <button class="btn btn-ghost btn-xs" onclick={enterSelectionMode}>
-          <ListTodo size={14} />
-          <span class="hidden sm:inline">
-            {browser.i18n.getMessage('select')}
-          </span>
-        </button>
-      {/if}
       <button
         class="btn btn-ghost btn-xs"
         onclick={() => handleRestoreGroup(true)}
@@ -341,10 +215,10 @@
         </span>
       </button>
       <button
-        class="btn btn-ghost btn-xs text-error hover:btn-error hover:text-white"
+        class="btn btn-ghost btn-xs hover:btn-error hover:text-white"
         onclick={handleDeleteGroup}
       >
-        <X size={14} />
+        <Trash2 size={14} />
         <span class="hidden sm:inline">
           {browser.i18n.getMessage('delete')}
         </span>
@@ -361,31 +235,29 @@
       <div
         class={[
           'group flex items-center gap-3 py-2.5 px-2 bg-base-100',
-          isSelectionMode && 'select-none',
-          !isSelectionMode && 'drag-handle active:cursor-grabbing',
+          selection.selectedCount === 0 && 'drag-handle active:cursor-grabbing',
         ]}
         data-tab-id={tab.id}
       >
-        {#if isSelectionMode}
-          <input
-            type="checkbox"
-            class="checkbox checkbox-xs rounded"
-            class:checkbox-primary={selectedTabIds.includes(tab.id)}
-            checked={selectedTabIds.includes(tab.id)}
-            aria-label={`Select ${tab.title || browser.i18n.getMessage('untitled')}`}
-            onclick={(e) => {
-              e.stopPropagation()
-              shiftKeyPressed = e.shiftKey
-            }}
-            onchange={(e) => {
-              handleSelectionChange(
-                tab.id,
-                (e.currentTarget as HTMLInputElement).checked,
-                shiftKeyPressed,
-              )
-            }}
-          />
-        {/if}
+        <input
+          type="checkbox"
+          class="checkbox checkbox-xs rounded"
+          class:checkbox-primary={selection.isSelected(tabGroup.id, tab.id)}
+          checked={selection.isSelected(tabGroup.id, tab.id)}
+          aria-label={`Select ${tab.title || browser.i18n.getMessage('untitled')}`}
+          onclick={(e) => {
+            e.stopPropagation()
+            shiftKeyPressed = e.shiftKey
+          }}
+          onchange={(e) => {
+            selection.toggle(
+              tabGroup,
+              tab.id,
+              (e.currentTarget as HTMLInputElement).checked,
+              shiftKeyPressed,
+            )
+          }}
+        />
         <div class="favicon-container">
           {#if tab.favicon}
             <img
@@ -420,14 +292,14 @@
           class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
         >
           <button
-            class="btn btn-ghost btn-xs p-1"
+            class="btn btn-ghost btn-xs btn-square"
             onclick={() => handleRestoreTab(tab.id, { remove: false })}
             title={browser.i18n.getMessage('restoreAndPreserve')}
           >
             <ExternalLink size={14} />
           </button>
           <button
-            class="btn btn-ghost btn-xs p-1 text-error hover:btn-error hover:text-white"
+            class="btn btn-ghost btn-xs btn-square hover:btn-error hover:text-white"
             onclick={() => handleDeleteTab(tab.id)}
             title={browser.i18n.getMessage('delete')}
           >
@@ -438,32 +310,3 @@
     {/each}
   </div>
 </div>
-
-<Dialog
-  id={moveModalId}
-  disableConfirm={!moveTargetUserGroupId || selectedTabIds.length === 0}
-  onConfirm={handleMoveTabs}
->
-  <h3 class="font-bold text-lg">{browser.i18n.getMessage('moveTabs')}</h3>
-
-  <div class="my-4 space-y-3">
-    <p class="text-sm text-base-content/70">
-      {browser.i18n.getMessage('moveSelectedTabsTo', [
-        selectedTabIds.length.toString(),
-        browser.i18n.getMessage(
-          selectedTabIds.length === 1 ? 'tabSingular' : 'tabPlural',
-        ),
-      ])}
-    </p>
-
-    <select
-      id={`move-target-group-${tabGroup.id}`}
-      class="select"
-      bind:value={moveTargetUserGroupId}
-    >
-      {#each userGroups as group}
-        <option value={group.id}>{group.name}</option>
-      {/each}
-    </select>
-  </div>
-</Dialog>

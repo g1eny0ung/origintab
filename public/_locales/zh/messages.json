@@ -206,11 +206,11 @@
   "deleteTabConfirm": {
     "message": "删除此标签页？"
   },
+  "deleteSelectedTabsConfirm": {
+    "message": "删除已选择的标签页？"
+  },
   "tabDeleted": {
     "message": "标签页已删除"
-  },
-  "select": {
-    "message": "选择"
   },
   "moveTo": {
     "message": "移动到"
@@ -226,9 +226,6 @@
   },
   "tabPlural": {
     "message": "标签页"
-  },
-  "selectTabsFirst": {
-    "message": "请至少选择一个标签页"
   },
   "tabsMoved": {
     "message": "标签页已移动"

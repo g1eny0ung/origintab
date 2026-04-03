@@ -206,11 +206,11 @@
   "deleteTabConfirm": {
     "message": "Delete this tab?"
   },
+  "deleteSelectedTabsConfirm": {
+    "message": "Delete selected tabs?"
+  },
   "tabDeleted": {
     "message": "Tab deleted"
-  },
-  "select": {
-    "message": "Select"
   },
   "moveTo": {
     "message": "Move To"
@@ -226,9 +226,6 @@
   },
   "tabPlural": {
     "message": "tabs"
-  },
-  "selectTabsFirst": {
-    "message": "Please select at least one tab"
   },
   "tabsMoved": {
     "message": "Tabs moved"

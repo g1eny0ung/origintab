@@ -14,13 +14,12 @@
 
   interface Props {
     userGroup: UserGroup
-    userGroups: UserGroup[]
     tabGroups: TabGroup[]
     settings: Settings
     onToast: (message: string, type?: ToastType) => void
   }
 
-  let { userGroup, userGroups, tabGroups, settings, onToast }: Props = $props()
+  let { userGroup, tabGroups, settings, onToast }: Props = $props()
 
   let isExpanded = $state(true)
   let activeDropTarget: 'header' | 'empty' | null = $state(null)
@@ -205,7 +204,7 @@
         </div>
       {:else}
         {#each tabGroups as tabGroup (tabGroup.id)}
-          <TabGroupItem {tabGroup} {userGroups} {settings} {onToast} />
+          <TabGroupItem {tabGroup} {settings} {onToast} />
         {/each}
       {/if}
     </div>
