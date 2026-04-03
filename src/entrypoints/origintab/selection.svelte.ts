@@ -44,11 +44,11 @@ class TabSelectionControllerImpl implements TabSelectionController {
     return this.moveTargetUserGroupIdState
   }
 
-  isSelected(tabGroupId: string, tabId: string) {
+  isSelected = (tabGroupId: string, tabId: string) => {
     return this.selectedTabKeySet.has(`${tabGroupId}:${tabId}`)
   }
 
-  private addSelection(selection: SelectedTabRef) {
+  private addSelection = (selection: SelectedTabRef) => {
     if (this.isSelected(selection.tabGroupId, selection.tabId)) {
       return
     }
@@ -56,12 +56,12 @@ class TabSelectionControllerImpl implements TabSelectionController {
     this.selectedTabsState = [...this.selectedTabsState, selection]
   }
 
-  toggle(
+  toggle = (
     tabGroup: TabGroup,
     tabId: string,
     checked: boolean,
     isShiftClick: boolean = false,
-  ) {
+  ) => {
     const nextSelection = {
       tabGroupId: tabGroup.id,
       tabId,
@@ -128,16 +128,16 @@ class TabSelectionControllerImpl implements TabSelectionController {
     }
   }
 
-  clear() {
+  clear = () => {
     this.selectedTabsState = []
     this.lastSelectedRef = null
   }
 
-  setMoveTargetUserGroupId(id: string) {
+  setMoveTargetUserGroupId = (id: string) => {
     this.moveTargetUserGroupIdState = id
   }
 
-  getOrderedSelection(tabGroups: TabGroup[]) {
+  getOrderedSelection = (tabGroups: TabGroup[]) => {
     // Batch actions follow the current page order instead of selection order.
     return tabGroups.flatMap((tabGroup) =>
       tabGroup.tabs
@@ -149,7 +149,7 @@ class TabSelectionControllerImpl implements TabSelectionController {
     )
   }
 
-  reconcile(tabGroups: TabGroup[]) {
+  reconcile = (tabGroups: TabGroup[]) => {
     // LiveQuery updates can remove/move tabs after they were selected.
     const validSelectionKeySet = new Set(
       tabGroups.flatMap((tabGroup) =>
