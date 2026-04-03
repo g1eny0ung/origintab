@@ -148,15 +148,29 @@ export async function moveSelectedTabsToUserGroup(
     const sourceGroupsById = new Map<string, TabGroup>()
 
     for (const groupId of new Set(selectedTabs.map((tab) => tab.tabGroupId))) {
-      const sourceGroup = (await db.tabGroups.get(groupId))!
+      const sourceGroup = await db.tabGroups.get(groupId)
+
+      if (!sourceGroup) {
+        continue
+      }
+
       sourceGroupsById.set(groupId, sourceGroup)
     }
 
     const movedTabs: TabItem[] = []
 
     for (const { tabGroupId, tabId } of selectedTabs) {
-      const sourceGroup = sourceGroupsById.get(tabGroupId)!
-      const movedTab = sourceGroup.tabs.find((tab) => tab.id === tabId)!
+      const sourceGroup = sourceGroupsById.get(tabGroupId)
+
+      if (!sourceGroup) {
+        continue
+      }
+
+      const movedTab = sourceGroup.tabs.find((tab) => tab.id === tabId)
+
+      if (!movedTab) {
+        continue
+      }
 
       movedTabs.push(movedTab)
 
