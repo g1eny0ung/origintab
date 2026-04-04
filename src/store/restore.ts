@@ -2,7 +2,11 @@ import type { SelectedTabRef, TabGroup } from '~/utils/types'
 
 import { db } from './base'
 import { deleteTabGroup } from './tabGroups'
-import { removeTabFromGroup } from './tabs'
+import {
+  filterTabsByIds,
+  removeTabFromGroup,
+  updateOrDeleteGroup,
+} from './tabs'
 
 interface RestoreOptions {
   active?: boolean
@@ -155,15 +159,9 @@ export async function restoreSelectedTabs(
 
     for (const [groupId, selectedTabIds] of selectedTabIdsByGroupId) {
       const sourceGroup = sourceGroupsById.get(groupId)!
-      const remainingTabs = sourceGroup.tabs.filter(
-        (tab) => !selectedTabIds.has(tab.id),
-      )
+      const remainingTabs = filterTabsByIds(sourceGroup.tabs, selectedTabIds)
 
-      if (remainingTabs.length === 0) {
-        await db.tabGroups.delete(groupId)
-      } else {
-        await db.tabGroups.update(groupId, { tabs: remainingTabs })
-      }
+      await updateOrDeleteGroup(groupId, remainingTabs)
     }
   })
 }

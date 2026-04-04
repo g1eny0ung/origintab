@@ -44,6 +44,21 @@ function getTabsByIds<
   return tabs.filter((tab) => selectedTabIdSet.has(tab.id))
 }
 
+export function filterTabsByIds<T extends { id: string }>(
+  tabs: T[],
+  tabIdsToExclude: Set<string>,
+) {
+  return tabs.filter((tab) => !tabIdsToExclude.has(tab.id))
+}
+
+export async function updateOrDeleteGroup(groupId: string, tabs: TabItem[]) {
+  if (tabs.length === 0) {
+    await db.tabGroups.delete(groupId)
+  } else {
+    await db.tabGroups.update(groupId, { tabs })
+  }
+}
+
 export async function moveTabsBetweenGroups(
   sourceGroupId: string,
   targetGroupId: string,
@@ -71,9 +86,7 @@ export async function moveTabsBetweenGroups(
     const selectedTabIdSet = new Set(movedTabs.map((tab) => tab.id))
 
     if (sourceGroupId === targetGroupId) {
-      const nextTabs = sourceGroup.tabs.filter(
-        (tab) => !selectedTabIdSet.has(tab.id),
-      )
+      const nextTabs = filterTabsByIds(sourceGroup.tabs, selectedTabIdSet)
       const nextIndex = clampIndex(targetIndex, nextTabs.length)
       nextTabs.splice(nextIndex, 0, ...movedTabs)
 
@@ -81,20 +94,13 @@ export async function moveTabsBetweenGroups(
       return
     }
 
-    const nextSourceTabs = sourceGroup.tabs.filter(
-      (tab) => !selectedTabIdSet.has(tab.id),
-    )
+    const nextSourceTabs = filterTabsByIds(sourceGroup.tabs, selectedTabIdSet)
     const nextTargetTabs = [...targetGroup.tabs]
     const nextIndex = clampIndex(targetIndex, nextTargetTabs.length)
 
     nextTargetTabs.splice(nextIndex, 0, ...movedTabs)
 
-    if (nextSourceTabs.length === 0) {
-      await db.tabGroups.delete(sourceGroupId)
-    } else {
-      await db.tabGroups.update(sourceGroupId, { tabs: nextSourceTabs })
-    }
-
+    await updateOrDeleteGroup(sourceGroupId, nextSourceTabs)
     await db.tabGroups.update(targetGroupId, { tabs: nextTargetTabs })
   })
 }
@@ -122,15 +128,9 @@ export async function moveTabsToNewGroupInUserGroup(
     }
 
     const selectedTabIdSet = new Set(movedTabs.map((tab) => tab.id))
-    const remainingTabs = sourceGroup.tabs.filter(
-      (tab) => !selectedTabIdSet.has(tab.id),
-    )
+    const remainingTabs = filterTabsByIds(sourceGroup.tabs, selectedTabIdSet)
 
-    if (remainingTabs.length === 0) {
-      await db.tabGroups.delete(sourceGroupId)
-    } else {
-      await db.tabGroups.update(sourceGroupId, { tabs: remainingTabs })
-    }
+    await updateOrDeleteGroup(sourceGroupId, remainingTabs)
 
     await createTabGroupWithExistingTabs(movedTabs, userGroupId)
   })
@@ -158,6 +158,7 @@ export async function moveSelectedTabsToUserGroup(
     }
 
     const movedTabs: TabItem[] = []
+    const tabIdsToRemoveByGroup = new Map<string, Set<string>>()
 
     for (const { tabGroupId, tabId } of selectedTabs) {
       const sourceGroup = sourceGroupsById.get(tabGroupId)
@@ -174,22 +175,28 @@ export async function moveSelectedTabsToUserGroup(
 
       movedTabs.push(movedTab)
 
-      // Remove this tab from source group
-      sourceGroup.tabs = sourceGroup.tabs.filter((tab) => tab.id !== tabId)
-      sourceGroupsById.set(tabGroupId, sourceGroup)
+      // Track which tabs to remove from each group
+      const tabIdsToRemove = tabIdsToRemoveByGroup.get(tabGroupId)
+      if (!tabIdsToRemove) {
+        tabIdsToRemoveByGroup.set(tabGroupId, new Set([tabId]))
+      } else {
+        tabIdsToRemove.add(tabId)
+      }
     }
 
     if (movedTabs.length === 0) {
       return
     }
 
-    for (const [id, group] of sourceGroupsById) {
-      if (group.tabs.length === 0) {
-        // No remaining tabs in this group, delete it
-        await db.tabGroups.delete(id)
-      } else {
-        await db.tabGroups.update(id, { tabs: group.tabs })
+    // Update all affected source groups
+    for (const [groupId, tabIdsToRemove] of tabIdsToRemoveByGroup) {
+      const sourceGroup = sourceGroupsById.get(groupId)
+      if (!sourceGroup) {
+        continue
       }
+
+      const remainingTabs = filterTabsByIds(sourceGroup.tabs, tabIdsToRemove)
+      await updateOrDeleteGroup(groupId, remainingTabs)
     }
 
     await db.tabGroups.add({
@@ -221,15 +228,9 @@ export async function removeSelectedTabs(selectedTabs: SelectedTabRef[]) {
 
     for (const [groupId, selectedTabIds] of selectedTabIdsByGroupId) {
       const sourceGroup = (await db.tabGroups.get(groupId))!
-      const remainingTabs = sourceGroup.tabs.filter(
-        (tab) => !selectedTabIds.has(tab.id),
-      )
+      const remainingTabs = filterTabsByIds(sourceGroup.tabs, selectedTabIds)
 
-      if (remainingTabs.length === 0) {
-        await db.tabGroups.delete(groupId)
-      } else {
-        await db.tabGroups.update(groupId, { tabs: remainingTabs })
-      }
+      await updateOrDeleteGroup(groupId, remainingTabs)
     }
   })
 }
