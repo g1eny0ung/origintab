@@ -22,7 +22,8 @@ src/
 │   │   ├── App.svelte
 │   │   ├── main.ts
 │   │   ├── app.css
-│   │   └── index.html
+│   │   ├── index.html
+│   │   └── selection.svelte.ts  # Selection state management
 │   ├── popup/              # Extension popup
 │   │   └── ...
 │   └── options/            # Settings page
