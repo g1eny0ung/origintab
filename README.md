@@ -2,9 +2,9 @@
 
 [简体中文](README-ZH.md)
 
-## Download
+## Installation
 
-Go to <https://products.g1en.site/origintab> to download OriginTab for different browsers.
+Go to <https://products.g1en.site/origintab> to install OriginTab for different browsers.
 
 ## Introduction
 

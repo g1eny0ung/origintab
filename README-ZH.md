@@ -1,8 +1,8 @@
 # OriginTab
 
-## 下载
+## 安装
 
-请访问 <https://products.g1en.site/zh/origintab> 下载适用于不同浏览器的 OriginTab。
+请访问 <https://products.g1en.site/zh/origintab> 安装适用于不同浏览器的 OriginTab。
 
 ## 简介
 
