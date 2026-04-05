@@ -1,5 +1,9 @@
 # OriginTab
 
+## 下载
+
+请访问 <https://products.g1en.site/zh/origintab> 下载适用于不同浏览器的 OriginTab。
+
 ## 简介
 
 如果你想要一种简单直接的方式来保存浏览器标签页，并在需要时恢复它们，那么 OriginTab 就是为你设计的。

@@ -2,6 +2,10 @@
 
 [简体中文](README-ZH.md)
 
+## Download
+
+Go to <https://products.g1en.site/origintab> to download OriginTab for different browsers.
+
 ## Introduction
 
 If you want a simple and straightforward way to save your browser tabs and restore them when needed in the future, then OriginTab is designed for you.
