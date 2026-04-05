@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.1.0] - 2026-04-03
+## [1.1.0] - 2026-04-05
 
 ### Added
 
 - Global tab selection is now supported. You can select tabs across all groups, and then move, restore, or delete them.
+
+### Changed
+
+- Update localized content.

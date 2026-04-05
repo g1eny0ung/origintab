@@ -3,7 +3,7 @@
     "message": "OriginTab - 保存你的标签页"
   },
   "extDescription": {
-    "message": "一键保存标签页，随时恢复。"
+    "message": "以最简单的方式保存你的标签页。"
   },
   "confirm": {
     "message": "确认"
@@ -167,6 +167,15 @@
   "aboutOriginTab": {
     "message": "关于 OriginTab"
   },
+  "aboutDescription1": {
+    "message": "访问"
+  },
+  "aboutDescription2": {
+    "message": "以了解更多关于OriginTab的信息。"
+  },
+  "productPage": {
+    "message": "产品主页"
+  },
   "delete": {
     "message": "删除"
   },
@@ -297,7 +306,7 @@
     "message": "打开分组位置"
   },
   "openGroupInNewWindowDescription": {
-    "message": "选择在何处打开标签页组"
+    "message": "选择在何处打开标签页组（此处的\"组\"指在不同时间保存的子分组）"
   },
   "openInCurrentWindow": {
     "message": "当前窗口"

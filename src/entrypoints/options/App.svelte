@@ -277,6 +277,19 @@
             </h3>
           </div>
           <p>{browser.i18n.getMessage('extDescription')}</p>
+          <p>
+            {browser.i18n.getMessage('aboutDescription1')}
+            <a
+              href={browser.i18n.getUILanguage().startsWith('zh')
+                ? 'https://products.g1en.site/zh/origintab/'
+                : 'https://products.g1en.site/origintab/'}
+              class="underline"
+              target="_blank"
+            >
+              {browser.i18n.getMessage('productPage')}
+            </a>
+            {browser.i18n.getMessage('aboutDescription2')}
+          </p>
         </div>
       </div>
     </div>

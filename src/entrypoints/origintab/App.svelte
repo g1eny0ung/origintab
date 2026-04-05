@@ -391,7 +391,7 @@
         <h2 class="text-xl font-semibold mb-2">
           {browser.i18n.getMessage('noSavedTabs')}
         </h2>
-        <p class="text-base-content/60 max-w-md">
+        <p class="text-sm text-base-content/60 max-w-md">
           {browser.i18n.getMessage('emptyStateMessage')}
         </p>
       </div>

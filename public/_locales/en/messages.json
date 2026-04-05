@@ -3,7 +3,7 @@
     "message": "OriginTab - Save Your Tabs"
   },
   "extDescription": {
-    "message": "Save tabs with one click and restore them at any time."
+    "message": "Save your tabs in the simplest way."
   },
   "confirm": {
     "message": "Confirm"
@@ -167,6 +167,15 @@
   "aboutOriginTab": {
     "message": "About OriginTab"
   },
+  "aboutDescription1": {
+    "message": "Visit"
+  },
+  "aboutDescription2": {
+    "message": "to learn more about OriginTab."
+  },
+  "productPage": {
+    "message": "Product Homepage"
+  },
   "delete": {
     "message": "Delete"
   },
@@ -297,7 +306,7 @@
     "message": "Open Group In"
   },
   "openGroupInNewWindowDescription": {
-    "message": "Choose where to open tab groups"
+    "message": "Choose where to open tab groups (the term \"group\" here refers to subgroups saved at different times)"
   },
   "openInCurrentWindow": {
     "message": "Current Window"
