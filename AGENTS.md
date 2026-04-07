@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-OriginTab is a browser extension for managing tabs. Users can save tabs into groups, organize them into custom categories, and restore them later.
+OriginTab is a browser extension for managing tabs. Users can save tabs into groups, and restore them later.
 
 ## Tech Stack
 
@@ -14,33 +14,20 @@ OriginTab is a browser extension for managing tabs. Users can save tabs into gro
 
 ## Project Structure
 
-```
+```txt
 src/
 ├── entrypoints/
 │   ├── background.ts       # Service worker (tab collection, messaging)
 │   ├── origintab/          # Main management page
-│   │   ├── App.svelte
-│   │   ├── main.ts
-│   │   ├── app.css
-│   │   ├── index.html
-│   │   └── selection.svelte.ts  # Selection state management
+│   │   ├── ...
+│   │   └── selection.svelte.ts  # Global selection state management
 │   ├── popup/              # Extension popup
 │   │   └── ...
 │   └── options/            # Settings page
 │       └── ...
 ├── components/             # Shared Svelte components
-│   ├── ExportModal.svelte
-│   ├── ImportModal.svelte
-│   ├── TabGroupItem.svelte
-│   ├── UserGroupItem.svelte
-│   ├── UserGroupList.svelte
-│   └── ui/
-│       ├── Dialog.svelte
-│       ├── Fieldset.svelte
-│       ├── SettingItemCheckboxCard.svelte
-│       ├── SettingItemRadio.svelte
-│       └── SettingItemRadioCard.svelte
-├── store/                  # State management (Dexie + Svelte stores)
+│   ├── ...
+├── store/                  # State management (Dexie + WXT storage)
 │   ├── base.ts             # DB setup, DEFAULT_GROUP_ID, generateId
 │   ├── dataManagement.ts   # Import/export data
 │   ├── index.ts            # Re-exports all store modules
