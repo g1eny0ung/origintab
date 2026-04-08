@@ -8,7 +8,7 @@ import {
   collectAllTabs,
   collectCurrentTab,
 } from '~/utils/background/tabCollection'
-import { createOriginTab, findOriginTab, openOriginTab } from '~/utils/helpers'
+import { createOriginTab, findOriginTab, initOriginTab } from '~/utils/helpers'
 import { ClickAction } from '~/utils/types'
 
 interface BackgroundMessage {
@@ -95,7 +95,7 @@ async function handleRuntimeMessage(
       await collectCurrentTab(message.userGroupId)
       return { ok: true }
     case 'openOriginTab':
-      await openOriginTab()
+      await returnOriginTab()
       return { ok: true }
     case 'refreshContextMenus':
       await refreshContextMenus()
@@ -105,24 +105,40 @@ async function handleRuntimeMessage(
   }
 }
 
+async function handleCommand(command: string) {
+  switch (command) {
+    case 'open':
+      await returnOriginTab()
+      break
+    case 'saveAllTabs':
+      await collectAllTabs()
+      break
+    case 'saveCurrentTab':
+      await collectCurrentTab()
+      break
+    default:
+      break
+  }
+}
+
 export default defineBackground(() => {
   initializeBackground()
 
+  browser.action.onClicked.addListener(handleIconClick)
+  browser.commands.onCommand.addListener(handleCommand)
   browser.contextMenus.onClicked.addListener(handleContextMenuClick)
 
   storage.watch<Settings>('sync:settings', () => handleSettingsChange())
-
-  browser.action.onClicked.addListener(handleIconClick)
 
   browser.runtime.onMessage.addListener(handleRuntimeMessage)
 
   browser.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install' || details.reason === 'update') {
-      await openOriginTab()
+      await initOriginTab()
     }
   })
 
   browser.runtime.onStartup.addListener(async () => {
-    await openOriginTab()
+    await initOriginTab()
   })
 })

@@ -26,7 +26,7 @@ export async function createOriginTab() {
   })
 }
 
-export async function openOriginTab() {
+export async function initOriginTab() {
   try {
     const autoOpen = (await getSettings()).autoOpenOnStartup
     if (autoOpen === false) {

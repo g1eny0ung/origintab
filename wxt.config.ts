@@ -12,6 +12,21 @@ export default defineConfig({
     version: '1.1.0',
     default_locale: 'en',
     permissions: ['tabs', 'storage', 'contextMenus'],
+    commands: {
+      open: {
+        suggested_key: {
+          default: 'Ctrl+R',
+          mac: 'MacCtrl+R',
+        },
+        description: '__MSG_openOriginTab__',
+      },
+      saveAllTabs: {
+        description: '__MSG_saveAllTabs__',
+      },
+      saveCurrentTab: {
+        description: '__MSG_saveCurrentTab__',
+      },
+    },
     browser_specific_settings: {
       gecko: {
         id: 'origintab@app.g1en.dev',
