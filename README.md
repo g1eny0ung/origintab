@@ -38,6 +38,12 @@ That's why I created OriginTab.
 - OriginTab will save tabs to the most recently created group by default.
 - When restoring tab groups, OriginTab freezes them to reduce memory usage.
 
+## Shortcuts
+
+- Open OriginTab: default `Ctrl/Cmd + R`
+- Save all tabs: need to be manually set
+- Save current tab: need to be manually set
+
 ## Development
 
 Please refer to the [AGENT.md](AGENT.md) for development details.
