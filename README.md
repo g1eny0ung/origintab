@@ -42,7 +42,7 @@ That's why I created OriginTab.
 
 ## Shortcuts
 
-- Open OriginTab: default `Ctrl + R`
+- Open OriginTab: default `Alt + R` (`Ctrl + R` on Mac)
 - Save all tabs: need to be manually set
 - Save current tab: need to be manually set
 

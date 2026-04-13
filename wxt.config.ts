@@ -15,7 +15,7 @@ export default defineConfig({
     commands: {
       open: {
         suggested_key: {
-          default: 'Ctrl+R',
+          default: 'Alt+R',
           mac: 'MacCtrl+R',
         },
         description: '__MSG_openOriginTab__',
