@@ -40,7 +40,7 @@ That's why I created OriginTab.
 
 ## Shortcuts
 
-- Open OriginTab: default `Ctrl/Cmd + R`
+- Open OriginTab: default `Ctrl + R`
 - Save all tabs: need to be manually set
 - Save current tab: need to be manually set
 
