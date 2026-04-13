@@ -1,5 +1,7 @@
 # OriginTab
 
+<a href="https://www.producthunt.com/products/origintab-save-your-tabs?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-origintab-save-your-tabs" target="_blank" rel="noopener noreferrer"><img alt="OriginTab - Save Your Tabs - Save your tabs in the simplest way. | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1122435&amp;theme=light&amp;t=1776065036756"></a>
+
 ## 安装
 
 请访问 <https://products.g1en.site/zh/origintab> 安装适用于不同浏览器的 OriginTab。
