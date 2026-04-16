@@ -9,7 +9,7 @@ export default defineConfig({
   manifest: {
     name: '__MSG_extName__',
     description: '__MSG_extDescription__',
-    version: '1.1.2',
+    version: '1.1.3',
     default_locale: 'en',
     permissions: ['tabs', 'storage', 'contextMenus'],
     commands: {
