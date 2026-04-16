@@ -337,5 +337,23 @@
   },
   "copied": {
     "message": "Copied!"
+  },
+  "timeDisplayMode": {
+    "message": "Time Display Mode"
+  },
+  "timeDisplayDescription": {
+    "message": "Choose how to display the tabs' saved time"
+  },
+  "timeDisplayRelative": {
+    "message": "Relative time"
+  },
+  "timeDisplayRelativeDescription": {
+    "message": "Show time in relative format (e.g., 2 minutes ago)"
+  },
+  "timeDisplayAbsolute": {
+    "message": "Absolute time"
+  },
+  "timeDisplayAbsoluteDescription": {
+    "message": "Show time in absolute format (e.g., Apr 16, 2026, 12:30 PM)"
   }
 }

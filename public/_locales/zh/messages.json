@@ -337,5 +337,23 @@
   },
   "copied": {
     "message": "已复制！"
+  },
+  "timeDisplayMode": {
+    "message": "时间显示模式"
+  },
+  "timeDisplayDescription": {
+    "message": "选择如何显示标签页保存的时间"
+  },
+  "timeDisplayRelative": {
+    "message": "相对时间"
+  },
+  "timeDisplayRelativeDescription": {
+    "message": "以相对格式显示时间（例如：2分钟前）"
+  },
+  "timeDisplayAbsolute": {
+    "message": "绝对时间"
+  },
+  "timeDisplayAbsoluteDescription": {
+    "message": "以绝对格式显示时间（例如：2026年4月16日 12:30）"
   }
 }

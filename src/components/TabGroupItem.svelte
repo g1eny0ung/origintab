@@ -16,7 +16,7 @@
   import type { Settings } from '~/store/settings'
   import { clearDraggedTabState, setDraggedTabState } from '~/utils/tabDrag'
   import type { TabGroup } from '~/utils/types'
-  import { RestoreAction, UrlDisplayMode } from '~/utils/types'
+  import { RestoreAction, TimeDisplayMode, UrlDisplayMode } from '~/utils/types'
 
   interface Props {
     tabGroup: TabGroup
@@ -32,11 +32,17 @@
   const selection = getTabSelectionContext()
 
   function formatTime(ts: number) {
-    if (DateTime.fromMillis(ts).diffNow().as('seconds') > -10) {
+    const time = DateTime.fromMillis(ts)
+
+    if (settings.timeDisplayMode === TimeDisplayMode.Absolute) {
+      return time.toLocaleString(DateTime.DATETIME_MED)
+    }
+
+    if (time.diffNow().as('seconds') > -10) {
       return browser.i18n.getMessage('justNow')
     }
 
-    return DateTime.fromMillis(ts).toRelative()
+    return time.toRelative()
   }
 
   function urlHostname(url: string) {

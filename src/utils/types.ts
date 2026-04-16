@@ -55,3 +55,9 @@ export enum RestoreAction {
   OpenWithoutJump = 'openWithoutJump',
   OpenAndJump = 'openAndJump',
 }
+
+// Time display mode
+export enum TimeDisplayMode {
+  Relative = 'relative',
+  Absolute = 'absolute',
+}

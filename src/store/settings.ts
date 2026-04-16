@@ -1,4 +1,9 @@
-import { ClickAction, RestoreAction, UrlDisplayMode } from '~/utils/types'
+import {
+  ClickAction,
+  RestoreAction,
+  TimeDisplayMode,
+  UrlDisplayMode,
+} from '~/utils/types'
 
 export interface Settings {
   autoOpenOnStartup: boolean
@@ -7,6 +12,7 @@ export interface Settings {
   urlDisplayMode: UrlDisplayMode
   restoreAction: RestoreAction
   openGroupInNewWindow: boolean
+  timeDisplayMode: TimeDisplayMode
 }
 
 const SETTINGS_KEY = 'sync:settings'
@@ -18,6 +24,7 @@ export const defaultSettings: Settings = {
   urlDisplayMode: UrlDisplayMode.None,
   restoreAction: RestoreAction.OpenWithoutJump,
   openGroupInNewWindow: true,
+  timeDisplayMode: TimeDisplayMode.Relative,
 }
 
 const settings = storage.defineItem<Settings>(SETTINGS_KEY, {

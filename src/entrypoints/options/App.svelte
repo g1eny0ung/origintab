@@ -1,6 +1,7 @@
 <script lang="ts">
   import { returnOriginTab } from '@/utils/helpers'
   import {
+    Clock,
     Folder,
     Link,
     MousePointerClick,
@@ -17,7 +18,12 @@
     resetSettings as resetAllSettings,
     updateSettings,
   } from '~/store'
-  import { ClickAction, RestoreAction, UrlDisplayMode } from '~/utils/types'
+  import {
+    ClickAction,
+    RestoreAction,
+    TimeDisplayMode,
+    UrlDisplayMode,
+  } from '~/utils/types'
 
   // Settings state
   let settings = $state(defaultSettings)
@@ -71,6 +77,11 @@
     const boolValue = value === 'true'
     settings.openGroupInNewWindow = boolValue
     updateSettings({ openGroupInNewWindow: boolValue })
+  }
+
+  function onTimeDisplayModeChange(mode: TimeDisplayMode) {
+    settings.timeDisplayMode = mode
+    updateSettings({ timeDisplayMode: mode })
   }
 
   async function resetSettings() {
@@ -136,6 +147,37 @@
           aria-label={browser.i18n.getMessage('confirmBeforeDelete')}
         />
       </SettingItemCheckboxCard>
+
+      <!-- Time Display Mode -->
+      <SettingItemRadioCard
+        Icon={Clock}
+        title={browser.i18n.getMessage('timeDisplayMode')}
+        description={browser.i18n.getMessage('timeDisplayDescription')}
+      >
+        <SettingItemRadio
+          id="timeDisplayMode-relative"
+          name="timeDisplayMode"
+          title={browser.i18n.getMessage('timeDisplayRelative')}
+          description={browser.i18n.getMessage(
+            'timeDisplayRelativeDescription',
+          )}
+          value={settings.timeDisplayMode}
+          checkedValue={TimeDisplayMode.Relative}
+          onChange={onTimeDisplayModeChange}
+        />
+
+        <SettingItemRadio
+          id="timeDisplayMode-absolute"
+          name="timeDisplayMode"
+          title={browser.i18n.getMessage('timeDisplayAbsolute')}
+          description={browser.i18n.getMessage(
+            'timeDisplayAbsoluteDescription',
+          )}
+          value={settings.timeDisplayMode}
+          checkedValue={TimeDisplayMode.Absolute}
+          onChange={onTimeDisplayModeChange}
+        />
+      </SettingItemRadioCard>
 
       <!-- Icon Click Action -->
       <SettingItemRadioCard
