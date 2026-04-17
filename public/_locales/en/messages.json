@@ -137,6 +137,9 @@
   "autoOpenDescription": {
     "message": "Automatically open OriginTab when browser starts"
   },
+  "autoOpenTooltip": {
+    "message": "If you prefer to open OriginTab in side panel, you can turn this option off"
+  },
   "confirmBeforeDelete": {
     "message": "Confirm before delete"
   },

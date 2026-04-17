@@ -137,6 +137,9 @@
   "autoOpenDescription": {
     "message": "浏览器启动时自动打开OriginTab"
   },
+  "autoOpenTooltip": {
+    "message": "如果你习惯于在侧边栏中打开OriginTab，可以关闭此选项"
+  },
   "confirmBeforeDelete": {
     "message": "删除前确认"
   },

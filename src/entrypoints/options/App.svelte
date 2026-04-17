@@ -139,6 +139,7 @@
       <SettingItemCheckboxCard
         title={browser.i18n.getMessage('autoOpenOnStartup')}
         description={browser.i18n.getMessage('autoOpenDescription')}
+        tooltip={browser.i18n.getMessage('autoOpenTooltip')}
       >
         <input
           type="checkbox"
