@@ -8,7 +8,12 @@ import {
   collectAllTabs,
   collectCurrentTab,
 } from '~/utils/background/tabCollection'
-import { createOriginTab, findOriginTab, initOriginTab } from '~/utils/helpers'
+import {
+  createOriginTab,
+  findOriginTab,
+  initOriginTab,
+  openOriginTabInSidePanel,
+} from '~/utils/helpers'
 import { ClickAction } from '~/utils/types'
 
 interface BackgroundMessage {
@@ -94,9 +99,6 @@ async function handleRuntimeMessage(
     case 'collectCurrentTab':
       await collectCurrentTab(message.userGroupId)
       return { ok: true }
-    case 'openOriginTab':
-      await returnOriginTab()
-      return { ok: true }
     case 'refreshContextMenus':
       await refreshContextMenus()
       return { ok: true }
@@ -105,16 +107,19 @@ async function handleRuntimeMessage(
   }
 }
 
-async function handleCommand(command: string) {
+function handleCommand(command: string) {
   switch (command) {
     case 'open':
-      await returnOriginTab()
+      returnOriginTab()
+      break
+    case 'openInSidePanel':
+      openOriginTabInSidePanel()
       break
     case 'saveAllTabs':
-      await collectAllTabs()
+      collectAllTabs()
       break
     case 'saveCurrentTab':
-      await collectCurrentTab()
+      collectCurrentTab()
       break
     default:
       break
@@ -128,7 +133,7 @@ export default defineBackground(() => {
   browser.commands.onCommand.addListener(handleCommand)
   browser.contextMenus.onClicked.addListener(handleContextMenuClick)
 
-  storage.watch<Settings>('sync:settings', () => handleSettingsChange())
+  storage.watch<Settings>('sync:settings', handleSettingsChange)
 
   browser.runtime.onMessage.addListener(handleRuntimeMessage)
 

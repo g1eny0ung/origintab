@@ -86,6 +86,9 @@
   "openOriginTab": {
     "message": "Open OriginTab"
   },
+  "openOriginTabInSidePanel": {
+    "message": "Open OriginTab in Side Panel"
+  },
   "returnOriginTab": {
     "message": "Return OriginTab"
   },
@@ -355,5 +358,17 @@
   },
   "timeDisplayAbsoluteDescription": {
     "message": "Show time in absolute format (e.g., Apr 16, 2026, 12:30 PM)"
+  },
+  "shortcuts": {
+    "message": "Shortcuts"
+  },
+  "unset": {
+    "message": "Not set"
+  },
+  "setShortcuts": {
+    "message": "Set Shortcuts"
+  },
+  "setShortcutsFirefox": {
+    "message": "Go to Add-ons Manager to set shortcuts"
   }
 }

@@ -86,6 +86,9 @@
   "openOriginTab": {
     "message": "打开OriginTab"
   },
+  "openOriginTabInSidePanel": {
+    "message": "在侧边栏中打开OriginTab"
+  },
   "returnOriginTab": {
     "message": "返回OriginTab"
   },
@@ -355,5 +358,17 @@
   },
   "timeDisplayAbsoluteDescription": {
     "message": "以绝对格式显示时间（例如：2026年4月16日 12:30）"
+  },
+  "shortcuts": {
+    "message": "快捷键"
+  },
+  "unset": {
+    "message": "未设置"
+  },
+  "setShortcuts": {
+    "message": "设置快捷键"
+  },
+  "setShortcutsFirefox": {
+    "message": "打开扩展管理器以设置快捷键"
   }
 }

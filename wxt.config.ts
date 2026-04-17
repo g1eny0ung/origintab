@@ -1,5 +1,35 @@
 import tailwindcss from '@tailwindcss/vite'
-import { defineConfig } from 'wxt'
+import { UserManifest, defineConfig } from 'wxt'
+
+export const commonPermissions = ['tabs', 'storage', 'contextMenus']
+export const manifest: UserManifest = {
+  name: '__MSG_extName__',
+  description: '__MSG_extDescription__',
+  version: '1.1.3',
+  default_locale: 'en',
+  commands: {
+    open: {
+      suggested_key: {
+        default: 'Alt+R',
+        mac: 'MacCtrl+R',
+      },
+      description: '__MSG_openOriginTab__',
+    },
+    openInSidePanel: {
+      suggested_key: {
+        default: 'Alt+Shift+R',
+        mac: 'MacCtrl+Shift+R',
+      },
+      description: '__MSG_openOriginTabInSidePanel__',
+    },
+    saveAllTabs: {
+      description: '__MSG_saveAllTabs__',
+    },
+    saveCurrentTab: {
+      description: '__MSG_saveCurrentTab__',
+    },
+  },
+}
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -7,35 +37,10 @@ export default defineConfig({
   srcDir: 'src',
   modules: ['@wxt-dev/module-svelte'],
   manifest: {
-    name: '__MSG_extName__',
-    description: '__MSG_extDescription__',
-    version: '1.1.3',
-    default_locale: 'en',
-    permissions: ['tabs', 'storage', 'contextMenus'],
-    commands: {
-      open: {
-        suggested_key: {
-          default: 'Alt+R',
-          mac: 'MacCtrl+R',
-        },
-        description: '__MSG_openOriginTab__',
-      },
-      saveAllTabs: {
-        description: '__MSG_saveAllTabs__',
-      },
-      saveCurrentTab: {
-        description: '__MSG_saveCurrentTab__',
-      },
-    },
-    browser_specific_settings: {
-      gecko: {
-        id: 'origintab@app.g1en.dev',
-        // https://github.com/wxt-dev/wxt/issues/1975
-        // @ts-ignore
-        data_collection_permissions: {
-          required: ['none'],
-        },
-      },
+    ...manifest,
+    permissions: [...commonPermissions, 'sidePanel'],
+    side_panel: {
+      default_path: 'origintab.html',
     },
   },
   vite: () => ({

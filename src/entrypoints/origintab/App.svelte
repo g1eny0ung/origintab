@@ -314,13 +314,13 @@
   <header
     class="sticky top-0 z-40 bg-base-100/80 backdrop-blur border-b border-base-200"
   >
-    <div class="max-w-5xl mx-auto px-4 py-4">
+    <div class="max-w-5xl mx-auto p-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <img src="/origintab.svg" alt="OriginTab" class="w-12 h-12" />
           <div>
             <h1 class="text-xl font-bold">OriginTab</h1>
-            <p class="text-sm text-base-content/60">
+            <p class="text-sm text-base-content/60 hidden sm:block">
               {browser.i18n.getMessage('extDescription')}
             </p>
           </div>

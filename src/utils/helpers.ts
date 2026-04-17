@@ -17,10 +17,12 @@ export async function findOriginTab() {
   return originTab?.id
 }
 
-export async function createOriginTab() {
+export async function createOriginTab(options?: { active?: boolean }) {
+  const { active = false } = options || {}
+
   return browser.tabs.create({
     url: getOriginTabUrl(),
-    active: false,
+    active,
     pinned: true,
     index: 0, // Place at leftmost
   })
@@ -28,8 +30,8 @@ export async function createOriginTab() {
 
 export async function initOriginTab() {
   try {
-    const autoOpen = (await getSettings()).autoOpenOnStartup
-    if (autoOpen === false) {
+    const settings = await getSettings()
+    if (settings.autoOpenOnStartup === false) {
       return
     }
 
@@ -53,9 +55,24 @@ export async function returnOriginTab() {
     if (originTab) {
       await browser.tabs.update(originTab, { active: true })
     } else {
-      await createOriginTab()
+      await createOriginTab({ active: true })
     }
   } catch (error) {
     console.error('Failed to return OriginTab:', error)
+  }
+}
+
+// NOTE: https://stackoverflow.com/a/77213912/5676489
+export function openOriginTabInSidePanel() {
+  if (import.meta.env.BROWSER === 'firefox') {
+    browser.sidebarAction.toggle()
+  } else {
+    browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length > 0) {
+        browser.sidePanel.open({
+          windowId: tabs[0].windowId,
+        })
+      }
+    })
   }
 }

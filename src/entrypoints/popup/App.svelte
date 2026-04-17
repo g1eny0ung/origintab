@@ -8,6 +8,7 @@
   } from '@lucide/svelte'
   import { onMount } from 'svelte'
   import { getUserGroups } from '~/store'
+  import { returnOriginTab } from '~/utils/helpers'
   import type { UserGroup } from '~/utils/types'
 
   let userGroups: UserGroup[] = $state([])
@@ -38,7 +39,7 @@
   }
 
   async function openManager() {
-    await browser.runtime.sendMessage({ action: 'openOriginTab' })
+    await returnOriginTab()
   }
 
   onMount(() => {

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Shortcuts from '@/components/ui/Shortcuts.svelte'
   import { returnOriginTab } from '@/utils/helpers'
   import {
     Clock,
@@ -25,25 +26,33 @@
     UrlDisplayMode,
   } from '~/utils/types'
 
+  let commands = $state<Browser.commands.Command[]>([])
+
   // Settings state
   let settings = $state(defaultSettings)
 
   // Load settings on mount
   onMount(() => {
     loadSettings()
+    loadCommands()
   })
 
   async function loadSettings() {
     try {
-      const _settings = await getSettings()
-
       settings = {
         ...settings,
-        ..._settings,
+        ...(await getSettings()),
       }
     } catch (error) {
       console.error('Failed to load settings:', error)
     }
+  }
+
+  async function loadCommands() {
+    commands = (await browser.commands.getAll()).filter(
+      (command) =>
+        command.name !== '_execute_action' && !command.name?.startsWith('wxt'),
+    )
   }
 
   function handleAutoOpenChange(e: Event) {
@@ -93,33 +102,39 @@
 </script>
 
 <div class="min-h-screen">
-  <div class="max-w-2xl mx-auto px-4 py-8">
+  <div class="max-w-3xl mx-auto px-4 py-8">
     <!-- Header -->
-    <div class="flex items-center justify-between mb-8">
+    <section class="flex items-center justify-between mb-8">
       <div class="flex items-center gap-4">
         <Settings size={26} aria-hidden="true" />
-        <div>
+        <header>
           <h1 class="text-xl font-bold">
             {browser.i18n.getMessage('settings')}
           </h1>
           <p class="text-sm text-base-content/60">
             {browser.i18n.getMessage('customizeOriginTab')}
           </p>
-        </div>
+        </header>
       </div>
       <div class="flex gap-2">
-        <button class="btn btn-ghost btn-sm" onclick={() => returnOriginTab()}>
-          {browser.i18n.getMessage('returnOriginTab')}
-        </button>
-        <button class="btn btn-ghost btn-sm" onclick={resetSettings}>
+        <button
+          class="btn btn-ghost btn-sm hover:btn-warning"
+          onclick={resetSettings}
+        >
           <RotateCcw size={16} aria-hidden="true" />
           {browser.i18n.getMessage('reset')}
         </button>
+
+        <Shortcuts {commands} />
+
+        <button class="btn btn-ghost btn-sm" onclick={returnOriginTab}>
+          {browser.i18n.getMessage('returnOriginTab')}
+        </button>
       </div>
-    </div>
+    </section>
 
     <!-- Settings List -->
-    <div class="space-y-4">
+    <section class="space-y-4">
       <!-- Auto-open on startup -->
       <SettingItemCheckboxCard
         title={browser.i18n.getMessage('autoOpenOnStartup')}
@@ -308,32 +323,32 @@
           onChange={onOpenGroupInNewWindowChange}
         />
       </SettingItemRadioCard>
+    </section>
 
-      <!-- About Section -->
-      <div class="card bg-base-100 shadow-sm border border-base-200 mt-8">
-        <div class="card-body">
-          <div class="flex items-center gap-2 mb-4">
-            <img src="/origintab.svg" alt="OriginTab" class="w-6 h-6" />
-            <h3 class="font-medium">
-              {browser.i18n.getMessage('aboutOriginTab')}
-            </h3>
-          </div>
-          <p>{browser.i18n.getMessage('extDescription')}</p>
-          <p>
-            {browser.i18n.getMessage('aboutDescription1')}
-            <a
-              href={browser.i18n.getUILanguage().startsWith('zh')
-                ? 'https://products.g1en.site/zh/origintab/'
-                : 'https://products.g1en.site/origintab/'}
-              class="underline"
-              target="_blank"
-            >
-              {browser.i18n.getMessage('productPage')}
-            </a>
-            {browser.i18n.getMessage('aboutDescription2')}
-          </p>
+    <!-- About Section -->
+    <section class="card bg-base-100 shadow-sm border border-base-200 mt-8">
+      <div class="card-body">
+        <div class="flex items-center gap-2 mb-4">
+          <img src="/origintab.svg" alt="OriginTab" class="w-6 h-6" />
+          <h3 class="font-medium">
+            {browser.i18n.getMessage('aboutOriginTab')}
+          </h3>
         </div>
+        <p>{browser.i18n.getMessage('extDescription')}</p>
+        <p>
+          {browser.i18n.getMessage('aboutDescription1')}
+          <a
+            href={browser.i18n.getUILanguage().startsWith('zh')
+              ? 'https://products.g1en.site/zh/origintab/'
+              : 'https://products.g1en.site/origintab/'}
+            class="underline"
+            target="_blank"
+          >
+            {browser.i18n.getMessage('productPage')}
+          </a>
+          {browser.i18n.getMessage('aboutDescription2')}
+        </p>
       </div>
-    </div>
+    </section>
   </div>
 </div>
