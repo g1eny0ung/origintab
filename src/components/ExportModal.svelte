@@ -80,7 +80,7 @@
           <option value="all">
             {browser.i18n.getMessage('allUserGroups')}
           </option>
-          {#each userGroups as group}
+          {#each userGroups as group (group.id)}
             <option value={group.id}>{group.name}</option>
           {/each}
         </select>

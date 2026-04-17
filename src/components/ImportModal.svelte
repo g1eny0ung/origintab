@@ -72,7 +72,7 @@
         class="select"
         bind:value={targetGroupId}
       >
-        {#each userGroups as group}
+        {#each userGroups as group (group.id)}
           <option value={group.id}>{group.name}</option>
         {/each}
       </select>
