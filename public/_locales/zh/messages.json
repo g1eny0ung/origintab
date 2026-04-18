@@ -192,7 +192,7 @@
     "message": "分组已删除，标签页已移至默认分组"
   },
   "deleteFailed": {
-    "message": "删除失败"
+    "message": "删除失败，请重试"
   },
   "noTabsInGroup": {
     "message": "此分组中没有标签页"
@@ -213,7 +213,7 @@
     "message": "标签页已恢复"
   },
   "restoreFailed": {
-    "message": "恢复失败"
+    "message": "恢复标签页失败"
   },
   "tabRestored": {
     "message": "标签页已恢复"

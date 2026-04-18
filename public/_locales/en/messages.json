@@ -192,7 +192,7 @@
     "message": "Group deleted, tabs moved to Default"
   },
   "deleteFailed": {
-    "message": "Delete failed"
+    "message": "Failed to delete, please try again"
   },
   "noTabsInGroup": {
     "message": "No tabs in this group"
@@ -213,7 +213,7 @@
     "message": "Tabs restored"
   },
   "restoreFailed": {
-    "message": "Restore failed"
+    "message": "Failed to restore tabs"
   },
   "tabRestored": {
     "message": "Tab restored"
