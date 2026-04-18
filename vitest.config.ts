@@ -1,7 +1,8 @@
-import { join } from 'node:path'
 import { defineConfig } from 'vitest/config'
+import { WxtVitest } from 'wxt/testing/vitest-plugin'
 
 export default defineConfig({
+  plugins: [WxtVitest()],
   test: {
     environment: 'node',
     include: ['**/*.test.ts'],
@@ -10,11 +11,5 @@ export default defineConfig({
       include: ['src/store/**/*.ts'],
     },
     setupFiles: ['./vitest.setup.ts'],
-  },
-  resolve: {
-    alias: {
-      '~': join(import.meta.dirname, 'src'),
-      '@': join(import.meta.dirname, 'src'),
-    },
   },
 })

@@ -373,5 +373,17 @@
   },
   "setShortcutsFirefox": {
     "message": "Go to Add-ons Manager to set shortcuts"
+  },
+  "setAsDefaultGroup": {
+    "message": "Set as Default Group"
+  },
+  "defaultGroup": {
+    "message": "Default Group"
+  },
+  "defaultGroupSetTo": {
+    "message": "Default group set to $1"
+  },
+  "setDefaultFailed": {
+    "message": "Failed to set default group"
   }
 }

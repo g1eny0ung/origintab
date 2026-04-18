@@ -373,5 +373,17 @@
   },
   "setShortcutsFirefox": {
     "message": "打开扩展管理器以设置快捷键"
+  },
+  "setAsDefaultGroup": {
+    "message": "设为默认分组"
+  },
+  "defaultGroup": {
+    "message": "默认分组"
+  },
+  "defaultGroupSetTo": {
+    "message": "默认分组已设置为$1"
+  },
+  "setDefaultFailed": {
+    "message": "设置默认分组失败"
   }
 }

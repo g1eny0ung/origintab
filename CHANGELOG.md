@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add shortcuts for opening OriginTab in side panel.
+- Now users can specify an existing group as the default group.
 
 ## [1.1.3] - 2026-04-16
 

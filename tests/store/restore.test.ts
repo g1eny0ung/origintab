@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { fakeBrowser } from 'wxt/testing/fake-browser'
 
 import { db } from '../../src/store/base'
 import {
@@ -13,9 +14,13 @@ import type { TabItem } from '../../src/utils/types'
 
 describe('restore module', () => {
   beforeEach(async () => {
+    fakeBrowser.reset()
     await db.delete()
     await db.open()
     vi.clearAllMocks()
+    // Spy on the methods we need to check
+    vi.spyOn(fakeBrowser.tabs, 'create')
+    vi.spyOn(fakeBrowser.windows, 'create')
   })
 
   const sampleTabs: TabItem[] = [
@@ -56,13 +61,13 @@ describe('restore module', () => {
     it('should restore tabs in current window', async () => {
       const group = await createTabGroupWithExistingTabs(sampleTabs)
       await restoreGroup(group.id, { newWindow: false })
-      expect(browser.tabs.create).toHaveBeenCalledTimes(2)
+      expect(fakeBrowser.tabs.create).toHaveBeenCalledTimes(2)
     })
 
     it('should restore tabs in new window', async () => {
       const group = await createTabGroupWithExistingTabs(sampleTabs)
       await restoreGroup(group.id, { newWindow: true })
-      expect(browser.windows.create).toHaveBeenCalled()
+      expect(fakeBrowser.windows.create).toHaveBeenCalled()
     })
   })
 
@@ -92,7 +97,7 @@ describe('restore module', () => {
     it('should restore single tab', async () => {
       const group = await createTabGroupWithExistingTabs(sampleTabs)
       await restoreTab(group.id, 'tab-1')
-      expect(browser.tabs.create).toHaveBeenCalledWith({
+      expect(fakeBrowser.tabs.create).toHaveBeenCalledWith({
         url: 'https://example.com',
         active: false,
       })
@@ -101,7 +106,7 @@ describe('restore module', () => {
     it('should restore tab with active option', async () => {
       const group = await createTabGroupWithExistingTabs(sampleTabs)
       await restoreTab(group.id, 'tab-1', { active: true })
-      expect(browser.tabs.create).toHaveBeenCalledWith({
+      expect(fakeBrowser.tabs.create).toHaveBeenCalledWith({
         url: 'https://example.com',
         active: true,
       })
@@ -132,7 +137,7 @@ describe('restore module', () => {
         { tabGroupId: group.id, tabId: 'tab-2' },
       ])
 
-      expect(browser.tabs.create).toHaveBeenCalledTimes(2)
+      expect(fakeBrowser.tabs.create).toHaveBeenCalledTimes(2)
     })
 
     it('should restore and remove tabs when remove option is true', async () => {

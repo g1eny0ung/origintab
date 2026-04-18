@@ -1,9 +1,22 @@
-import { createTabGroup, getLastUserGroup } from '~/store'
+import { createTabGroup, getLastUserGroup, getUserGroup } from '~/store'
+import { getLocalSettings } from '~/store/localSettings'
 import { findOriginTab, getOriginTabUrl } from '~/utils/helpers'
 import type { TabItem } from '~/utils/types'
 
 async function getTargetGroupId(userGroupId?: string) {
-  return userGroupId || (await getLastUserGroup())?.id
+  if (userGroupId) {
+    return userGroupId
+  }
+
+  const localSettings = await getLocalSettings()
+  if (localSettings.defaultUserGroupId) {
+    const userGroup = await getUserGroup(localSettings.defaultUserGroupId)
+    if (userGroup) {
+      return localSettings.defaultUserGroupId
+    }
+  }
+
+  return (await getLastUserGroup())?.id
 }
 
 export async function collectCurrentTab(userGroupId?: string) {

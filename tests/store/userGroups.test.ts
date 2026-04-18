@@ -1,5 +1,6 @@
 import { notifyContextMenusRefresh } from '@/utils/background/contextMenus'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { fakeBrowser } from 'wxt/testing/fake-browser'
 
 import { DEFAULT_GROUP_ID, db, initDefaultGroup } from '../../src/store/base'
 import {
@@ -14,6 +15,7 @@ vi.mock('@/utils/background/contextMenus')
 
 describe('userGroups module', () => {
   beforeEach(async () => {
+    fakeBrowser.reset()
     await db.delete()
     await db.open()
     vi.clearAllMocks()

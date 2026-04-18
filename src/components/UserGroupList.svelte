@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onDestroy, onMount } from 'svelte'
+  import { getLocalSettings, localSettings } from '~/store'
   import type { Settings } from '~/store/settings'
   import type { TabGroup, UserGroup } from '~/utils/types'
 
@@ -13,6 +15,24 @@
 
   let { userGroups, tabGroups, settings, onToast }: Props = $props()
 
+  let defaultUserGroupId = $state<string | undefined>(undefined)
+  let unwatchLocalSettings: (() => void) | null = null
+
+  onMount(async () => {
+    const initialSettings = await getLocalSettings()
+    defaultUserGroupId = initialSettings.defaultUserGroupId
+
+    unwatchLocalSettings = localSettings.watch((newSettings) => {
+      defaultUserGroupId = newSettings?.defaultUserGroupId
+    })
+  })
+
+  onDestroy(() => {
+    if (unwatchLocalSettings) {
+      unwatchLocalSettings()
+    }
+  })
+
   function getTabGroups(userGroupId: string) {
     return tabGroups.filter((tg) => tg.userGroupId === userGroupId)
   }
@@ -23,6 +43,7 @@
     <UserGroupItem
       {userGroup}
       tabGroups={getTabGroups(userGroup.id)}
+      isDefaultUserGroup={defaultUserGroupId === userGroup.id}
       {settings}
       {onToast}
     />

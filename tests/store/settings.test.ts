@@ -1,5 +1,5 @@
-// @ts-nocheck
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { fakeBrowser } from 'wxt/testing/fake-browser'
 
 import {
   defaultSettings,
@@ -13,28 +13,9 @@ import {
   UrlDisplayMode,
 } from '../../src/utils/types'
 
-// Mock the storage module properly
-vi.mock('../../src/store/settings', async () => {
-  const actual = await vi.importActual('../../src/store/settings')
-  let mockStorage = { ...actual.defaultSettings }
-  return {
-    ...actual,
-    getSettings: vi.fn().mockImplementation(() => Promise.resolve(mockStorage)),
-    updateSettings: vi.fn().mockImplementation((updates) => {
-      mockStorage = { ...mockStorage, ...updates }
-      return Promise.resolve()
-    }),
-    resetSettings: vi.fn().mockImplementation(() => {
-      mockStorage = { ...actual.defaultSettings }
-      return Promise.resolve()
-    }),
-  }
-})
-
 describe('settings module', () => {
   beforeEach(async () => {
-    vi.clearAllMocks()
-    // Reset to default before each test
+    fakeBrowser.reset()
     await resetSettings()
   })
 

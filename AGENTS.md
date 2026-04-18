@@ -62,6 +62,7 @@ public/                     # Static assets
 - `storage` from `@wxt-dev/storage` for settings only
 - Data structure: Dexie tables with `userGroups` and `tabGroups`
 - Default group ID: `"default"` (defined in `src/store/base.ts`)
+- **Best Practice**: Use `storage.defineItem().watch()` to react to storage changes instead of manual callback functions - see https://wxt.dev/storage.html#watchers
 
 ### Background Script
 

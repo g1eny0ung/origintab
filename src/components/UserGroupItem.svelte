@@ -5,6 +5,7 @@
     deleteUserGroup,
     moveTabsBetweenGroups,
     moveTabsToNewGroupInUserGroup,
+    updateLocalSettings,
   } from '~/store'
   import type { Settings } from '~/store/settings'
   import { clearDraggedTabState, getDraggedTabState } from '~/utils/tabDrag'
@@ -15,11 +16,13 @@
   interface Props {
     userGroup: UserGroup
     tabGroups: TabGroup[]
+    isDefaultUserGroup: boolean
     settings: Settings
     onToast: (message: string, type?: ToastType) => void
   }
 
-  let { userGroup, tabGroups, settings, onToast }: Props = $props()
+  let { userGroup, tabGroups, isDefaultUserGroup, settings, onToast }: Props =
+    $props()
 
   let isExpanded = $state(true)
   let activeDropTarget: 'header' | 'empty' | null = $state(null)
@@ -28,6 +31,15 @@
     tabGroups.reduce((sum, tg) => sum + tg.tabs.length, 0),
   )
   let isDefault = $derived(userGroup.id === DEFAULT_GROUP_ID)
+
+  async function handleSetDefault() {
+    try {
+      await updateLocalSettings({ defaultUserGroupId: userGroup.id })
+      onToast(browser.i18n.getMessage('defaultGroupSetTo', userGroup.name))
+    } catch {
+      onToast(browser.i18n.getMessage('setDefaultFailed'), 'error')
+    }
+  }
 
   async function handleDelete() {
     if (
@@ -39,6 +51,9 @@
 
     try {
       await deleteUserGroup(userGroup.id)
+      if (isDefaultUserGroup) {
+        await updateLocalSettings({ defaultUserGroupId: undefined })
+      }
       onToast(browser.i18n.getMessage('groupDeleted'))
     } catch {
       onToast(browser.i18n.getMessage('deleteFailed'), 'error')
@@ -147,7 +162,7 @@
 >
   <div
     class={[
-      'card-body p-4 hover:bg-base-200/30 cursor-pointer focus-visible:outline-none',
+      'group card-body p-4 hover:bg-base-200/30 cursor-pointer focus-visible:outline-none',
       activeDropTarget === 'header' && 'bg-primary/10',
     ]}
     data-header-drop-zone
@@ -175,8 +190,23 @@
       </div>
       {#if !isDefault}
         <div class="flex items-center gap-1">
+          {#if isDefaultUserGroup}
+            <span class="badge badge-sm badge-secondary">
+              {browser.i18n.getMessage('defaultGroup')}
+            </span>
+          {:else}
+            <button
+              class="hidden group-hover:inline-flex btn btn-ghost btn-xs"
+              onclick={(e) => {
+                e.stopPropagation()
+                handleSetDefault()
+              }}
+            >
+              {browser.i18n.getMessage('setAsDefaultGroup')}
+            </button>
+          {/if}
           <button
-            class="btn btn-ghost btn-xs p-1 text-error"
+            class="btn btn-ghost btn-xs btn-square hover:btn-error hover:text-white"
             onclick={(e) => {
               e.stopPropagation()
               handleDelete()

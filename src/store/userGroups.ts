@@ -7,6 +7,10 @@ export async function getUserGroups() {
   return db.userGroups.orderBy('createdAt').reverse().toArray()
 }
 
+export async function getUserGroup(id: string) {
+  return db.userGroups.get(id)
+}
+
 export async function getLastUserGroup() {
   return db.userGroups.orderBy('createdAt').last()
 }
@@ -42,5 +46,6 @@ export async function deleteUserGroup(groupId: string) {
       .equals(groupId)
       .modify({ userGroupId: DEFAULT_GROUP_ID })
   })
+
   await notifyContextMenusRefresh()
 }
