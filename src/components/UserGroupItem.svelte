@@ -191,7 +191,7 @@
       {#if !isDefault}
         <div class="flex items-center gap-1">
           {#if isDefaultUserGroup}
-            <span class="badge badge-sm badge-secondary">
+            <span class="badge badge-sm badge-soft badge-secondary">
               {browser.i18n.getMessage('defaultGroup')}
             </span>
           {:else}

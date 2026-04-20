@@ -5,7 +5,7 @@ export const commonPermissions = ['tabs', 'storage', 'contextMenus']
 export const manifest: UserManifest = {
   name: '__MSG_extName__',
   description: '__MSG_extDescription__',
-  version: '1.1.3',
+  version: '1.2.0',
   default_locale: 'en',
   commands: {
     open: {
