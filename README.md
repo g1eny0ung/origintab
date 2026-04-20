@@ -37,12 +37,13 @@ That's why I created OriginTab.
 
 - OriginTab allows duplicate tabs (most of the time, you don't care about duplicates).
 - OriginTab doesn't save fixed tabs (it assumes they are permanent).
-- OriginTab will save tabs to the most recently created group by default.
+- OriginTab will save tabs to the most recently created group by default (you can manually specify a default group in the group tab, only saved locally).
 - When restoring tab groups, OriginTab freezes them to reduce memory usage.
 
 ## Shortcuts
 
 - Open OriginTab: default `Alt + R` (`Ctrl + R` on Mac)
+- Open in side panel: `Alt + Shift + R` (`Ctrl + Shift + R` on Mac)
 - Save all tabs: need to be manually set
 - Save current tab: need to be manually set
 
