@@ -83,7 +83,6 @@
     )
   })
 
-  // Load settings only
   async function loadSettings() {
     try {
       settings = await getSettings()
@@ -101,8 +100,8 @@
     }, 3000)
   }
 
-  // Create new group - liveQuery will auto-refresh
-  async function handleCreateGroup() {
+  // Create new user group - liveQuery will auto-refresh
+  async function handleCreateUserGroup() {
     const name = newGroupName.trim()
     if (!name) {
       return
@@ -126,7 +125,7 @@
 
   function handleNewGroupKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
-      handleCreateGroup()
+      handleCreateUserGroup()
     } else if (e.key === 'Escape') {
       clearNewGroup()
     }
@@ -408,7 +407,10 @@
               bind:this={newGroupInputRef}
               onkeydown={handleNewGroupKeydown}
             />
-            <button class="btn btn-primary btn-sm" onclick={handleCreateGroup}>
+            <button
+              class="btn btn-primary btn-sm"
+              onclick={handleCreateUserGroup}
+            >
               <Check size={16} />
             </button>
             <button class="btn btn-ghost btn-sm" onclick={clearNewGroup}>
