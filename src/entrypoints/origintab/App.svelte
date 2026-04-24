@@ -22,10 +22,6 @@
   import UserGroupList from '~/components/UserGroupList.svelte'
   import Dialog from '~/components/ui/Dialog.svelte'
   import {
-    createTabSelectionController,
-    setTabSelectionContext,
-  } from '~/entrypoints/origintab/selection.svelte'
-  import {
     DEFAULT_GROUP_ID,
     clearAllData,
     createUserGroup,
@@ -38,7 +34,13 @@
     restoreSelectedTabs,
   } from '~/store'
   import { db } from '~/store/base'
+  import { showToast, toasts } from '~/utils/toast.svelte'
   import { RestoreAction } from '~/utils/types'
+
+  import {
+    createTabSelectionController,
+    setTabSelectionContext,
+  } from './selection.svelte'
 
   // Use liveQuery for reactive data fetching
   let userGroups = liveQuery(() =>
@@ -61,13 +63,6 @@
 
   let selectModalId = 'select-tabs-modal'
 
-  // Toasts
-  let toasts: {
-    id: number
-    message: string
-    type: ToastType
-  }[] = $state([])
-
   // New group input
   let showNewGroupInput = $state(false)
   let newGroupName = $state('')
@@ -89,15 +84,6 @@
     } catch (error) {
       showToast(browser.i18n.getMessage('failedToLoadSettings'), 'error')
     }
-  }
-
-  // Show toast notification
-  function showToast(message: string, type: ToastType = 'success') {
-    const id = Date.now()
-    toasts = [...toasts, { id, message, type }]
-    setTimeout(() => {
-      toasts = toasts.filter((t) => t.id !== id)
-    }, 3000)
   }
 
   // Create new user group - liveQuery will auto-refresh
@@ -490,7 +476,7 @@
 
 <!-- Toasts -->
 <div class="toast toast-center toast-top z-50">
-  {#each toasts as toast (toast.id)}
+  {#each toasts.value as toast (toast.id)}
     <div
       role="alert"
       class="alert alert-soft shadow-lg"
