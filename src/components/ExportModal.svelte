@@ -17,7 +17,7 @@
   let {
     id,
     userGroups,
-    selectedUserGroupId = $bindable('all'),
+    selectedUserGroupId = $bindable(),
     onExport,
     onCancel,
   }: Props = $props()

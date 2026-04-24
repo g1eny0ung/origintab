@@ -59,7 +59,7 @@
 
   // Export modal
   let exportModalId = 'export-modal'
-  let selectedUserGroupId = $state('all')
+  let selectedUserGroupId = $state('')
 
   let selectModalId = 'select-tabs-modal'
 
@@ -173,7 +173,7 @@
   }
 
   function clearExport() {
-    selectedUserGroupId = 'all'
+    selectedUserGroupId = ''
   }
 
   function openSelectModal() {
