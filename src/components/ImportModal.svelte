@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Upload } from '@lucide/svelte'
+  import { importFromText, isISOTimeString } from '~/store/dataManagement'
   import type { UserGroup } from '~/utils/types'
 
   import Dialog from './ui/Dialog.svelte'
@@ -10,7 +11,6 @@
     userGroups: UserGroup[]
     importText: string
     targetGroupId: string
-    onImport: () => void
     onCancel: () => void
   }
 
@@ -19,12 +19,26 @@
     userGroups,
     importText = $bindable(),
     targetGroupId = $bindable(),
-    onImport,
     onCancel,
   }: Props = $props()
 
   let fileInputRef: HTMLInputElement | null = $state(null)
   let fileReadError = $state('')
+
+  function isOriginTabFormat(text: string): boolean {
+    const lines = text
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean)
+    for (const line of lines) {
+      if (isISOTimeString(line)) {
+        return true
+      }
+    }
+    return false
+  }
+
+  let isDetectedOriginTabFormat = $derived(isOriginTabFormat(importText))
 
   async function handleFileChange(event: Event) {
     const input = event.currentTarget as HTMLInputElement
@@ -43,6 +57,33 @@
     }
   }
 
+  async function handleImport() {
+    if (!importText.trim()) {
+      showToast(browser.i18n.getMessage('pleaseEnterDataToImport'), 'error')
+      return
+    }
+
+    try {
+      const { imported, errors } = await importFromText(importText, {
+        format: isDetectedOriginTabFormat ? 'originTab' : 'general',
+        userGroupId: targetGroupId,
+      })
+
+      if (errors.length > 0) {
+        showToast(browser.i18n.getMessage('importedTabsWithErrors'), 'error')
+        errors.forEach((error) => {
+          showToast(error, 'error')
+        })
+      } else {
+        showToast(
+          browser.i18n.getMessage('importedTabs', [imported.toString()]),
+        )
+      }
+    } catch (error) {
+      showToast(browser.i18n.getMessage('importFailed'), 'error')
+    }
+  }
+
   function handleClose() {
     fileReadError = ''
 
@@ -57,7 +98,7 @@
 <Dialog
   {id}
   disableConfirm={!importText.trim()}
-  onConfirm={onImport}
+  onConfirm={handleImport}
   onClose={handleClose}
 >
   <h3 class="font-bold text-lg flex items-center gap-2">
@@ -66,11 +107,17 @@
   </h3>
 
   <div class="my-4 space-y-3">
-    <Fieldset legend={browser.i18n.getMessage('targetGroup')}>
+    <Fieldset
+      legend={browser.i18n.getMessage('importTargetGroup')}
+      hint={isDetectedOriginTabFormat
+        ? browser.i18n.getMessage('importTargetGroupNotRequiredHint')
+        : browser.i18n.getMessage('importTargetGroupHint')}
+    >
       <select
         id="import-target-group"
         class="select"
         bind:value={targetGroupId}
+        disabled={isDetectedOriginTabFormat}
       >
         {#each userGroups as group (group.id)}
           <option value={group.id}>{group.name}</option>

@@ -32,6 +32,9 @@
   "groupNamePlaceholder": {
     "message": "Group name"
   },
+  "defaultGroupCannotBeCreated": {
+    "message": "Name \"Default\" is reserved for the default group. Please use a different name"
+  },
   "groupCreated": {
     "message": "Group created"
   },
@@ -68,17 +71,23 @@
   "importTabs": {
     "message": "Import Tabs"
   },
-  "targetGroup": {
+  "importTargetGroup": {
     "message": "Target Group"
   },
+  "importTargetGroupHint": {
+    "message": "Select a group to save the tabs"
+  },
+  "importTargetGroupNotRequiredHint": {
+    "message": "Specific format does not require specifying a group"
+  },
   "importPlaceholder": {
-    "message": "https://example.com | Example Title\nhttps://another.com | Another Title"
+    "message": "General format:\nhttps://example.com | Example Title\nhttps://another.com | Another Title\n\nOriginTab specific format:\nGroup Name\n2026-04-23T12:00:00.000Z\nhttps://example.com | Example Title\nhttps://another.com | Another Title"
   },
   "importFile": {
     "message": "Import File"
   },
   "importFileHint": {
-    "message": "Upload a text file in the same \"URL | Title\" format. Uploaded content will fill the text area below. You can also paste the data directly."
+    "message": "Upload a text file in the same \"URL | Title\" format, and the content will fill the text area below. You can also paste the data directly."
   },
   "failedToReadImportFile": {
     "message": "Failed to read import file"
@@ -337,6 +346,15 @@
   },
   "noDataToExport": {
     "message": "No data to export"
+  },
+  "exportFormat": {
+    "message": "Export Format"
+  },
+  "exportFormatOriginTab": {
+    "message": "OriginTab specific format"
+  },
+  "exportFormatGeneral": {
+    "message": "General format (URL | Title only)"
   },
   "copyToClipboard": {
     "message": "Copy to Clipboard"

@@ -26,9 +26,7 @@
     clearAllData,
     createUserGroup,
     defaultSettings,
-    exportToText,
     getSettings,
-    importFromText,
     moveSelectedTabsToUserGroup,
     removeSelectedTabs,
     restoreSelectedTabs,
@@ -93,6 +91,11 @@
       return
     }
 
+    if (name === 'Default') {
+      showToast(browser.i18n.getMessage('defaultGroupCannotBeCreated'), 'error')
+      return
+    }
+
     try {
       await createUserGroup(name)
 
@@ -146,30 +149,6 @@
     selectedUserGroupId = 'all'
     const dialog = document.getElementById(exportModalId) as HTMLDialogElement
     dialog.showModal()
-  }
-
-  // Export tabs - download
-  async function handleExport() {
-    try {
-      const text = await exportToText(
-        selectedUserGroupId === 'all' ? undefined : selectedUserGroupId,
-      )
-      if (!text.trim()) {
-        showToast(browser.i18n.getMessage('noDataToExport'), 'warning')
-        return
-      }
-      const blob = new Blob([text], { type: 'text/plain' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `origintab-export-${new Date().toISOString().slice(0, 10)}.txt`
-      a.click()
-      URL.revokeObjectURL(url)
-
-      showToast(browser.i18n.getMessage('exportedSuccessfully'))
-    } catch (error) {
-      showToast(browser.i18n.getMessage('exportFailed'), 'error')
-    }
   }
 
   function clearExport() {
@@ -245,36 +224,9 @@
     }
   }
 
-  // Import tabs - liveQuery will auto-refresh
-  async function handleImport() {
-    if (!importText.trim()) {
-      showToast(browser.i18n.getMessage('pleaseEnterDataToImport'), 'error')
-      return
-    }
-
-    try {
-      const result = await importFromText(importText, importTargetGroupId)
-
-      if (result.errors.length > 0) {
-        showToast(
-          browser.i18n.getMessage('importedTabsWithErrors', [
-            result.imported.toString(),
-            result.errors.length.toString(),
-          ]),
-          'error',
-        )
-      } else {
-        showToast(
-          browser.i18n.getMessage('importedTabs', [result.imported.toString()]),
-        )
-      }
-    } catch (error) {
-      showToast(browser.i18n.getMessage('importFailed'), 'error')
-    }
-  }
-
   function clearImport() {
     importText = ''
+    importTargetGroupId = DEFAULT_GROUP_ID
   }
 
   // Listen for messages from background (settings changes)
@@ -429,7 +381,6 @@
   userGroups={$userGroups || []}
   bind:importText
   bind:targetGroupId={importTargetGroupId}
-  onImport={handleImport}
   onCancel={clearImport}
 />
 
@@ -437,7 +388,6 @@
   id={exportModalId}
   userGroups={$userGroups || []}
   bind:selectedUserGroupId
-  onExport={handleExport}
   onCancel={clearExport}
 />
 

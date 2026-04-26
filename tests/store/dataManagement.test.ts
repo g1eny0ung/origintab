@@ -8,6 +8,7 @@ import {
   importFromText,
 } from '../../src/store/dataManagement'
 import { createTabGroupWithExistingTabs } from '../../src/store/tabGroups'
+import { createUserGroup } from '../../src/store/userGroups'
 import type { TabItem } from '../../src/utils/types'
 
 vi.mock('@/utils/background/contextMenus')
@@ -98,7 +99,7 @@ https://example.com | Example Site
 https://google.com | Google Search
 `
 
-      const result = await importFromText(importText)
+      const result = await importFromText(importText, { format: 'general' })
 
       expect(result.imported).toBe(2)
       expect(result.errors.length).toBe(0)
@@ -113,27 +114,93 @@ https://google.com | Google Search
 https://example.com | Example Site
 invalid line without separator
 | Missing URL and title
-missing-title | 
+missing-title |
 `
 
-      const result = await importFromText(importText)
+      const result = await importFromText(importText, { format: 'general' })
 
-      expect(result.imported).toBe(1)
+      expect(result.imported).toBe(0)
       expect(result.errors.length).toBe(3)
     })
 
-    it('should import to specified user group', async () => {
-      const customGroupId = 'custom-group'
-      const importText = 'https://example.com | Example'
+    it('should import to specified user group from text header', async () => {
+      const importText =
+        'Custom Group\n2023-10-01T12:00:00.000Z\nhttps://example.com | Example'
 
-      await importFromText(importText, customGroupId)
+      await importFromText(importText, { format: 'originTab' })
 
       const tabGroups = await db.tabGroups.toArray()
-      expect(tabGroups[0].userGroupId).toBe(customGroupId)
+      expect(tabGroups[0].userGroupId).not.toBe('default')
     })
 
     it('should handle empty input', async () => {
-      const result = await importFromText('')
+      const result = await importFromText('', { format: 'general' })
+      expect(result.imported).toBe(0)
+      expect(result.errors.length).toBe(0)
+    })
+
+    it('should import old format to specified fallback user group', async () => {
+      await initDefaultGroup()
+      const customGroup = await createUserGroup('Custom Group')
+      const importText = 'https://example.com | Example'
+
+      await importFromText(importText, {
+        format: 'general',
+        userGroupId: customGroup.id,
+      })
+
+      const tabGroups = await db.tabGroups.toArray()
+      expect(tabGroups.length).toBe(1)
+      expect(tabGroups[0].userGroupId).toBe(customGroup.id)
+    })
+
+    it('should import old format to default group when no fallback specified', async () => {
+      await initDefaultGroup()
+      const importText = 'https://example.com | Example'
+
+      await importFromText(importText, { format: 'general' })
+
+      const tabGroups = await db.tabGroups.toArray()
+      expect(tabGroups.length).toBe(1)
+      expect(tabGroups[0].userGroupId).toBe(DEFAULT_GROUP_ID)
+    })
+
+    it('should import originTab format creating new user group from text', async () => {
+      await initDefaultGroup()
+      const importText =
+        'New Group\n2023-10-01T12:00:00.000Z\nhttps://example.com | Example'
+
+      await importFromText(importText, { format: 'originTab' })
+
+      const tabGroups = await db.tabGroups.toArray()
+      const userGroups = await db.userGroups.toArray()
+
+      expect(tabGroups.length).toBe(1)
+      expect(userGroups.length).toBe(2)
+      expect(tabGroups[0].userGroupId).not.toBe('default')
+    })
+
+    it('should import originTab format ignoring invalid lines as user group names', async () => {
+      await initDefaultGroup()
+      const importText = `
+Custom Group
+2023-10-01T12:00:00.000Z
+https://example.com | Example
+invalid line without separator or pipe
+`
+
+      const result = await importFromText(importText, { format: 'originTab' })
+
+      expect(result.imported).toBe(1)
+      expect(result.errors.length).toBe(0)
+
+      const tabGroups = await db.tabGroups.toArray()
+      expect(tabGroups.length).toBe(1)
+      expect(tabGroups[0].tabs.length).toBe(1)
+    })
+
+    it('should handle empty input for originTab format', async () => {
+      const result = await importFromText('', { format: 'originTab' })
       expect(result.imported).toBe(0)
       expect(result.errors.length).toBe(0)
     })

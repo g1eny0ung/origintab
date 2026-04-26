@@ -10,7 +10,6 @@
     id: string
     userGroups: UserGroup[]
     selectedUserGroupId: string
-    onExport: () => void
     onCancel: () => void
   }
 
@@ -18,25 +17,27 @@
     id,
     userGroups,
     selectedUserGroupId = $bindable(),
-    onExport,
     onCancel,
   }: Props = $props()
 
   let exportPreview = $state('')
-
   let hasCopiedToClipboard = $state(false)
-
   let hasMultipleGroups = $derived(userGroups.length > 1)
+  let exportFormat = $state<'unique' | 'general'>('unique')
 
-  async function loadExportPreview(userGroupId: string) {
+  async function loadExportPreview(
+    userGroupId: string,
+    isOriginTabFormat: boolean,
+  ) {
     exportPreview = await exportToText(
       userGroupId === 'all' ? undefined : userGroupId,
+      { originTabFormat: isOriginTabFormat },
     )
   }
 
   $effect(() => {
     if (selectedUserGroupId) {
-      loadExportPreview(selectedUserGroupId)
+      loadExportPreview(selectedUserGroupId, exportFormat === 'unique')
     }
   })
 
@@ -52,6 +53,28 @@
     }
   }
 
+  // Export tabs - download
+  async function handleExport() {
+    try {
+      const text = exportPreview
+      if (!text.trim()) {
+        showToast(browser.i18n.getMessage('noDataToExport'), 'warning')
+        return
+      }
+      const blob = new Blob([text], { type: 'text/plain' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `origintab-export-${new Date().toISOString().slice(0, 10)}.txt`
+      a.click()
+      URL.revokeObjectURL(url)
+
+      showToast(browser.i18n.getMessage('exportedSuccessfully'))
+    } catch (error) {
+      showToast(browser.i18n.getMessage('exportFailed'), 'error')
+    }
+  }
+
   function handleClose() {
     hasCopiedToClipboard = false
     onCancel()
@@ -61,7 +84,7 @@
 <Dialog
   {id}
   disableConfirm={!exportPreview.trim()}
-  onConfirm={onExport}
+  onConfirm={handleExport}
   onClose={handleClose}
 >
   <h3 class="font-bold text-lg flex items-center gap-2">
@@ -90,6 +113,23 @@
         {browser.i18n.getMessage('allUserGroups')}
       </p>
     {/if}
+
+    <Fieldset legend={browser.i18n.getMessage('exportFormat')}>
+      <select
+        id="export-format"
+        class="select"
+        bind:value={exportFormat}
+        onchange={() =>
+          loadExportPreview(selectedUserGroupId, exportFormat === 'unique')}
+      >
+        <option value="unique">
+          {browser.i18n.getMessage('exportFormatOriginTab')}
+        </option>
+        <option value="general">
+          {browser.i18n.getMessage('exportFormatGeneral')}
+        </option>
+      </select>
+    </Fieldset>
 
     <Fieldset legend={browser.i18n.getMessage('preview')}>
       <textarea

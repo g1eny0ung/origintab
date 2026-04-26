@@ -32,6 +32,9 @@
   "groupNamePlaceholder": {
     "message": "分组名称"
   },
+  "defaultGroupCannotBeCreated": {
+    "message": "名称\"Default\"已被保留给默认分组。请使用其他名称。"
+  },
   "groupCreated": {
     "message": "分组创建成功"
   },
@@ -68,11 +71,17 @@
   "importTabs": {
     "message": "导入标签页"
   },
-  "targetGroup": {
+  "importTargetGroup": {
     "message": "目标分组"
   },
+  "importTargetGroupHint": {
+    "message": "选择要保存标签页的分组"
+  },
+  "importTargetGroupNotRequiredHint": {
+    "message": "专有格式无需指定分组"
+  },
   "importPlaceholder": {
-    "message": "https://example.com | 示例标题\nhttps://another.com | 另一个标题"
+    "message": "通用格式：\nhttps://example.com | 示例标题\nhttps://another.com | 另一个标题\n\nOriginTab专有格式：\n分组名\n2026-04-23T12:00:00.000Z\nhttps://example.com | 示例标题\nhttps://another.com | 另一个标题"
   },
   "importFile": {
     "message": "导入文件"
@@ -337,6 +346,15 @@
   },
   "noDataToExport": {
     "message": "没有可导出的数据"
+  },
+  "exportFormat": {
+    "message": "导出格式"
+  },
+  "exportFormatOriginTab": {
+    "message": "OriginTab专有格式"
+  },
+  "exportFormatGeneral": {
+    "message": "通用格式（仅 URL | 标题）"
   },
   "copyToClipboard": {
     "message": "复制到剪贴板"
