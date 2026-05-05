@@ -2,7 +2,6 @@
   import {
     Archive,
     Check,
-    CircleAlert,
     CircleCheck,
     CircleX,
     Download,
@@ -431,13 +430,10 @@
       role="alert"
       class="alert alert-soft shadow-lg"
       class:alert-success={toast.type === 'success'}
-      class:alert-warning={toast.type === 'warning'}
       class:alert-error={toast.type === 'error'}
     >
       {#if toast.type === 'success'}
         <CircleCheck size={16} />
-      {:else if toast.type === 'warning'}
-        <CircleAlert size={16} />
       {:else}
         <CircleX size={16} />
       {/if}

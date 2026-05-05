@@ -1,5 +1,5 @@
 // UI
-export type ToastType = 'success' | 'warning' | 'error'
+export type ToastType = 'success' | 'error'
 
 // Single tab item
 export interface TabItem {

@@ -58,7 +58,7 @@
     try {
       const text = exportPreview
       if (!text.trim()) {
-        showToast(browser.i18n.getMessage('noDataToExport'), 'warning')
+        showToast(browser.i18n.getMessage('noDataToExport'), 'error')
         return
       }
       const blob = new Blob([text], { type: 'text/plain' })
