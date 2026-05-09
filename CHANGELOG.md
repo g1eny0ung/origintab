@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Now users can toggle the side panel in Chrome.
+
 ## [1.3.0] - 2026-04-26
 
 ### Added

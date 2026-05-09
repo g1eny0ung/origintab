@@ -62,6 +62,8 @@ export async function returnOriginTab() {
   }
 }
 
+let sidePanelOpen = false
+
 // NOTE: https://stackoverflow.com/a/77213912/5676489
 export function openOriginTabInSidePanel() {
   if (import.meta.env.BROWSER === 'firefox') {
@@ -69,9 +71,19 @@ export function openOriginTabInSidePanel() {
   } else {
     browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length > 0) {
-        browser.sidePanel.open({
-          windowId: tabs[0].windowId,
-        })
+        const windowId = tabs[0].windowId
+
+        if (!sidePanelOpen) {
+          browser.sidePanel.open({
+            windowId,
+          })
+        } else {
+          browser.sidePanel.close({
+            windowId,
+          })
+        }
+
+        sidePanelOpen = !sidePanelOpen
       }
     })
   }
