@@ -10,10 +10,9 @@
     userGroups: UserGroup[]
     tabGroups: TabGroup[]
     settings: Settings
-    onToast: (message: string, type?: ToastType) => void
   }
 
-  let { userGroups, tabGroups, settings, onToast }: Props = $props()
+  let { userGroups, tabGroups, settings }: Props = $props()
 
   let defaultUserGroupId = $state<string | undefined>(undefined)
   let unwatchLocalSettings: (() => void) | null = null
@@ -45,7 +44,6 @@
       tabGroups={getTabGroups(userGroup.id)}
       isDefaultUserGroup={defaultUserGroupId === userGroup.id}
       {settings}
-      {onToast}
     />
   {/each}
 </div>

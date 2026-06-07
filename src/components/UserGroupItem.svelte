@@ -9,6 +9,7 @@
   } from '~/store'
   import type { Settings } from '~/store/settings'
   import { clearDraggedTabState, getDraggedTabState } from '~/utils/tabDrag'
+  import { showToast } from '~/utils/toast.svelte'
   import type { TabGroup, UserGroup } from '~/utils/types'
 
   import TabGroupItem from './TabGroupItem.svelte'
@@ -18,11 +19,9 @@
     tabGroups: TabGroup[]
     isDefaultUserGroup: boolean
     settings: Settings
-    onToast: (message: string, type?: ToastType) => void
   }
 
-  let { userGroup, tabGroups, isDefaultUserGroup, settings, onToast }: Props =
-    $props()
+  let { userGroup, tabGroups, isDefaultUserGroup, settings }: Props = $props()
 
   let isExpanded = $state(true)
   let activeDropTarget: 'header' | 'empty' | null = $state(null)
@@ -35,9 +34,9 @@
   async function handleSetDefault() {
     try {
       await updateLocalSettings({ defaultUserGroupId: userGroup.id })
-      onToast(browser.i18n.getMessage('defaultGroupSetTo', userGroup.name))
+      showToast(browser.i18n.getMessage('defaultGroupSetTo', userGroup.name))
     } catch {
-      onToast(browser.i18n.getMessage('setDefaultFailed'), 'error')
+      showToast(browser.i18n.getMessage('setDefaultFailed'), 'error')
     }
   }
 
@@ -54,9 +53,9 @@
       if (isDefaultUserGroup) {
         await updateLocalSettings({ defaultUserGroupId: undefined })
       }
-      onToast(browser.i18n.getMessage('groupDeleted'))
+      showToast(browser.i18n.getMessage('groupDeleted'))
     } catch {
-      onToast(browser.i18n.getMessage('deleteFailed'), 'error')
+      showToast(browser.i18n.getMessage('deleteFailed'), 'error')
     }
   }
 
@@ -234,7 +233,7 @@
         </div>
       {:else}
         {#each tabGroups as tabGroup (tabGroup.id)}
-          <TabGroupItem {tabGroup} {settings} {onToast} />
+          <TabGroupItem {tabGroup} {settings} />
         {/each}
       {/if}
     </div>

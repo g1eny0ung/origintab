@@ -369,7 +369,6 @@
         userGroups={$userGroups || []}
         tabGroups={$tabGroups || []}
         {settings}
-        onToast={showToast}
       />
     {/if}
   </main>

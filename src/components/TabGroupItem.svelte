@@ -15,16 +15,16 @@
   } from '~/store'
   import type { Settings } from '~/store/settings'
   import { clearDraggedTabState, setDraggedTabState } from '~/utils/tabDrag'
+  import { showToast } from '~/utils/toast.svelte'
   import type { TabGroup } from '~/utils/types'
   import { RestoreAction, TimeDisplayMode, UrlDisplayMode } from '~/utils/types'
 
   interface Props {
     tabGroup: TabGroup
     settings: Settings
-    onToast: (message: string, type?: ToastType) => void
   }
 
-  let { tabGroup, settings, onToast }: Props = $props()
+  let { tabGroup, settings }: Props = $props()
 
   let tabsContainer: HTMLDivElement
   let sortable: Sortable | null = null
@@ -64,9 +64,9 @@
         await restoreGroup(tabGroup.id, { active, newWindow })
       }
 
-      onToast(browser.i18n.getMessage('tabsRestored'))
+      showToast(browser.i18n.getMessage('tabsRestored'))
     } catch {
-      onToast(browser.i18n.getMessage('restoreFailed'), 'error')
+      showToast(browser.i18n.getMessage('restoreFailed'), 'error')
     }
   }
 
@@ -80,9 +80,9 @@
 
     try {
       await deleteTabGroup(tabGroup.id)
-      onToast(browser.i18n.getMessage('collectionDeleted'))
+      showToast(browser.i18n.getMessage('collectionDeleted'))
     } catch {
-      onToast(browser.i18n.getMessage('deleteFailed'), 'error')
+      showToast(browser.i18n.getMessage('deleteFailed'), 'error')
     }
   }
 
@@ -110,9 +110,9 @@
         await restoreTab(tabGroup.id, tabId, { active })
       }
 
-      onToast(browser.i18n.getMessage('tabRestored'))
+      showToast(browser.i18n.getMessage('tabRestored'))
     } catch {
-      onToast(browser.i18n.getMessage('restoreFailed'), 'error')
+      showToast(browser.i18n.getMessage('restoreFailed'), 'error')
     }
   }
 
@@ -126,9 +126,9 @@
 
     try {
       await removeTabFromGroup(tabGroup.id, tabId)
-      onToast(browser.i18n.getMessage('tabDeleted'))
+      showToast(browser.i18n.getMessage('tabDeleted'))
     } catch {
-      onToast(browser.i18n.getMessage('deleteFailed'), 'error')
+      showToast(browser.i18n.getMessage('deleteFailed'), 'error')
     }
   }
 
