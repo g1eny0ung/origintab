@@ -321,7 +321,7 @@
     "message": "Open Group In"
   },
   "openGroupInNewWindowDescription": {
-    "message": "Choose where to open tab groups (the term \"group\" here refers to subgroups saved at different times)"
+    "message": "Choose where to open tab groups (the term \"group\" here refers to one or more tab collections saved at different times)"
   },
   "openInCurrentWindow": {
     "message": "Current Window"
@@ -412,5 +412,23 @@
   },
   "tabTitleUpdateFailed": {
     "message": "Failed to update tab title"
+  },
+  "deleteGroupTitle": {
+    "message": "Delete Group"
+  },
+  "deleteCollectionTitle": {
+    "message": "Delete Collection"
+  },
+  "deleteTabTitle": {
+    "message": "Delete Tab"
+  },
+  "deleteSelectedTabsTitle": {
+    "message": "Delete Selected Tabs"
+  },
+  "clearAllTitle": {
+    "message": "Clear All"
+  },
+  "resetSettingsTitle": {
+    "message": "Reset Settings"
   }
 }

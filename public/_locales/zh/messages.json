@@ -321,7 +321,7 @@
     "message": "打开分组位置"
   },
   "openGroupInNewWindowDescription": {
-    "message": "选择在何处打开标签页组（此处的\"组\"指在不同时间保存的子分组）"
+    "message": "选择在何处打开标签页组（此处的\"组\"指在不同时间保存的一个或多个标签页集合）"
   },
   "openInCurrentWindow": {
     "message": "当前窗口"
@@ -412,5 +412,23 @@
   },
   "tabTitleUpdateFailed": {
     "message": "更新标签页标题失败"
+  },
+  "deleteGroupTitle": {
+    "message": "删除分组"
+  },
+  "deleteCollectionTitle": {
+    "message": "删除集合"
+  },
+  "deleteTabTitle": {
+    "message": "删除标签页"
+  },
+  "deleteSelectedTabsTitle": {
+    "message": "删除选中标签页"
+  },
+  "clearAllTitle": {
+    "message": "清空全部"
+  },
+  "resetSettingsTitle": {
+    "message": "重置设置"
   }
 }

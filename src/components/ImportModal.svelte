@@ -97,7 +97,7 @@
 
 <Dialog
   {id}
-  disableConfirm={!importText.trim()}
+  confirmDisabled={!importText.trim()}
   onConfirm={handleImport}
   onClose={handleClose}
 >

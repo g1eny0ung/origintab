@@ -10,6 +10,7 @@
     Settings,
   } from '@lucide/svelte'
   import { onMount } from 'svelte'
+  import ConfirmDialog from '~/components/ui/ConfirmDialog.svelte'
   import SettingItemCheckboxCard from '~/components/ui/SettingItemCheckboxCard.svelte'
   import SettingItemRadio from '~/components/ui/SettingItemRadio.svelte'
   import SettingItemRadioCard from '~/components/ui/SettingItemRadioCard.svelte'
@@ -19,6 +20,7 @@
     resetSettings as resetAllSettings,
     updateSettings,
   } from '~/store'
+  import { openConfirm } from '~/utils/confirm.svelte'
   import {
     ClickAction,
     RestoreAction,
@@ -93,11 +95,15 @@
     updateSettings({ timeDisplayMode: mode })
   }
 
-  async function resetSettings() {
-    if (confirm(browser.i18n.getMessage('resetAllSettings'))) {
-      await resetAllSettings()
-      await loadSettings()
-    }
+  function resetSettings() {
+    openConfirm({
+      title: browser.i18n.getMessage('resetSettingsTitle'),
+      message: browser.i18n.getMessage('resetAllSettings'),
+      onConfirm: async () => {
+        await resetAllSettings()
+        await loadSettings()
+      },
+    })
   }
 </script>
 
@@ -353,3 +359,5 @@
     </section>
   </div>
 </div>
+
+<ConfirmDialog />

@@ -24,7 +24,7 @@
 </script>
 
 <label
-  class="flex items-center gap-3 p-3 rounded-lg hover:bg-base-200 cursor-pointer transition-colors"
+  class="flex items-center gap-4 p-2 rounded-lg hover:bg-base-200 cursor-pointer transition-colors"
   for={id}
 >
   <input

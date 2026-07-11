@@ -15,6 +15,7 @@
     updateTabTitle,
   } from '~/store'
   import type { Settings } from '~/store/settings'
+  import { openConfirm } from '~/utils/confirm.svelte'
   import { clearDraggedTabState, setDraggedTabState } from '~/utils/tabDrag'
   import { showToast } from '~/utils/toast.svelte'
   import type { TabGroup, TabItem } from '~/utils/types'
@@ -72,19 +73,25 @@
   }
 
   async function handleDeleteGroup() {
-    if (
-      settings.confirmBeforeDelete &&
-      !confirm(browser.i18n.getMessage('deleteCollection'))
-    ) {
+    const doDelete = async () => {
+      try {
+        await deleteTabGroup(tabGroup.id)
+        showToast(browser.i18n.getMessage('collectionDeleted'))
+      } catch {
+        showToast(browser.i18n.getMessage('deleteFailed'), 'error')
+      }
+    }
+
+    if (settings.confirmBeforeDelete) {
+      openConfirm({
+        title: browser.i18n.getMessage('deleteCollectionTitle'),
+        message: browser.i18n.getMessage('deleteCollection'),
+        onConfirm: doDelete,
+      })
       return
     }
 
-    try {
-      await deleteTabGroup(tabGroup.id)
-      showToast(browser.i18n.getMessage('collectionDeleted'))
-    } catch {
-      showToast(browser.i18n.getMessage('deleteFailed'), 'error')
-    }
+    await doDelete()
   }
 
   function handleTabClick(e: MouseEvent, tabId: string) {
@@ -118,19 +125,25 @@
   }
 
   async function handleDeleteTab(tabId: string) {
-    if (
-      settings.confirmBeforeDelete &&
-      !confirm(browser.i18n.getMessage('deleteTabConfirm'))
-    ) {
+    const doDelete = async () => {
+      try {
+        await removeTabFromGroup(tabGroup.id, tabId)
+        showToast(browser.i18n.getMessage('tabDeleted'))
+      } catch {
+        showToast(browser.i18n.getMessage('deleteFailed'), 'error')
+      }
+    }
+
+    if (settings.confirmBeforeDelete) {
+      openConfirm({
+        title: browser.i18n.getMessage('deleteTabTitle'),
+        message: browser.i18n.getMessage('deleteTabConfirm'),
+        onConfirm: doDelete,
+      })
       return
     }
 
-    try {
-      await removeTabFromGroup(tabGroup.id, tabId)
-      showToast(browser.i18n.getMessage('tabDeleted'))
-    } catch {
-      showToast(browser.i18n.getMessage('deleteFailed'), 'error')
-    }
+    await doDelete()
   }
 
   async function handleTabMove(
@@ -252,7 +265,7 @@
 
 <div class="p-4 border-b border-base-200 last:border-b-0">
   <div class="flex items-center justify-between mb-4 px-2">
-    <div class="text-sm text-base-content/60">
+    <div class="text-sm text-base-content/80">
       {formatTime(tabGroup.createdAt)}
     </div>
     <div class="flex items-center gap-1">

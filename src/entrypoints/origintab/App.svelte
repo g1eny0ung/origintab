@@ -1,9 +1,8 @@
 <script lang="ts">
+  import Toasts from '@/components/ui/Toasts.svelte'
   import {
     Archive,
     Check,
-    CircleCheck,
-    CircleX,
     Download,
     ExternalLink,
     FolderOutput,
@@ -19,6 +18,7 @@
   import ExportModal from '~/components/ExportModal.svelte'
   import ImportModal from '~/components/ImportModal.svelte'
   import UserGroupList from '~/components/UserGroupList.svelte'
+  import ConfirmDialog from '~/components/ui/ConfirmDialog.svelte'
   import Dialog from '~/components/ui/Dialog.svelte'
   import {
     DEFAULT_GROUP_ID,
@@ -31,7 +31,8 @@
     restoreSelectedTabs,
   } from '~/store'
   import { db } from '~/store/base'
-  import { showToast, toasts } from '~/utils/toast.svelte'
+  import { openConfirm } from '~/utils/confirm.svelte'
+  import { showToast } from '~/utils/toast.svelte'
   import { RestoreAction } from '~/utils/types'
 
   import {
@@ -131,16 +132,20 @@
   })
 
   // Clear all data - liveQuery will auto-refresh
-  async function handleClearAll() {
-    if (confirm(browser.i18n.getMessage('clearAllConfirm'))) {
-      try {
-        await clearAllData()
+  function handleClearAll() {
+    openConfirm({
+      title: browser.i18n.getMessage('clearAllTitle'),
+      message: browser.i18n.getMessage('clearAllConfirm'),
+      onConfirm: async () => {
+        try {
+          await clearAllData()
 
-        showToast(browser.i18n.getMessage('allTabsCleared'))
-      } catch (error) {
-        showToast(browser.i18n.getMessage('failedToClearAllTabs'), 'error')
-      }
-    }
+          showToast(browser.i18n.getMessage('allTabsCleared'))
+        } catch (error) {
+          showToast(browser.i18n.getMessage('failedToClearAllTabs'), 'error')
+        }
+      },
+    })
   }
 
   // Export tabs - open modal
@@ -207,20 +212,26 @@
   }
 
   async function handleDeleteSelectedTabs() {
-    if (
-      settings.confirmBeforeDelete &&
-      !confirm(browser.i18n.getMessage('deleteSelectedTabsConfirm'))
-    ) {
+    const doDelete = async () => {
+      try {
+        await removeSelectedTabs(selection.selectedTabs)
+        selection.clear()
+        showToast(browser.i18n.getMessage('tabDeleted'))
+      } catch {
+        showToast(browser.i18n.getMessage('deleteFailed'), 'error')
+      }
+    }
+
+    if (settings.confirmBeforeDelete) {
+      openConfirm({
+        title: browser.i18n.getMessage('deleteSelectedTabsTitle'),
+        message: browser.i18n.getMessage('deleteSelectedTabsConfirm'),
+        onConfirm: doDelete,
+      })
       return
     }
 
-    try {
-      await removeSelectedTabs(selection.selectedTabs)
-      selection.clear()
-      showToast(browser.i18n.getMessage('tabDeleted'))
-    } catch {
-      showToast(browser.i18n.getMessage('deleteFailed'), 'error')
-    }
+    await doDelete()
   }
 
   function clearImport() {
@@ -391,7 +402,7 @@
 
 <Dialog
   id={selectModalId}
-  disableConfirm={!selection.moveTargetUserGroupId ||
+  confirmDisabled={!selection.moveTargetUserGroupId ||
     selection.selectedCount === 0}
   onConfirm={handleMoveSelectedTabs}
 >
@@ -421,25 +432,6 @@
     </select>
   </div>
 </Dialog>
-
-<!-- Toasts -->
-<div class="toast toast-center toast-top z-50">
-  {#each toasts.value as toast (toast.id)}
-    <div
-      role="alert"
-      class="alert alert-soft"
-      class:alert-success={toast.type === 'success'}
-      class:alert-error={toast.type === 'error'}
-    >
-      {#if toast.type === 'success'}
-        <CircleCheck size={16} />
-      {:else}
-        <CircleX size={16} />
-      {/if}
-      <span>{toast.message}</span>
-    </div>
-  {/each}
-</div>
 
 {#if selection.selectedCount > 0}
   <div
@@ -488,6 +480,9 @@
     </div>
   </div>
 {/if}
+
+<ConfirmDialog />
+<Toasts />
 
 <style>
   @keyframes enter {

@@ -83,7 +83,7 @@
 
 <Dialog
   {id}
-  disableConfirm={!exportPreview.trim()}
+  confirmDisabled={!exportPreview.trim()}
   onConfirm={handleExport}
   onClose={handleClose}
 >
@@ -108,10 +108,6 @@
           {/each}
         </select>
       </Fieldset>
-    {:else}
-      <p class="text-sm text-base-content/60">
-        {browser.i18n.getMessage('allUserGroups')}
-      </p>
     {/if}
 
     <Fieldset legend={browser.i18n.getMessage('exportFormat')}>

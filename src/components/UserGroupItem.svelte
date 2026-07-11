@@ -8,6 +8,7 @@
     updateLocalSettings,
   } from '~/store'
   import type { Settings } from '~/store/settings'
+  import { openConfirm } from '~/utils/confirm.svelte'
   import { clearDraggedTabState, getDraggedTabState } from '~/utils/tabDrag'
   import { showToast } from '~/utils/toast.svelte'
   import type { TabGroup, UserGroup } from '~/utils/types'
@@ -41,22 +42,28 @@
   }
 
   async function handleDelete() {
-    if (
-      settings.confirmBeforeDelete &&
-      !confirm(browser.i18n.getMessage('deleteGroupConfirm'))
-    ) {
+    const doDelete = async () => {
+      try {
+        await deleteUserGroup(userGroup.id)
+        if (isDefaultUserGroup) {
+          await updateLocalSettings({ defaultUserGroupId: undefined })
+        }
+        showToast(browser.i18n.getMessage('groupDeleted'))
+      } catch {
+        showToast(browser.i18n.getMessage('deleteFailed'), 'error')
+      }
+    }
+
+    if (settings.confirmBeforeDelete) {
+      openConfirm({
+        title: browser.i18n.getMessage('deleteGroupTitle'),
+        message: browser.i18n.getMessage('deleteGroupConfirm'),
+        onConfirm: doDelete,
+      })
       return
     }
 
-    try {
-      await deleteUserGroup(userGroup.id)
-      if (isDefaultUserGroup) {
-        await updateLocalSettings({ defaultUserGroupId: undefined })
-      }
-      showToast(browser.i18n.getMessage('groupDeleted'))
-    } catch {
-      showToast(browser.i18n.getMessage('deleteFailed'), 'error')
-    }
+    await doDelete()
   }
 
   const handleExpand = () => (isExpanded = !isExpanded)
@@ -177,7 +184,7 @@
     aria-expanded={isExpanded}
   >
     <div class="flex items-center justify-between">
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2">
         {#if isExpanded}
           <ChevronDown size={20} class="text-base-content/60" />
         {:else}
@@ -185,12 +192,12 @@
         {/if}
         <Folder size={20} />
         <span class="font-medium">{userGroup.name}</span>
-        <span class="text-sm text-base-content/60">({tabCount} tabs)</span>
+        <span class="text-sm text-base-content/80">{tabCount} tabs</span>
       </div>
       {#if !isDefault}
         <div class="flex items-center gap-1">
           {#if isDefaultUserGroup}
-            <span class="badge badge-sm badge-soft badge-secondary">
+            <span class="badge badge-primary badge-sm badge-soft">
               {browser.i18n.getMessage('defaultGroup')}
             </span>
           {:else}
