@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ExternalLink, RotateCcw, Trash2, X } from '@lucide/svelte'
+  import { ExternalLink, Pencil, RotateCcw, Trash2, X } from '@lucide/svelte'
   import { DateTime } from 'luxon'
   import Sortable from 'sortablejs'
   import { onMount } from 'svelte'
@@ -12,11 +12,12 @@
     restoreAndDeleteTab,
     restoreGroup,
     restoreTab,
+    updateTabTitle,
   } from '~/store'
   import type { Settings } from '~/store/settings'
   import { clearDraggedTabState, setDraggedTabState } from '~/utils/tabDrag'
   import { showToast } from '~/utils/toast.svelte'
-  import type { TabGroup } from '~/utils/types'
+  import type { TabGroup, TabItem } from '~/utils/types'
   import { RestoreAction, TimeDisplayMode, UrlDisplayMode } from '~/utils/types'
 
   interface Props {
@@ -141,6 +142,59 @@
     await moveTabBetweenGroups(sourceGroupId, targetGroupId, tabId, newIndex)
   }
 
+  let editingTabId = $state<string | null>(null)
+  let editValue = $state('')
+  let originalTitle = $state('')
+
+  function focusNode(node: HTMLInputElement) {
+    node.focus()
+  }
+
+  function startEdit(tab: TabItem) {
+    editingTabId = tab.id
+    editValue = tab.title
+    originalTitle = tab.title
+  }
+
+  function handleEditCancel() {
+    editingTabId = null
+  }
+
+  async function handleEditSave(tabId: string) {
+    if (editingTabId !== tabId) {
+      return
+    }
+
+    const title = editValue.trim()
+
+    if (!title) {
+      return
+    }
+
+    if (title === originalTitle) {
+      editingTabId = null
+      return
+    }
+
+    try {
+      await updateTabTitle(tabGroup.id, tabId, title)
+      editingTabId = null
+      showToast(browser.i18n.getMessage('tabTitleUpdated'))
+    } catch {
+      showToast(browser.i18n.getMessage('tabTitleUpdateFailed'), 'error')
+    }
+  }
+
+  function handleEditKeydown(e: KeyboardEvent, tabId: string) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleEditSave(tabId)
+    } else if (e.key === 'Escape') {
+      e.preventDefault()
+      handleEditCancel()
+    }
+  }
+
   $effect(() => {
     sortable?.option('disabled', selection.selectedCount > 0)
   })
@@ -241,7 +295,9 @@
       <div
         class={[
           'group flex items-center gap-3 py-2.5 px-2 bg-base-100',
-          selection.selectedCount === 0 && 'drag-handle active:cursor-grabbing',
+          selection.selectedCount === 0 &&
+            editingTabId !== tab.id &&
+            'drag-handle active:cursor-grabbing',
         ]}
         data-tab-id={tab.id}
       >
@@ -276,27 +332,50 @@
             <div class="w-4 h-4 rounded bg-base-300"></div>
           {/if}
         </div>
-        <a
-          href={tab.url}
-          class="flex-1 inline-flex flex-col min-w-0 cursor-pointer"
-          onclick={(e) => handleTabClick(e, tab.id)}
-        >
-          <span class="font-medium text-sm truncate">
-            {tab.title || browser.i18n.getMessage('untitled')}
-          </span>
-          {#if settings.urlDisplayMode === UrlDisplayMode.Full}
-            <span class="text-xs text-base-content/60 truncate">
-              {tab.url}
+        {#if editingTabId === tab.id}
+          <div class="flex-1 min-w-0">
+            <input
+              use:focusNode
+              bind:value={editValue}
+              class="input input-xs w-full"
+              onkeydown={(e) => handleEditKeydown(e, tab.id)}
+              onblur={() => handleEditSave(tab.id)}
+            />
+          </div>
+        {:else}
+          <a
+            href={tab.url}
+            class="flex-1 inline-flex flex-col min-w-0 cursor-pointer"
+            onclick={(e) => handleTabClick(e, tab.id)}
+          >
+            <span class="font-medium text-sm truncate">
+              {tab.title || browser.i18n.getMessage('untitled')}
             </span>
-          {:else if settings.urlDisplayMode === UrlDisplayMode.Hostname}
-            <span class="text-xs text-base-content/60">
-              {urlHostname(tab.url)}
-            </span>
-          {/if}
-        </a>
+            {#if settings.urlDisplayMode === UrlDisplayMode.Full}
+              <span class="text-xs text-base-content/60 truncate">
+                {tab.url}
+              </span>
+            {:else if settings.urlDisplayMode === UrlDisplayMode.Hostname}
+              <span class="text-xs text-base-content/60">
+                {urlHostname(tab.url)}
+              </span>
+            {/if}
+          </a>
+        {/if}
         <div
           class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
         >
+          {#if editingTabId !== tab.id}
+            <button
+              class="btn btn-ghost btn-xs btn-square"
+              onclick={() => {
+                startEdit(tab)
+              }}
+              title={browser.i18n.getMessage('editTitle')}
+            >
+              <Pencil size={14} />
+            </button>
+          {/if}
           <button
             class="btn btn-ghost btn-xs btn-square"
             onclick={() => handleRestoreTab(tab.id, { remove: false })}

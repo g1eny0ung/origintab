@@ -20,6 +20,24 @@ export async function removeTabFromGroup(groupId: string, tabId: string) {
   }
 }
 
+export async function updateTabTitle(
+  groupId: string,
+  tabId: string,
+  title: string,
+) {
+  const group = await db.tabGroups.get(groupId)
+
+  if (!group) {
+    return
+  }
+
+  const newTabs = group.tabs.map((tab) =>
+    tab.id === tabId ? { ...tab, title } : tab,
+  )
+
+  await db.tabGroups.update(groupId, { tabs: newTabs })
+}
+
 export async function moveTabBetweenGroups(
   sourceGroupId: string,
   targetGroupId: string,

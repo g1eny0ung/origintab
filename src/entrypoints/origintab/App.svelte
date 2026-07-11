@@ -427,7 +427,7 @@
   {#each toasts.value as toast (toast.id)}
     <div
       role="alert"
-      class="alert alert-soft shadow-lg"
+      class="alert alert-soft"
       class:alert-success={toast.type === 'success'}
       class:alert-error={toast.type === 'error'}
     >

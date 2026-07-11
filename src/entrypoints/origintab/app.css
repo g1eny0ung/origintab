@@ -3,6 +3,18 @@
   themes: emerald --default;
 }
 
+.input:focus,
+.textarea:focus,
+.select:focus,
+.select:open,
+.file-input:focus {
+  @apply outline-1 outline-offset-0;
+}
+
+@utility alert {
+  @apply rounded-lg;
+}
+
 .favicon-container {
   width: 20px;
   height: 20px;

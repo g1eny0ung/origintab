@@ -403,5 +403,14 @@
   },
   "setDefaultFailed": {
     "message": "设置默认分组失败"
+  },
+  "editTitle": {
+    "message": "编辑标题"
+  },
+  "tabTitleUpdated": {
+    "message": "标签页标题已更新"
+  },
+  "tabTitleUpdateFailed": {
+    "message": "更新标签页标题失败"
   }
 }

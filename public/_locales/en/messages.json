@@ -403,5 +403,14 @@
   },
   "setDefaultFailed": {
     "message": "Failed to set default group"
+  },
+  "editTitle": {
+    "message": "Edit title"
+  },
+  "tabTitleUpdated": {
+    "message": "Tab title updated"
+  },
+  "tabTitleUpdateFailed": {
+    "message": "Failed to update tab title"
   }
 }
