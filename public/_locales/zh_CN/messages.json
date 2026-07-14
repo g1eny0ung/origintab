@@ -5,6 +5,7 @@
   "extDescription": {
     "message": "以最简单的方式保存你的标签页。"
   },
+
   "confirm": {
     "message": "确认"
   },
@@ -20,6 +21,22 @@
   "clear": {
     "message": "清空"
   },
+  "delete": {
+    "message": "删除"
+  },
+  "restore": {
+    "message": "恢复"
+  },
+  "restoreAndPreserve": {
+    "message": "恢复并保留"
+  },
+  "settings": {
+    "message": "设置"
+  },
+  "reset": {
+    "message": "重置"
+  },
+
   "noSavedTabs": {
     "message": "暂无保存的标签页"
   },
@@ -50,168 +67,35 @@
   "failedToClearAllTabs": {
     "message": "清空标签页失败"
   },
-  "exportedSuccessfully": {
-    "message": "导出成功"
-  },
-  "exportFailed": {
-    "message": "导出失败"
-  },
-  "pleaseEnterDataToImport": {
-    "message": "请输入要导入的数据"
-  },
-  "importedTabs": {
-    "message": "已导入 $1 个标签页"
-  },
-  "importedTabsWithErrors": {
-    "message": "导入失败，请检查导入数据是否正确"
-  },
-  "importFailed": {
-    "message": "导入失败"
-  },
-  "importTabs": {
-    "message": "导入标签页"
-  },
-  "importTargetGroup": {
-    "message": "目标分组"
-  },
-  "importTargetGroupHint": {
-    "message": "选择要保存标签页的分组"
-  },
-  "importTargetGroupNotRequiredHint": {
-    "message": "专有格式无需指定分组"
-  },
-  "importPlaceholder": {
-    "message": "通用格式：\nhttps://example.com | 示例标题\nhttps://another.com | 另一个标题\n\nOriginTab专有格式：\n分组名\n2026-04-23T12:00:00.000Z\nhttps://example.com | 示例标题\nhttps://another.com | 另一个标题"
-  },
-  "importFile": {
-    "message": "导入文件"
-  },
-  "importFileHint": {
-    "message": "上传符合“URL | 标题”格式的文本文件，内容会自动填入下方文本框。你也可以直接粘贴数据。"
-  },
-  "failedToReadImportFile": {
-    "message": "读取导入文件失败"
-  },
-  "openOriginTab": {
-    "message": "打开OriginTab"
-  },
-  "openOriginTabInSidePanel": {
-    "message": "在侧边栏中打开OriginTab"
-  },
-  "returnOriginTab": {
-    "message": "返回OriginTab"
-  },
-  "saveAllTabs": {
-    "message": "保存所有标签页"
-  },
-  "saveCurrentTab": {
-    "message": "保存当前标签页"
-  },
-  "save": {
-    "message": "保存"
-  },
-  "allTabs": {
-    "message": "所有标签页"
-  },
-  "currentTab": {
-    "message": "当前标签页"
-  },
-  "to": {
-    "message": "到"
-  },
-  "saveAllTabsToGroup": {
-    "message": "保存所有标签页到分组"
-  },
-  "saveCurrentTabToGroup": {
-    "message": "保存当前标签页到分组"
-  },
-  "saveToTip": {
-    "message": "点击切换保存目标"
-  },
-  "settings": {
-    "message": "设置"
-  },
-  "customizeOriginTab": {
-    "message": "自定义OriginTab行为"
-  },
-  "reset": {
-    "message": "重置"
-  },
-  "resetAllSettings": {
-    "message": "将所有设置重置为默认值？"
-  },
-  "autoOpenOnStartup": {
-    "message": "启动时自动打开"
-  },
-  "autoOpenDescription": {
-    "message": "浏览器启动时自动打开OriginTab"
-  },
-  "autoOpenTooltip": {
-    "message": "如果你习惯于在侧边栏中打开OriginTab，可以关闭此选项（你可以通过快捷键在侧边栏中打开OriginTab，请参考上方的快捷键列表）"
-  },
-  "confirmBeforeDelete": {
-    "message": "删除前确认"
-  },
-  "confirmDeleteDescription": {
-    "message": "删除标签页或分组时显示确认对话框"
-  },
-  "iconClickAction": {
-    "message": "图标点击操作"
-  },
-  "clickActionDescription": {
-    "message": "选择点击扩展图标时的操作"
-  },
-  "saveAll": {
-    "message": "保存所有标签页"
-  },
-  "saveAllDescription": {
-    "message": "将当前窗口中的所有标签页保存到OriginTab"
-  },
-  "saveCurrent": {
-    "message": "仅保存当前标签页"
-  },
-  "saveCurrentDescription": {
-    "message": "仅将当前活动标签页保存到OriginTab"
-  },
-  "showPopup": {
-    "message": "显示弹出菜单"
-  },
-  "showPopupDescription": {
-    "message": "打开带有选项的弹出菜单"
-  },
-  "aboutOriginTab": {
-    "message": "关于 OriginTab"
-  },
-  "aboutDescription1": {
-    "message": "访问"
-  },
-  "aboutDescription2": {
-    "message": "以了解更多关于OriginTab的信息。"
-  },
-  "productPage": {
-    "message": "产品主页"
-  },
-  "delete": {
-    "message": "删除"
-  },
+
   "deleteGroupConfirm": {
     "message": "删除此分组？标签页将移至默认分组。"
   },
   "groupDeleted": {
     "message": "分组已删除，标签页已移至默认分组"
   },
-  "deleteFailed": {
-    "message": "删除失败，请重试"
-  },
   "noTabsInGroup": {
     "message": "此分组中没有标签页"
   },
-  "restore": {
-    "message": "恢复"
+  "selectUserGroup": {
+    "message": "选择分组"
   },
-  "restoreAndPreserve": {
-    "message": "恢复并保留"
+  "allUserGroups": {
+    "message": "全部分组"
   },
+  "setAsDefaultGroup": {
+    "message": "设为默认分组"
+  },
+  "defaultGroup": {
+    "message": "默认分组"
+  },
+  "defaultGroupSetTo": {
+    "message": "默认分组已设置为$1"
+  },
+  "setDefaultFailed": {
+    "message": "设置默认分组失败"
+  },
+
   "deleteCollection": {
     "message": "删除此集合？"
   },
@@ -260,17 +144,161 @@
   "untitled": {
     "message": "无标题"
   },
-  "open": {
-    "message": "打开"
+  "editTitle": {
+    "message": "编辑标题"
   },
-  "failedToLoadData": {
-    "message": "加载数据失败"
+  "tabTitleUpdated": {
+    "message": "标签页标题已更新"
   },
-  "failedToLoadSettings": {
-    "message": "加载设置失败"
+  "tabTitleUpdateFailed": {
+    "message": "更新标签页标题失败"
   },
-  "failedToLoadGroups": {
-    "message": "加载分组失败"
+
+  "exportedSuccessfully": {
+    "message": "导出成功"
+  },
+  "exportFailed": {
+    "message": "导出失败"
+  },
+  "pleaseEnterDataToImport": {
+    "message": "请输入要导入的数据"
+  },
+  "importedTabs": {
+    "message": "已导入 $1 个标签页"
+  },
+  "importedTabsWithErrors": {
+    "message": "导入失败，请检查导入数据是否正确"
+  },
+  "importFailed": {
+    "message": "导入失败"
+  },
+  "importTabs": {
+    "message": "导入标签页"
+  },
+  "importTargetGroup": {
+    "message": "目标分组"
+  },
+  "importTargetGroupHint": {
+    "message": "选择要保存标签页的分组"
+  },
+  "importTargetGroupNotRequiredHint": {
+    "message": "专有格式无需指定分组"
+  },
+  "importPlaceholder": {
+    "message": "通用格式：\nhttps://example.com | 示例标题\nhttps://another.com | 另一个标题\n\nOriginTab专有格式：\n分组名\n2026-04-23T12:00:00.000Z\nhttps://example.com | 示例标题\nhttps://another.com | 另一个标题"
+  },
+  "importFile": {
+    "message": "导入文件"
+  },
+  "importFileHint": {
+    "message": "上传符合“URL | 标题”格式的文本文件，内容会自动填入下方文本框。你也可以直接粘贴数据。"
+  },
+  "failedToReadImportFile": {
+    "message": "读取导入文件失败"
+  },
+  "preview": {
+    "message": "预览"
+  },
+  "noDataToExport": {
+    "message": "没有可导出的数据"
+  },
+  "exportFormat": {
+    "message": "导出格式"
+  },
+  "exportFormatOriginTab": {
+    "message": "OriginTab专有格式"
+  },
+  "exportFormatGeneral": {
+    "message": "通用格式（仅 URL | 标题）"
+  },
+  "copyToClipboard": {
+    "message": "复制到剪贴板"
+  },
+  "copied": {
+    "message": "已复制！"
+  },
+
+  "openOriginTab": {
+    "message": "打开OriginTab"
+  },
+  "openOriginTabInSidePanel": {
+    "message": "在侧边栏中打开OriginTab"
+  },
+  "returnOriginTab": {
+    "message": "返回OriginTab"
+  },
+  "saveAllTabs": {
+    "message": "保存所有标签页"
+  },
+  "saveCurrentTab": {
+    "message": "保存当前标签页"
+  },
+  "save": {
+    "message": "保存"
+  },
+  "allTabs": {
+    "message": "所有标签页"
+  },
+  "currentTab": {
+    "message": "当前标签页"
+  },
+  "to": {
+    "message": "到"
+  },
+  "saveAllTabsToGroup": {
+    "message": "保存所有标签页到分组"
+  },
+  "saveCurrentTabToGroup": {
+    "message": "保存当前标签页到分组"
+  },
+  "saveToTip": {
+    "message": "点击切换保存目标"
+  },
+
+  "customizeOriginTab": {
+    "message": "自定义OriginTab行为"
+  },
+  "resetAllSettings": {
+    "message": "将所有设置重置为默认值？"
+  },
+  "autoOpenOnStartup": {
+    "message": "启动时自动打开"
+  },
+  "autoOpenDescription": {
+    "message": "浏览器启动时自动打开OriginTab"
+  },
+  "autoOpenTooltip": {
+    "message": "如果你习惯于在侧边栏中打开OriginTab，可以关闭此选项（你可以通过快捷键在侧边栏中打开OriginTab，请参考上方的快捷键列表）"
+  },
+  "confirmBeforeDelete": {
+    "message": "删除前确认"
+  },
+  "confirmDeleteDescription": {
+    "message": "删除标签页或分组时显示确认对话框"
+  },
+  "iconClickAction": {
+    "message": "图标点击操作"
+  },
+  "clickActionDescription": {
+    "message": "选择点击扩展图标时的操作"
+  },
+  "saveAll": {
+    "message": "保存所有标签页"
+  },
+  "saveAllDescription": {
+    "message": "将当前窗口中的所有标签页保存到OriginTab"
+  },
+  "saveCurrent": {
+    "message": "仅保存当前标签页"
+  },
+  "saveCurrentDescription": {
+    "message": "仅将当前活动标签页保存到OriginTab"
+  },
+  "showPopup": {
+    "message": "显示弹出菜单"
+  },
+  "showPopupDescription": {
+    "message": "打开带有选项的弹出菜单"
   },
   "urlDisplayMode": {
     "message": "URL 显示模式"
@@ -314,9 +342,6 @@
   "openAndJumpDescription": {
     "message": "打开标签页并切换到它们（当使用Ctrl/Command/Shift点击时，会遵从浏览器的默认行为）"
   },
-  "justNow": {
-    "message": "刚刚"
-  },
   "openGroupInNewWindow": {
     "message": "打开分组位置"
   },
@@ -334,33 +359,6 @@
   },
   "openInNewWindowDescription": {
     "message": "在新窗口中打开标签页组"
-  },
-  "selectUserGroup": {
-    "message": "选择分组"
-  },
-  "allUserGroups": {
-    "message": "全部分组"
-  },
-  "preview": {
-    "message": "预览"
-  },
-  "noDataToExport": {
-    "message": "没有可导出的数据"
-  },
-  "exportFormat": {
-    "message": "导出格式"
-  },
-  "exportFormatOriginTab": {
-    "message": "OriginTab专有格式"
-  },
-  "exportFormatGeneral": {
-    "message": "通用格式（仅 URL | 标题）"
-  },
-  "copyToClipboard": {
-    "message": "复制到剪贴板"
-  },
-  "copied": {
-    "message": "已复制！"
   },
   "timeDisplayMode": {
     "message": "时间显示模式"
@@ -380,6 +378,7 @@
   "timeDisplayAbsoluteDescription": {
     "message": "以绝对格式显示时间（例如：2026年4月16日 12:30）"
   },
+
   "shortcuts": {
     "message": "快捷键"
   },
@@ -392,26 +391,30 @@
   "setShortcutsFirefox": {
     "message": "打开扩展管理器以设置快捷键"
   },
-  "setAsDefaultGroup": {
-    "message": "设为默认分组"
+  "aboutOriginTab": {
+    "message": "关于 OriginTab"
   },
-  "defaultGroup": {
-    "message": "默认分组"
+  "aboutDescription": {
+    "message": "访问_a_以了解更多关于OriginTab的信息。"
   },
-  "defaultGroupSetTo": {
-    "message": "默认分组已设置为$1"
+  "feedbackDescription": {
+    "message": "如果您遇到任何使用问题，可以通过此_a_反馈。"
   },
-  "setDefaultFailed": {
-    "message": "设置默认分组失败"
+  "productPage": {
+    "message": "产品主页"
   },
-  "editTitle": {
-    "message": "编辑标题"
+  "feedbackForm": {
+    "message": "表单"
   },
-  "tabTitleUpdated": {
-    "message": "标签页标题已更新"
+
+  "failedToLoadSettings": {
+    "message": "加载设置失败"
   },
-  "tabTitleUpdateFailed": {
-    "message": "更新标签页标题失败"
+  "deleteFailed": {
+    "message": "删除失败，请重试"
+  },
+  "justNow": {
+    "message": "刚刚"
   },
   "deleteGroupTitle": {
     "message": "删除分组"

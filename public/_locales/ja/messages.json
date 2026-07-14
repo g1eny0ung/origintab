@@ -1,0 +1,428 @@
+{
+  "extName": {
+    "message": "OriginTab - タブを保存"
+  },
+  "extDescription": {
+    "message": "最もシンプルな方法でタブを保存します。"
+  },
+  "confirm": {
+    "message": "確認"
+  },
+  "cancel": {
+    "message": "キャンセル"
+  },
+  "import": {
+    "message": "インポート"
+  },
+  "export": {
+    "message": "エクスポート"
+  },
+  "clear": {
+    "message": "すべて消去"
+  },
+  "delete": {
+    "message": "削除"
+  },
+  "restore": {
+    "message": "復元"
+  },
+  "restoreAndPreserve": {
+    "message": "復元して保持"
+  },
+  "settings": {
+    "message": "設定"
+  },
+  "reset": {
+    "message": "リセット"
+  },
+  "noSavedTabs": {
+    "message": "保存したタブはありません"
+  },
+  "emptyStateMessage": {
+    "message": "ブラウザのツールバーにあるOriginTabアイコンをクリックして、現在のウィンドウのタブを保存します"
+  },
+  "newGroup": {
+    "message": "新しいグループ"
+  },
+  "groupNamePlaceholder": {
+    "message": "グループ名"
+  },
+  "defaultGroupCannotBeCreated": {
+    "message": "名前「Default」はデフォルトグループ用に予約されています。 別の名前を使用してください"
+  },
+  "groupCreated": {
+    "message": "グループを作成しました"
+  },
+  "failedToCreateGroup": {
+    "message": "グループの作成に失敗しました"
+  },
+  "clearAllConfirm": {
+    "message": "保存したすべてのタブを消去してもよろしいですか？ これは元に戻せません。"
+  },
+  "allTabsCleared": {
+    "message": "すべてのタブをクリアしました"
+  },
+  "failedToClearAllTabs": {
+    "message": "すべてのタブをクリアできませんでした"
+  },
+  "deleteGroupConfirm": {
+    "message": "このグループを削除しますか？タブはデフォルトに移動します。"
+  },
+  "groupDeleted": {
+    "message": "グループを削除しました。タブはデフォルトグループに移動しました"
+  },
+  "noTabsInGroup": {
+    "message": "このグループにタブはありません"
+  },
+  "selectUserGroup": {
+    "message": "グループを選択"
+  },
+  "allUserGroups": {
+    "message": "すべてのグループ"
+  },
+  "setAsDefaultGroup": {
+    "message": "デフォルトグループに設定"
+  },
+  "defaultGroup": {
+    "message": "デフォルトグループ"
+  },
+  "defaultGroupSetTo": {
+    "message": "「$1」をデフォルトグループに設定しました"
+  },
+  "setDefaultFailed": {
+    "message": "デフォルトグループの設定に失敗しました"
+  },
+  "deleteCollection": {
+    "message": "このコレクションを削除しますか？"
+  },
+  "collectionDeleted": {
+    "message": "タブコレクションを削除しました"
+  },
+  "tabsRestored": {
+    "message": "タブを復元しました"
+  },
+  "restoreFailed": {
+    "message": "タブの復元に失敗しました"
+  },
+  "tabRestored": {
+    "message": "タブを復元しました"
+  },
+  "deleteTabConfirm": {
+    "message": "このタブを削除しますか？"
+  },
+  "deleteSelectedTabsConfirm": {
+    "message": "選択したタブを削除しますか？"
+  },
+  "tabDeleted": {
+    "message": "タブを削除しました"
+  },
+  "moveTo": {
+    "message": "移動先"
+  },
+  "moveTabs": {
+    "message": "タブを移動"
+  },
+  "moveSelectedTabsTo": {
+    "message": "選択した$1個の$2の移動先"
+  },
+  "tabSingular": {
+    "message": "タブ"
+  },
+  "tabPlural": {
+    "message": "タブ"
+  },
+  "tabsMoved": {
+    "message": "タブを移動しました"
+  },
+  "moveTabsFailed": {
+    "message": "タブの移動に失敗しました"
+  },
+  "untitled": {
+    "message": "無題"
+  },
+  "editTitle": {
+    "message": "タイトルを編集"
+  },
+  "tabTitleUpdated": {
+    "message": "タブのタイトルを更新しました"
+  },
+  "tabTitleUpdateFailed": {
+    "message": "タブのタイトル更新に失敗しました"
+  },
+  "exportedSuccessfully": {
+    "message": "正常にエクスポートされました"
+  },
+  "exportFailed": {
+    "message": "エクスポートに失敗しました"
+  },
+  "pleaseEnterDataToImport": {
+    "message": "インポートするデータを入力してください"
+  },
+  "importedTabs": {
+    "message": "$1個のタブをインポートしました"
+  },
+  "importedTabsWithErrors": {
+    "message": "インポートに失敗しました。インポートしたデータを確認してください"
+  },
+  "importFailed": {
+    "message": "インポートに失敗しました"
+  },
+  "importTabs": {
+    "message": "タブをインポート"
+  },
+  "importTargetGroup": {
+    "message": "ターゲットグループ"
+  },
+  "importTargetGroupHint": {
+    "message": "グループを選択してタブを保存します"
+  },
+  "importTargetGroupNotRequiredHint": {
+    "message": "特定のフォーマットでは、グループを指定する必要はありません"
+  },
+  "importPlaceholder": {
+    "message": "一般的なフォーマット：\nhttps://example.com |タイトル例\nhttps://another.com |別のタイトル\n\nOriginTab固有のフォーマット：\nグループ名\n2026-04-23T12:00:00.000Z\nhttps://example.com |タイトル例\nhttps://another.com |別のタイトル"
+  },
+  "importFile": {
+    "message": "ファイルをインポート"
+  },
+  "importFileHint": {
+    "message": "同じ「URL |タイトル」形式のテキストファイルをアップロードすると、コンテンツが以下のテキスト領域に表示されます。 データを直接貼り付けることもできます。"
+  },
+  "failedToReadImportFile": {
+    "message": "インポートファイルの読み込みに失敗しました"
+  },
+  "preview": {
+    "message": "プレビュー"
+  },
+  "noDataToExport": {
+    "message": "エクスポートするデータがありません"
+  },
+  "exportFormat": {
+    "message": "エクスポート形式"
+  },
+  "exportFormatOriginTab": {
+    "message": "OriginTab固有のフォーマット"
+  },
+  "exportFormatGeneral": {
+    "message": "一般的なフォーマット（ URL |タイトルのみ）"
+  },
+  "copyToClipboard": {
+    "message": "クリップボードにコピー"
+  },
+  "copied": {
+    "message": "コピーしました！"
+  },
+  "openOriginTab": {
+    "message": "OriginTab を開く"
+  },
+  "openOriginTabInSidePanel": {
+    "message": "サイドパネルで OriginTab を開く"
+  },
+  "returnOriginTab": {
+    "message": "OriginTab に戻る"
+  },
+  "saveAllTabs": {
+    "message": "すべてのタブを保存"
+  },
+  "saveCurrentTab": {
+    "message": "現在のタブを保存"
+  },
+  "save": {
+    "message": "保存"
+  },
+  "allTabs": {
+    "message": "すべてのタブ"
+  },
+  "currentTab": {
+    "message": "現在のタブ"
+  },
+  "to": {
+    "message": "保存先"
+  },
+  "saveAllTabsToGroup": {
+    "message": "すべてのタブをグループに保存"
+  },
+  "saveCurrentTabToGroup": {
+    "message": "現在のタブをグループに保存"
+  },
+  "saveToTip": {
+    "message": "クリックして保存ターゲットを切り替えます"
+  },
+  "customizeOriginTab": {
+    "message": "OriginTabの動作をカスタマイズする"
+  },
+  "resetAllSettings": {
+    "message": "すべての設定をデフォルトに戻しますか？"
+  },
+  "autoOpenOnStartup": {
+    "message": "起動時に自動で開く"
+  },
+  "autoOpenDescription": {
+    "message": "ブラウザ起動時にOriginTabを自動的に開く"
+  },
+  "autoOpenTooltip": {
+    "message": "サイドパネルでOriginTabを開きたい場合は、このオプションをオフにすることができます（ショートカットキーを使用してサイドパネルでOriginTabを開くことができます。上記のショートカットキーを参照してください）"
+  },
+  "confirmBeforeDelete": {
+    "message": "削除前に確認"
+  },
+  "confirmDeleteDescription": {
+    "message": "タブやグループを削除するときに確認ダイアログを表示する"
+  },
+  "iconClickAction": {
+    "message": "アイコンクリックアクション"
+  },
+  "clickActionDescription": {
+    "message": "拡張機能のアイコンをクリックしたときに何が起こるかを選択します"
+  },
+  "saveAll": {
+    "message": "すべてのタブを保存"
+  },
+  "saveAllDescription": {
+    "message": "現在のウィンドウ内のすべてのタブをOriginTabに保存する"
+  },
+  "saveCurrent": {
+    "message": "現在のタブのみ保存"
+  },
+  "saveCurrentDescription": {
+    "message": "現在アクティブなタブのみをOriginTabに保存する"
+  },
+  "showPopup": {
+    "message": "ポップアップメニューを表示"
+  },
+  "showPopupDescription": {
+    "message": "オプション付きのポップアップを開きます"
+  },
+  "urlDisplayMode": {
+    "message": "URL の表示方法"
+  },
+  "urlDisplayDescription": {
+    "message": "保存したタブにURLを表示する方法を選択します"
+  },
+  "urlDisplayNone": {
+    "message": "表示しない"
+  },
+  "urlDisplayNoneDescription": {
+    "message": "保存したタブでURLを非表示にする"
+  },
+  "urlDisplayHostname": {
+    "message": "ホスト名のみ"
+  },
+  "urlDisplayHostnameDescription": {
+    "message": "ホスト名のみを表示します（例：example.com）"
+  },
+  "urlDisplayFull": {
+    "message": "完全なURL"
+  },
+  "urlDisplayFullDescription": {
+    "message": "完全なURLを表示"
+  },
+  "restoreTabAction": {
+    "message": "タブ復元時の動作"
+  },
+  "restoreActionDescription": {
+    "message": "タブを復元するときに何が起こるかを選択します"
+  },
+  "openWithoutJump": {
+    "message": "開いてそのまま"
+  },
+  "openWithoutJumpDescription": {
+    "message": "タブを開いても切り替えない"
+  },
+  "openAndJump": {
+    "message": "開いて切り替える"
+  },
+  "openAndJumpDescription": {
+    "message": "タブを開いて切り替える（Ctrl/Command/Shift + クリック時は、ブラウザのデフォルト動作に従います）"
+  },
+  "openGroupInNewWindow": {
+    "message": "次の場所でグループを開く"
+  },
+  "openGroupInNewWindowDescription": {
+    "message": "タブグループを開く場所を選択します（ここでの「グループ」という用語は、異なる時間に保存された1つ以上のタブコレクションを指します）"
+  },
+  "openInCurrentWindow": {
+    "message": "現在のウィンドウ"
+  },
+  "openInCurrentWindowDescription": {
+    "message": "現在のウィンドウでタブグループを開く"
+  },
+  "openInNewWindow": {
+    "message": "新しいウィンドウ"
+  },
+  "openInNewWindowDescription": {
+    "message": "新しいウィンドウでタブグループを開く"
+  },
+  "timeDisplayMode": {
+    "message": "時刻表示"
+  },
+  "timeDisplayDescription": {
+    "message": "タブの保存時間を表示する方法を選択します"
+  },
+  "timeDisplayRelative": {
+    "message": "相対時刻"
+  },
+  "timeDisplayRelativeDescription": {
+    "message": "時間を相対的な形式で表示する（例： 2分前）"
+  },
+  "timeDisplayAbsolute": {
+    "message": "絶対時刻"
+  },
+  "timeDisplayAbsoluteDescription": {
+    "message": "時刻を絶対形式で表示する（例： 2026年4月16日、午後12時30分）"
+  },
+  "shortcuts": {
+    "message": "ショートカット"
+  },
+  "unset": {
+    "message": "未設定"
+  },
+  "setShortcuts": {
+    "message": "ショートカットを設定"
+  },
+  "setShortcutsFirefox": {
+    "message": "アドオンマネージャーに移動してショートカットを設定します"
+  },
+  "aboutOriginTab": {
+    "message": "OriginTab について"
+  },
+  "aboutDescription": {
+    "message": "OriginTabの詳細については_a_をご覧ください。"
+  },
+  "feedbackDescription": {
+    "message": "OriginTabの利用中に問題が発生した場合は、こちらの_a_からフィードバックをお送りください。"
+  },
+  "productPage": {
+    "message": "製品ページ"
+  },
+  "feedbackForm": {
+    "message": "フォーム"
+  },
+  "failedToLoadSettings": {
+    "message": "設定の読み込みに失敗しました"
+  },
+  "deleteFailed": {
+    "message": "削除に失敗しました。もう一度お試しください"
+  },
+  "justNow": {
+    "message": "たった今"
+  },
+  "deleteGroupTitle": {
+    "message": "グループを削除"
+  },
+  "deleteCollectionTitle": {
+    "message": "コレクションを削除"
+  },
+  "deleteTabTitle": {
+    "message": "タブを削除"
+  },
+  "deleteSelectedTabsTitle": {
+    "message": "選択したタブを削除"
+  },
+  "clearAllTitle": {
+    "message": "すべて消去"
+  },
+  "resetSettingsTitle": {
+    "message": "設定をリセット"
+  }
+}

@@ -1,0 +1,428 @@
+{
+  "extName": {
+    "message": "OriginTab — сохранение вкладок"
+  },
+  "extDescription": {
+    "message": "Сохраняйте вкладки самым простым способом."
+  },
+  "confirm": {
+    "message": "Подтвердить"
+  },
+  "cancel": {
+    "message": "Отмена"
+  },
+  "import": {
+    "message": "Импорт"
+  },
+  "export": {
+    "message": "Экспорт"
+  },
+  "clear": {
+    "message": "Очистить всё"
+  },
+  "delete": {
+    "message": "Удалить"
+  },
+  "restore": {
+    "message": "Восстановить"
+  },
+  "restoreAndPreserve": {
+    "message": "Восстановить и сохранить"
+  },
+  "settings": {
+    "message": "Настройки"
+  },
+  "reset": {
+    "message": "Сбросить"
+  },
+  "noSavedTabs": {
+    "message": "Нет сохранённых вкладок"
+  },
+  "emptyStateMessage": {
+    "message": "Нажмите значок OriginTab на панели инструментов браузера, чтобы сохранить вкладки текущего окна"
+  },
+  "newGroup": {
+    "message": "Новая группа"
+  },
+  "groupNamePlaceholder": {
+    "message": "Название группы"
+  },
+  "defaultGroupCannotBeCreated": {
+    "message": "Имя «Default» зарезервировано для группы по умолчанию. Используйте другое имя"
+  },
+  "groupCreated": {
+    "message": "Группа создана"
+  },
+  "failedToCreateGroup": {
+    "message": "Не удалось создать группу"
+  },
+  "clearAllConfirm": {
+    "message": "Удалить все сохранённые вкладки? Это действие нельзя отменить."
+  },
+  "allTabsCleared": {
+    "message": "Все вкладки удалены"
+  },
+  "failedToClearAllTabs": {
+    "message": "Не удалось удалить все вкладки"
+  },
+  "deleteGroupConfirm": {
+    "message": "Удалить эту группу? Вкладки будут перемещены в Default."
+  },
+  "groupDeleted": {
+    "message": "Группа удалена, вкладки перемещены в Default"
+  },
+  "noTabsInGroup": {
+    "message": "В этой группе нет вкладок"
+  },
+  "selectUserGroup": {
+    "message": "Выбрать группу"
+  },
+  "allUserGroups": {
+    "message": "Все группы"
+  },
+  "setAsDefaultGroup": {
+    "message": "Сделать группой по умолчанию"
+  },
+  "defaultGroup": {
+    "message": "Группа по умолчанию"
+  },
+  "defaultGroupSetTo": {
+    "message": "Группа по умолчанию: $1"
+  },
+  "setDefaultFailed": {
+    "message": "Не удалось задать группу по умолчанию"
+  },
+  "deleteCollection": {
+    "message": "Удалить эту коллекцию?"
+  },
+  "collectionDeleted": {
+    "message": "Коллекция вкладок удалена"
+  },
+  "tabsRestored": {
+    "message": "Вкладки восстановлены"
+  },
+  "restoreFailed": {
+    "message": "Не удалось восстановить вкладки"
+  },
+  "tabRestored": {
+    "message": "Вкладка восстановлена"
+  },
+  "deleteTabConfirm": {
+    "message": "Удалить эту вкладку?"
+  },
+  "deleteSelectedTabsConfirm": {
+    "message": "Удалить выбранные вкладки?"
+  },
+  "tabDeleted": {
+    "message": "Вкладка удалена"
+  },
+  "moveTo": {
+    "message": "Переместить в"
+  },
+  "moveTabs": {
+    "message": "Переместить вкладки"
+  },
+  "moveSelectedTabsTo": {
+    "message": "Переместить выбор ($1 $2) в"
+  },
+  "tabSingular": {
+    "message": "вкладка"
+  },
+  "tabPlural": {
+    "message": "вкладки"
+  },
+  "tabsMoved": {
+    "message": "Вкладки перемещены"
+  },
+  "moveTabsFailed": {
+    "message": "Не удалось переместить вкладки"
+  },
+  "untitled": {
+    "message": "Без названия"
+  },
+  "editTitle": {
+    "message": "Изменить название"
+  },
+  "tabTitleUpdated": {
+    "message": "Название вкладки обновлено"
+  },
+  "tabTitleUpdateFailed": {
+    "message": "Не удалось обновить название вкладки"
+  },
+  "exportedSuccessfully": {
+    "message": "Экспорт выполнен"
+  },
+  "exportFailed": {
+    "message": "Ошибка экспорта"
+  },
+  "pleaseEnterDataToImport": {
+    "message": "Введите данные для импорта"
+  },
+  "importedTabs": {
+    "message": "Импортировано вкладок: $1"
+  },
+  "importedTabsWithErrors": {
+    "message": "Не удалось импортировать данные. Проверьте импортируемые данные"
+  },
+  "importFailed": {
+    "message": "Ошибка импорта"
+  },
+  "importTabs": {
+    "message": "Импортировать вкладки"
+  },
+  "importTargetGroup": {
+    "message": "Целевая группа"
+  },
+  "importTargetGroupHint": {
+    "message": "Выберите группу для сохранения вкладок"
+  },
+  "importTargetGroupNotRequiredHint": {
+    "message": "Для специального формата указывать группу не требуется"
+  },
+  "importPlaceholder": {
+    "message": "Общий формат:\nhttps://example.com | Пример заголовка\nhttps://another.com | Другой заголовок\n\nСпециальный формат OriginTab:\nНазвание группы\n2026-04-23T12:00:00.000Z\nhttps://example.com | Пример заголовка\nhttps://another.com | Другой заголовок"
+  },
+  "importFile": {
+    "message": "Импортировать файл"
+  },
+  "importFileHint": {
+    "message": "Загрузите текстовый файл в том же формате «URL | Title», и его содержимое заполнит поле ниже. Данные также можно вставить напрямую."
+  },
+  "failedToReadImportFile": {
+    "message": "Не удалось прочитать файл импорта"
+  },
+  "preview": {
+    "message": "Предпросмотр"
+  },
+  "noDataToExport": {
+    "message": "Нет данных для экспорта"
+  },
+  "exportFormat": {
+    "message": "Формат экспорта"
+  },
+  "exportFormatOriginTab": {
+    "message": "Специальный формат OriginTab"
+  },
+  "exportFormatGeneral": {
+    "message": "Общий формат (только URL | Title)"
+  },
+  "copyToClipboard": {
+    "message": "Копировать в буфер обмена"
+  },
+  "copied": {
+    "message": "Скопировано!"
+  },
+  "openOriginTab": {
+    "message": "Открыть OriginTab"
+  },
+  "openOriginTabInSidePanel": {
+    "message": "Открыть OriginTab на боковой панели"
+  },
+  "returnOriginTab": {
+    "message": "Вернуться в OriginTab"
+  },
+  "saveAllTabs": {
+    "message": "Сохранить все вкладки"
+  },
+  "saveCurrentTab": {
+    "message": "Сохранить текущую вкладку"
+  },
+  "save": {
+    "message": "Сохранить"
+  },
+  "allTabs": {
+    "message": "все вкладки"
+  },
+  "currentTab": {
+    "message": "текущую вкладку"
+  },
+  "to": {
+    "message": "В"
+  },
+  "saveAllTabsToGroup": {
+    "message": "Сохранить все вкладки в группу"
+  },
+  "saveCurrentTabToGroup": {
+    "message": "Сохранить текущую вкладку в группу"
+  },
+  "saveToTip": {
+    "message": "Нажмите, чтобы сменить место сохранения"
+  },
+  "customizeOriginTab": {
+    "message": "Настроить поведение OriginTab"
+  },
+  "resetAllSettings": {
+    "message": "Сбросить все настройки к значениям по умолчанию?"
+  },
+  "autoOpenOnStartup": {
+    "message": "Открывать при запуске"
+  },
+  "autoOpenDescription": {
+    "message": "Автоматически открывать OriginTab при запуске браузера"
+  },
+  "autoOpenTooltip": {
+    "message": "Если вы предпочитаете открывать OriginTab на боковой панели, отключите эту опцию (OriginTab можно открыть на боковой панели с помощью сочетаний клавиш, указанных выше)."
+  },
+  "confirmBeforeDelete": {
+    "message": "Подтверждать удаление"
+  },
+  "confirmDeleteDescription": {
+    "message": "Показывать подтверждение при удалении вкладок или групп"
+  },
+  "iconClickAction": {
+    "message": "Действие при нажатии на значок"
+  },
+  "clickActionDescription": {
+    "message": "Выберите действие при нажатии на значок расширения"
+  },
+  "saveAll": {
+    "message": "Сохранить все вкладки"
+  },
+  "saveAllDescription": {
+    "message": "Сохранить все вкладки текущего окна в OriginTab"
+  },
+  "saveCurrent": {
+    "message": "Сохранить только текущую вкладку"
+  },
+  "saveCurrentDescription": {
+    "message": "Сохранить в OriginTab только активную вкладку"
+  },
+  "showPopup": {
+    "message": "Показывать всплывающее меню"
+  },
+  "showPopupDescription": {
+    "message": "Открыть всплывающее окно с параметрами"
+  },
+  "urlDisplayMode": {
+    "message": "Отображение URL"
+  },
+  "urlDisplayDescription": {
+    "message": "Выберите способ отображения URL в сохранённых вкладках"
+  },
+  "urlDisplayNone": {
+    "message": "Не показывать"
+  },
+  "urlDisplayNoneDescription": {
+    "message": "Скрывать URL в сохранённых вкладках"
+  },
+  "urlDisplayHostname": {
+    "message": "Только имя хоста"
+  },
+  "urlDisplayHostnameDescription": {
+    "message": "Показывать только имя хоста (например, example.com)"
+  },
+  "urlDisplayFull": {
+    "message": "Полный URL"
+  },
+  "urlDisplayFullDescription": {
+    "message": "Показывать полный URL"
+  },
+  "restoreTabAction": {
+    "message": "Действие при восстановлении"
+  },
+  "restoreActionDescription": {
+    "message": "Выберите действие при восстановлении вкладок"
+  },
+  "openWithoutJump": {
+    "message": "Открыть без перехода"
+  },
+  "openWithoutJumpDescription": {
+    "message": "Открывать вкладки, не переключаясь на них"
+  },
+  "openAndJump": {
+    "message": "Открыть и перейти"
+  },
+  "openAndJumpDescription": {
+    "message": "Открывать вкладки и переключаться на них (при нажатии с Ctrl/Command/Shift действует стандартное поведение браузера)"
+  },
+  "openGroupInNewWindow": {
+    "message": "Открывать группу в"
+  },
+  "openGroupInNewWindowDescription": {
+    "message": "Выберите, где открывать группы вкладок (здесь «группа» означает одну или несколько коллекций вкладок, сохранённых в разное время)"
+  },
+  "openInCurrentWindow": {
+    "message": "Текущее окно"
+  },
+  "openInCurrentWindowDescription": {
+    "message": "Открывать группы вкладок в текущем окне"
+  },
+  "openInNewWindow": {
+    "message": "Новое окно"
+  },
+  "openInNewWindowDescription": {
+    "message": "Открывать группы вкладок в новом окне"
+  },
+  "timeDisplayMode": {
+    "message": "Отображение времени"
+  },
+  "timeDisplayDescription": {
+    "message": "Выберите способ отображения времени сохранения вкладок"
+  },
+  "timeDisplayRelative": {
+    "message": "Относительное время"
+  },
+  "timeDisplayRelativeDescription": {
+    "message": "Показывать время в относительном формате (например, 2 минуты назад)"
+  },
+  "timeDisplayAbsolute": {
+    "message": "Абсолютное время"
+  },
+  "timeDisplayAbsoluteDescription": {
+    "message": "Показывать время в абсолютном формате (например, 16 апр. 2026 г., 12:30)"
+  },
+  "shortcuts": {
+    "message": "Сочетания клавиш"
+  },
+  "unset": {
+    "message": "Не задано"
+  },
+  "setShortcuts": {
+    "message": "Настроить сочетания"
+  },
+  "setShortcutsFirefox": {
+    "message": "Перейдите в менеджер дополнений, чтобы настроить сочетания клавиш"
+  },
+  "aboutOriginTab": {
+    "message": "О OriginTab"
+  },
+  "aboutDescription": {
+    "message": "Перейдите на _a_, чтобы узнать больше об OriginTab."
+  },
+  "feedbackDescription": {
+    "message": "Если у вас возникли проблемы при использовании OriginTab, сообщите о них через эту _a_."
+  },
+  "productPage": {
+    "message": "Страница продукта"
+  },
+  "feedbackForm": {
+    "message": "форму"
+  },
+  "failedToLoadSettings": {
+    "message": "Не удалось загрузить настройки"
+  },
+  "deleteFailed": {
+    "message": "Не удалось удалить. Повторите попытку"
+  },
+  "justNow": {
+    "message": "Только что"
+  },
+  "deleteGroupTitle": {
+    "message": "Удалить группу"
+  },
+  "deleteCollectionTitle": {
+    "message": "Удалить коллекцию"
+  },
+  "deleteTabTitle": {
+    "message": "Удалить вкладку"
+  },
+  "deleteSelectedTabsTitle": {
+    "message": "Удалить выбранные вкладки"
+  },
+  "clearAllTitle": {
+    "message": "Удалить всё"
+  },
+  "resetSettingsTitle": {
+    "message": "Сбросить настройки"
+  }
+}

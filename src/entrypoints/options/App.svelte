@@ -105,6 +105,19 @@
       },
     })
   }
+
+  function getMessageWithLink(
+    messageName: 'aboutDescription' | 'feedbackDescription',
+    href: string,
+    linkText: string,
+  ) {
+    return browser.i18n
+      .getMessage(messageName)
+      .replace(
+        '_a_',
+        `<a href="${href}" class="underline" target="_blank">${linkText}</a>`,
+      )
+  }
 </script>
 
 <div class="min-h-screen">
@@ -343,17 +356,20 @@
         </div>
         <p>{browser.i18n.getMessage('extDescription')}</p>
         <p>
-          {browser.i18n.getMessage('aboutDescription1')}
-          <a
-            href={browser.i18n.getUILanguage().startsWith('zh')
-              ? 'https://products.g1en.site/zh/origintab/'
-              : 'https://products.g1en.site/origintab/'}
-            class="underline"
-            target="_blank"
-          >
-            {browser.i18n.getMessage('productPage')}
-          </a>
-          {browser.i18n.getMessage('aboutDescription2')}
+          {@html getMessageWithLink(
+            'aboutDescription',
+            browser.i18n.getUILanguage().startsWith('zh')
+              ? 'https://products.g1en.site/zh/origintab'
+              : 'https://products.g1en.site/origintab',
+            browser.i18n.getMessage('productPage'),
+          )}
+        </p>
+        <p>
+          {@html getMessageWithLink(
+            'feedbackDescription',
+            'https://j9ir8awapn.feishu.cn/share/base/form/shrcnNojJKGEEBowpvoFzuQFedb',
+            browser.i18n.getMessage('feedbackForm'),
+          )}
         </p>
       </div>
     </section>

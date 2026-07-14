@@ -1,0 +1,428 @@
+{
+  "extName": {
+    "message": "OriginTab - Enregistrez vos onglets"
+  },
+  "extDescription": {
+    "message": "Enregistrez vos onglets de la manière la plus simple."
+  },
+  "confirm": {
+    "message": "Confirmer"
+  },
+  "cancel": {
+    "message": "Annuler"
+  },
+  "import": {
+    "message": "Importer"
+  },
+  "export": {
+    "message": "Exporter"
+  },
+  "clear": {
+    "message": "Tout effacer"
+  },
+  "delete": {
+    "message": "Supprimer"
+  },
+  "restore": {
+    "message": "Restaurer"
+  },
+  "restoreAndPreserve": {
+    "message": "Restaurer et conserver"
+  },
+  "settings": {
+    "message": "Paramètres"
+  },
+  "reset": {
+    "message": "Réinitialiser"
+  },
+  "noSavedTabs": {
+    "message": "Aucun onglet enregistré"
+  },
+  "emptyStateMessage": {
+    "message": "Cliquez sur l’icône OriginTab dans la barre d’outils du navigateur pour enregistrer les onglets de la fenêtre actuelle"
+  },
+  "newGroup": {
+    "message": "Nouveau groupe"
+  },
+  "groupNamePlaceholder": {
+    "message": "Nom du groupe"
+  },
+  "defaultGroupCannotBeCreated": {
+    "message": "Le nom « Default » est réservé au groupe par défaut. Veuillez utiliser un autre nom"
+  },
+  "groupCreated": {
+    "message": "Groupe créé"
+  },
+  "failedToCreateGroup": {
+    "message": "Échec de la création du groupe"
+  },
+  "clearAllConfirm": {
+    "message": "Voulez-vous vraiment effacer tous les onglets enregistrés ? Cette action est irréversible."
+  },
+  "allTabsCleared": {
+    "message": "Tous les onglets ont été effacés"
+  },
+  "failedToClearAllTabs": {
+    "message": "Échec de l’effacement de tous les onglets"
+  },
+  "deleteGroupConfirm": {
+    "message": "Supprimer ce groupe ? Les onglets seront déplacés vers Default."
+  },
+  "groupDeleted": {
+    "message": "Groupe supprimé, onglets déplacés vers Default"
+  },
+  "noTabsInGroup": {
+    "message": "Aucun onglet dans ce groupe"
+  },
+  "selectUserGroup": {
+    "message": "Sélectionner un groupe"
+  },
+  "allUserGroups": {
+    "message": "Tous les groupes"
+  },
+  "setAsDefaultGroup": {
+    "message": "Définir comme groupe par défaut"
+  },
+  "defaultGroup": {
+    "message": "Groupe par défaut"
+  },
+  "defaultGroupSetTo": {
+    "message": "Groupe par défaut défini sur $1"
+  },
+  "setDefaultFailed": {
+    "message": "Échec de la définition du groupe par défaut"
+  },
+  "deleteCollection": {
+    "message": "Supprimer cette collection ?"
+  },
+  "collectionDeleted": {
+    "message": "Collection d’onglets supprimée"
+  },
+  "tabsRestored": {
+    "message": "Onglets restaurés"
+  },
+  "restoreFailed": {
+    "message": "Échec de la restauration des onglets"
+  },
+  "tabRestored": {
+    "message": "Onglet restauré"
+  },
+  "deleteTabConfirm": {
+    "message": "Supprimer cet onglet ?"
+  },
+  "deleteSelectedTabsConfirm": {
+    "message": "Supprimer les onglets sélectionnés ?"
+  },
+  "tabDeleted": {
+    "message": "Onglet supprimé"
+  },
+  "moveTo": {
+    "message": "Déplacer vers"
+  },
+  "moveTabs": {
+    "message": "Déplacer les onglets"
+  },
+  "moveSelectedTabsTo": {
+    "message": "Déplacer la sélection ($1 $2) vers"
+  },
+  "tabSingular": {
+    "message": "onglet"
+  },
+  "tabPlural": {
+    "message": "onglets"
+  },
+  "tabsMoved": {
+    "message": "Onglets déplacés"
+  },
+  "moveTabsFailed": {
+    "message": "Échec du déplacement des onglets"
+  },
+  "untitled": {
+    "message": "Sans titre"
+  },
+  "editTitle": {
+    "message": "Modifier le titre"
+  },
+  "tabTitleUpdated": {
+    "message": "Titre de l’onglet mis à jour"
+  },
+  "tabTitleUpdateFailed": {
+    "message": "Échec de la mise à jour du titre de l’onglet"
+  },
+  "exportedSuccessfully": {
+    "message": "Exportation réussie"
+  },
+  "exportFailed": {
+    "message": "Échec de l’exportation"
+  },
+  "pleaseEnterDataToImport": {
+    "message": "Veuillez saisir les données à importer"
+  },
+  "importedTabs": {
+    "message": "Nombre d’onglets importés : $1"
+  },
+  "importedTabsWithErrors": {
+    "message": "Échec de l’importation. Vérifiez les données importées"
+  },
+  "importFailed": {
+    "message": "Échec de l’importation"
+  },
+  "importTabs": {
+    "message": "Importer des onglets"
+  },
+  "importTargetGroup": {
+    "message": "Groupe cible"
+  },
+  "importTargetGroupHint": {
+    "message": "Sélectionnez un groupe dans lequel enregistrer les onglets"
+  },
+  "importTargetGroupNotRequiredHint": {
+    "message": "Ce format spécifique ne nécessite pas de préciser un groupe"
+  },
+  "importPlaceholder": {
+    "message": "Format général :\nhttps://example.com | Exemple de titre\nhttps://another.com | Autre titre\n\nFormat spécifique à OriginTab :\nNom du groupe\n2026-04-23T12:00:00.000Z\nhttps://example.com | Exemple de titre\nhttps://another.com | Autre titre"
+  },
+  "importFile": {
+    "message": "Importer un fichier"
+  },
+  "importFileHint": {
+    "message": "Importez un fichier texte au même format « URL | Title » ; son contenu remplira la zone de texte ci-dessous. Vous pouvez aussi coller les données directement."
+  },
+  "failedToReadImportFile": {
+    "message": "Échec de la lecture du fichier d’importation"
+  },
+  "preview": {
+    "message": "Aperçu"
+  },
+  "noDataToExport": {
+    "message": "Aucune donnée à exporter"
+  },
+  "exportFormat": {
+    "message": "Format d’exportation"
+  },
+  "exportFormatOriginTab": {
+    "message": "Format spécifique à OriginTab"
+  },
+  "exportFormatGeneral": {
+    "message": "Format général (URL | Title uniquement)"
+  },
+  "copyToClipboard": {
+    "message": "Copier dans le presse-papiers"
+  },
+  "copied": {
+    "message": "Copié !"
+  },
+  "openOriginTab": {
+    "message": "Ouvrir OriginTab"
+  },
+  "openOriginTabInSidePanel": {
+    "message": "Ouvrir OriginTab dans le panneau latéral"
+  },
+  "returnOriginTab": {
+    "message": "Retour à OriginTab"
+  },
+  "saveAllTabs": {
+    "message": "Enregistrer tous les onglets"
+  },
+  "saveCurrentTab": {
+    "message": "Enregistrer l’onglet actuel"
+  },
+  "save": {
+    "message": "Enregistrer"
+  },
+  "allTabs": {
+    "message": "tous les onglets"
+  },
+  "currentTab": {
+    "message": "l’onglet actuel"
+  },
+  "to": {
+    "message": "Vers"
+  },
+  "saveAllTabsToGroup": {
+    "message": "Enregistrer tous les onglets dans le groupe"
+  },
+  "saveCurrentTabToGroup": {
+    "message": "Enregistrer l’onglet actuel dans le groupe"
+  },
+  "saveToTip": {
+    "message": "Cliquez pour changer la destination d’enregistrement"
+  },
+  "customizeOriginTab": {
+    "message": "Personnaliser le comportement d’OriginTab"
+  },
+  "resetAllSettings": {
+    "message": "Réinitialiser tous les paramètres par défaut ?"
+  },
+  "autoOpenOnStartup": {
+    "message": "Ouverture automatique au démarrage"
+  },
+  "autoOpenDescription": {
+    "message": "Ouvrir automatiquement OriginTab au démarrage du navigateur"
+  },
+  "autoOpenTooltip": {
+    "message": "Si vous préférez ouvrir OriginTab dans le panneau latéral, désactivez cette option (vous pouvez ouvrir OriginTab dans le panneau latéral avec les raccourcis clavier indiqués ci-dessus)."
+  },
+  "confirmBeforeDelete": {
+    "message": "Confirmer avant de supprimer"
+  },
+  "confirmDeleteDescription": {
+    "message": "Afficher une boîte de dialogue de confirmation lors de la suppression d’onglets ou de groupes"
+  },
+  "iconClickAction": {
+    "message": "Action au clic sur l’icône"
+  },
+  "clickActionDescription": {
+    "message": "Choisissez ce qui se passe lorsque vous cliquez sur l’icône de l’extension"
+  },
+  "saveAll": {
+    "message": "Enregistrer tous les onglets"
+  },
+  "saveAllDescription": {
+    "message": "Enregistrer tous les onglets de la fenêtre actuelle dans OriginTab"
+  },
+  "saveCurrent": {
+    "message": "Enregistrer l’onglet actuel"
+  },
+  "saveCurrentDescription": {
+    "message": "Enregistrer uniquement l’onglet actif dans OriginTab"
+  },
+  "showPopup": {
+    "message": "Afficher le pop-up"
+  },
+  "showPopupDescription": {
+    "message": "Ouvrir une fenêtre pop-up avec des options"
+  },
+  "urlDisplayMode": {
+    "message": "Affichage des URL"
+  },
+  "urlDisplayDescription": {
+    "message": "Choisissez comment afficher les URL dans les onglets enregistrés"
+  },
+  "urlDisplayNone": {
+    "message": "Ne pas afficher"
+  },
+  "urlDisplayNoneDescription": {
+    "message": "Masquer les URL dans les onglets enregistrés"
+  },
+  "urlDisplayHostname": {
+    "message": "Nom d’hôte uniquement"
+  },
+  "urlDisplayHostnameDescription": {
+    "message": "Afficher uniquement le nom d’hôte (par ex. example.com)"
+  },
+  "urlDisplayFull": {
+    "message": "URL complète"
+  },
+  "urlDisplayFullDescription": {
+    "message": "Afficher l’URL complète"
+  },
+  "restoreTabAction": {
+    "message": "Action de restauration"
+  },
+  "restoreActionDescription": {
+    "message": "Choisissez ce qui se passe lors de la restauration des onglets"
+  },
+  "openWithoutJump": {
+    "message": "Ouvrir sans basculer"
+  },
+  "openWithoutJumpDescription": {
+    "message": "Ouvrir les onglets sans basculer dessus"
+  },
+  "openAndJump": {
+    "message": "Ouvrir et basculer"
+  },
+  "openAndJumpDescription": {
+    "message": "Ouvrir les onglets et basculer dessus (avec Ctrl/Command/Shift + clic, le comportement par défaut du navigateur s’applique)"
+  },
+  "openGroupInNewWindow": {
+    "message": "Ouvrir le groupe dans"
+  },
+  "openGroupInNewWindowDescription": {
+    "message": "Choisissez où ouvrir les groupes d’onglets (ici, le terme « groupe » désigne une ou plusieurs collections d’onglets enregistrées à différents moments)"
+  },
+  "openInCurrentWindow": {
+    "message": "Fenêtre actuelle"
+  },
+  "openInCurrentWindowDescription": {
+    "message": "Ouvrir les groupes d’onglets dans la fenêtre actuelle"
+  },
+  "openInNewWindow": {
+    "message": "Nouvelle fenêtre"
+  },
+  "openInNewWindowDescription": {
+    "message": "Ouvrir les groupes d’onglets dans une nouvelle fenêtre"
+  },
+  "timeDisplayMode": {
+    "message": "Affichage de l’heure"
+  },
+  "timeDisplayDescription": {
+    "message": "Choisissez comment afficher l’heure d’enregistrement des onglets"
+  },
+  "timeDisplayRelative": {
+    "message": "Heure relative"
+  },
+  "timeDisplayRelativeDescription": {
+    "message": "Afficher l’heure au format relatif (par ex. il y a 2 minutes)"
+  },
+  "timeDisplayAbsolute": {
+    "message": "Heure absolue"
+  },
+  "timeDisplayAbsoluteDescription": {
+    "message": "Afficher l’heure au format absolu (par ex. 16 avr. 2026, 12:30)"
+  },
+  "shortcuts": {
+    "message": "Raccourcis"
+  },
+  "unset": {
+    "message": "Non défini"
+  },
+  "setShortcuts": {
+    "message": "Définir les raccourcis"
+  },
+  "setShortcutsFirefox": {
+    "message": "Accédez au gestionnaire de modules complémentaires pour définir les raccourcis"
+  },
+  "aboutOriginTab": {
+    "message": "À propos d’OriginTab"
+  },
+  "aboutDescription": {
+    "message": "Visitez _a_ pour en savoir plus sur OriginTab."
+  },
+  "feedbackDescription": {
+    "message": "Si vous rencontrez un problème lors de l’utilisation d’OriginTab, vous pouvez le signaler via ce _a_."
+  },
+  "productPage": {
+    "message": "Page produit"
+  },
+  "feedbackForm": {
+    "message": "formulaire"
+  },
+  "failedToLoadSettings": {
+    "message": "Échec du chargement des paramètres"
+  },
+  "deleteFailed": {
+    "message": "Échec de la suppression. Veuillez réessayer"
+  },
+  "justNow": {
+    "message": "À l’instant"
+  },
+  "deleteGroupTitle": {
+    "message": "Supprimer le groupe"
+  },
+  "deleteCollectionTitle": {
+    "message": "Supprimer la collection"
+  },
+  "deleteTabTitle": {
+    "message": "Supprimer l’onglet"
+  },
+  "deleteSelectedTabsTitle": {
+    "message": "Supprimer les onglets sélectionnés"
+  },
+  "clearAllTitle": {
+    "message": "Tout effacer"
+  },
+  "resetSettingsTitle": {
+    "message": "Réinitialiser les paramètres"
+  }
+}

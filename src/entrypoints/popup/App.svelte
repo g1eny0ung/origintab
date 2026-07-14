@@ -47,7 +47,7 @@
   })
 </script>
 
-<div class="w-[300px] divide-y divide-base-200">
+<div class="w-75 divide-y divide-base-200">
   <div class="flex justify-between items-center p-2">
     <button class="btn btn-ghost btn-sm" onclick={openManager}>
       {browser.i18n.getMessage('openOriginTab')}

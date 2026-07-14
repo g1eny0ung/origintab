@@ -5,6 +5,7 @@
   "extDescription": {
     "message": "Save your tabs in the simplest way."
   },
+
   "confirm": {
     "message": "Confirm"
   },
@@ -20,6 +21,22 @@
   "clear": {
     "message": "Clear"
   },
+  "delete": {
+    "message": "Delete"
+  },
+  "restore": {
+    "message": "Restore"
+  },
+  "restoreAndPreserve": {
+    "message": "Restore & Preserve"
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "reset": {
+    "message": "Reset"
+  },
+
   "noSavedTabs": {
     "message": "No saved tabs"
   },
@@ -50,168 +67,35 @@
   "failedToClearAllTabs": {
     "message": "Failed to clear all tabs"
   },
-  "exportedSuccessfully": {
-    "message": "Exported successfully"
-  },
-  "exportFailed": {
-    "message": "Export failed"
-  },
-  "pleaseEnterDataToImport": {
-    "message": "Please enter data to import"
-  },
-  "importedTabs": {
-    "message": "Imported $1 tabs"
-  },
-  "importedTabsWithErrors": {
-    "message": "Imported failed, please check the data you imported"
-  },
-  "importFailed": {
-    "message": "Import failed"
-  },
-  "importTabs": {
-    "message": "Import Tabs"
-  },
-  "importTargetGroup": {
-    "message": "Target Group"
-  },
-  "importTargetGroupHint": {
-    "message": "Select a group to save the tabs"
-  },
-  "importTargetGroupNotRequiredHint": {
-    "message": "Specific format does not require specifying a group"
-  },
-  "importPlaceholder": {
-    "message": "General format:\nhttps://example.com | Example Title\nhttps://another.com | Another Title\n\nOriginTab specific format:\nGroup Name\n2026-04-23T12:00:00.000Z\nhttps://example.com | Example Title\nhttps://another.com | Another Title"
-  },
-  "importFile": {
-    "message": "Import File"
-  },
-  "importFileHint": {
-    "message": "Upload a text file in the same \"URL | Title\" format, and the content will fill the text area below. You can also paste the data directly."
-  },
-  "failedToReadImportFile": {
-    "message": "Failed to read import file"
-  },
-  "openOriginTab": {
-    "message": "Open OriginTab"
-  },
-  "openOriginTabInSidePanel": {
-    "message": "Open OriginTab in Side Panel"
-  },
-  "returnOriginTab": {
-    "message": "Return OriginTab"
-  },
-  "saveAllTabs": {
-    "message": "Save all tabs"
-  },
-  "saveCurrentTab": {
-    "message": "Save current tab"
-  },
-  "save": {
-    "message": "Save"
-  },
-  "allTabs": {
-    "message": "all tabs"
-  },
-  "currentTab": {
-    "message": "current tab"
-  },
-  "to": {
-    "message": "To"
-  },
-  "saveAllTabsToGroup": {
-    "message": "Save all tabs to group"
-  },
-  "saveCurrentTabToGroup": {
-    "message": "Save current tab to group"
-  },
-  "saveToTip": {
-    "message": "Click to switch save target"
-  },
-  "settings": {
-    "message": "Settings"
-  },
-  "customizeOriginTab": {
-    "message": "Customize OriginTab behavior"
-  },
-  "reset": {
-    "message": "Reset"
-  },
-  "resetAllSettings": {
-    "message": "Reset all settings to default?"
-  },
-  "autoOpenOnStartup": {
-    "message": "Auto-open on Startup"
-  },
-  "autoOpenDescription": {
-    "message": "Automatically open OriginTab when browser starts"
-  },
-  "autoOpenTooltip": {
-    "message": "If you prefer to open OriginTab in side panel, you can turn this option off (You can open OriginTab in side panel using shortcut keys, please refer to the shortcut keys above)"
-  },
-  "confirmBeforeDelete": {
-    "message": "Confirm before delete"
-  },
-  "confirmDeleteDescription": {
-    "message": "Show confirmation dialog when deleting tabs or groups"
-  },
-  "iconClickAction": {
-    "message": "Icon Click Action"
-  },
-  "clickActionDescription": {
-    "message": "Choose what happens when you click the extension icon"
-  },
-  "saveAll": {
-    "message": "Save All Tabs"
-  },
-  "saveAllDescription": {
-    "message": "Save all tabs in current window to OriginTab"
-  },
-  "saveCurrent": {
-    "message": "Save Current Tab Only"
-  },
-  "saveCurrentDescription": {
-    "message": "Save only the currently active tab to OriginTab"
-  },
-  "showPopup": {
-    "message": "Show Popup Menu"
-  },
-  "showPopupDescription": {
-    "message": "Open a popup with options"
-  },
-  "aboutOriginTab": {
-    "message": "About OriginTab"
-  },
-  "aboutDescription1": {
-    "message": "Visit"
-  },
-  "aboutDescription2": {
-    "message": "to learn more about OriginTab."
-  },
-  "productPage": {
-    "message": "Product Homepage"
-  },
-  "delete": {
-    "message": "Delete"
-  },
+
   "deleteGroupConfirm": {
     "message": "Delete this group? Tabs will move to Default."
   },
   "groupDeleted": {
     "message": "Group deleted, tabs moved to Default"
   },
-  "deleteFailed": {
-    "message": "Failed to delete, please try again"
-  },
   "noTabsInGroup": {
     "message": "No tabs in this group"
   },
-  "restore": {
-    "message": "Restore"
+  "selectUserGroup": {
+    "message": "Select Group"
   },
-  "restoreAndPreserve": {
-    "message": "Restore & Preserve"
+  "allUserGroups": {
+    "message": "All Groups"
   },
+  "setAsDefaultGroup": {
+    "message": "Set as Default Group"
+  },
+  "defaultGroup": {
+    "message": "Default Group"
+  },
+  "defaultGroupSetTo": {
+    "message": "Default group set to $1"
+  },
+  "setDefaultFailed": {
+    "message": "Failed to set default group"
+  },
+
   "deleteCollection": {
     "message": "Delete this collection?"
   },
@@ -260,17 +144,161 @@
   "untitled": {
     "message": "Untitled"
   },
-  "open": {
-    "message": "Open"
+  "editTitle": {
+    "message": "Edit title"
   },
-  "failedToLoadData": {
-    "message": "Failed to load data"
+  "tabTitleUpdated": {
+    "message": "Tab title updated"
   },
-  "failedToLoadSettings": {
-    "message": "Failed to load settings"
+  "tabTitleUpdateFailed": {
+    "message": "Failed to update tab title"
   },
-  "failedToLoadGroups": {
-    "message": "Failed to load groups"
+
+  "exportedSuccessfully": {
+    "message": "Exported successfully"
+  },
+  "exportFailed": {
+    "message": "Export failed"
+  },
+  "pleaseEnterDataToImport": {
+    "message": "Please enter data to import"
+  },
+  "importedTabs": {
+    "message": "Imported $1 tabs"
+  },
+  "importedTabsWithErrors": {
+    "message": "Imported failed, please check the data you imported"
+  },
+  "importFailed": {
+    "message": "Import failed"
+  },
+  "importTabs": {
+    "message": "Import Tabs"
+  },
+  "importTargetGroup": {
+    "message": "Target Group"
+  },
+  "importTargetGroupHint": {
+    "message": "Select a group to save the tabs"
+  },
+  "importTargetGroupNotRequiredHint": {
+    "message": "Specific format does not require specifying a group"
+  },
+  "importPlaceholder": {
+    "message": "General format:\nhttps://example.com | Example Title\nhttps://another.com | Another Title\n\nOriginTab specific format:\nGroup Name\n2026-04-23T12:00:00.000Z\nhttps://example.com | Example Title\nhttps://another.com | Another Title"
+  },
+  "importFile": {
+    "message": "Import File"
+  },
+  "importFileHint": {
+    "message": "Upload a text file in the same \"URL | Title\" format, and the content will fill the text area below. You can also paste the data directly."
+  },
+  "failedToReadImportFile": {
+    "message": "Failed to read import file"
+  },
+  "preview": {
+    "message": "Preview"
+  },
+  "noDataToExport": {
+    "message": "No data to export"
+  },
+  "exportFormat": {
+    "message": "Export Format"
+  },
+  "exportFormatOriginTab": {
+    "message": "OriginTab specific format"
+  },
+  "exportFormatGeneral": {
+    "message": "General format (URL | Title only)"
+  },
+  "copyToClipboard": {
+    "message": "Copy to Clipboard"
+  },
+  "copied": {
+    "message": "Copied!"
+  },
+
+  "openOriginTab": {
+    "message": "Open OriginTab"
+  },
+  "openOriginTabInSidePanel": {
+    "message": "Open OriginTab in Side Panel"
+  },
+  "returnOriginTab": {
+    "message": "Return OriginTab"
+  },
+  "saveAllTabs": {
+    "message": "Save all tabs"
+  },
+  "saveCurrentTab": {
+    "message": "Save current tab"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "allTabs": {
+    "message": "all tabs"
+  },
+  "currentTab": {
+    "message": "current tab"
+  },
+  "to": {
+    "message": "To"
+  },
+  "saveAllTabsToGroup": {
+    "message": "Save all tabs to group"
+  },
+  "saveCurrentTabToGroup": {
+    "message": "Save current tab to group"
+  },
+  "saveToTip": {
+    "message": "Click to switch save target"
+  },
+
+  "customizeOriginTab": {
+    "message": "Customize OriginTab behavior"
+  },
+  "resetAllSettings": {
+    "message": "Reset all settings to default?"
+  },
+  "autoOpenOnStartup": {
+    "message": "Auto-open on Startup"
+  },
+  "autoOpenDescription": {
+    "message": "Automatically open OriginTab when browser starts"
+  },
+  "autoOpenTooltip": {
+    "message": "If you prefer to open OriginTab in side panel, you can turn this option off (You can open OriginTab in side panel using shortcut keys, please refer to the shortcut keys above)"
+  },
+  "confirmBeforeDelete": {
+    "message": "Confirm before delete"
+  },
+  "confirmDeleteDescription": {
+    "message": "Show confirmation dialog when deleting tabs or groups"
+  },
+  "iconClickAction": {
+    "message": "Icon Click Action"
+  },
+  "clickActionDescription": {
+    "message": "Choose what happens when you click the extension icon"
+  },
+  "saveAll": {
+    "message": "Save All Tabs"
+  },
+  "saveAllDescription": {
+    "message": "Save all tabs in current window to OriginTab"
+  },
+  "saveCurrent": {
+    "message": "Save Current Tab Only"
+  },
+  "saveCurrentDescription": {
+    "message": "Save only the currently active tab to OriginTab"
+  },
+  "showPopup": {
+    "message": "Show Popup Menu"
+  },
+  "showPopupDescription": {
+    "message": "Open a popup with options"
   },
   "urlDisplayMode": {
     "message": "URL Display Mode"
@@ -314,9 +342,6 @@
   "openAndJumpDescription": {
     "message": "Open tabs and switch to them (when using Ctrl/Command/Shift click, it will follow the browser's default behavior)"
   },
-  "justNow": {
-    "message": "Just now"
-  },
   "openGroupInNewWindow": {
     "message": "Open Group In"
   },
@@ -334,33 +359,6 @@
   },
   "openInNewWindowDescription": {
     "message": "Open tab groups in a new window"
-  },
-  "selectUserGroup": {
-    "message": "Select Group"
-  },
-  "allUserGroups": {
-    "message": "All Groups"
-  },
-  "preview": {
-    "message": "Preview"
-  },
-  "noDataToExport": {
-    "message": "No data to export"
-  },
-  "exportFormat": {
-    "message": "Export Format"
-  },
-  "exportFormatOriginTab": {
-    "message": "OriginTab specific format"
-  },
-  "exportFormatGeneral": {
-    "message": "General format (URL | Title only)"
-  },
-  "copyToClipboard": {
-    "message": "Copy to Clipboard"
-  },
-  "copied": {
-    "message": "Copied!"
   },
   "timeDisplayMode": {
     "message": "Time Display Mode"
@@ -380,6 +378,7 @@
   "timeDisplayAbsoluteDescription": {
     "message": "Show time in absolute format (e.g., Apr 16, 2026, 12:30 PM)"
   },
+
   "shortcuts": {
     "message": "Shortcuts"
   },
@@ -392,26 +391,30 @@
   "setShortcutsFirefox": {
     "message": "Go to Add-ons Manager to set shortcuts"
   },
-  "setAsDefaultGroup": {
-    "message": "Set as Default Group"
+  "aboutOriginTab": {
+    "message": "About OriginTab"
   },
-  "defaultGroup": {
-    "message": "Default Group"
+  "aboutDescription": {
+    "message": "Visit _a_ to learn more about OriginTab."
   },
-  "defaultGroupSetTo": {
-    "message": "Default group set to $1"
+  "feedbackDescription": {
+    "message": "If you encounter any issues while using OriginTab, you can report them through this _a_."
   },
-  "setDefaultFailed": {
-    "message": "Failed to set default group"
+  "productPage": {
+    "message": "Product Homepage"
   },
-  "editTitle": {
-    "message": "Edit title"
+  "feedbackForm": {
+    "message": "form"
   },
-  "tabTitleUpdated": {
-    "message": "Tab title updated"
+
+  "failedToLoadSettings": {
+    "message": "Failed to load settings"
   },
-  "tabTitleUpdateFailed": {
-    "message": "Failed to update tab title"
+  "deleteFailed": {
+    "message": "Failed to delete, please try again"
+  },
+  "justNow": {
+    "message": "Just now"
   },
   "deleteGroupTitle": {
     "message": "Delete Group"

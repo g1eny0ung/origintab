@@ -1,0 +1,428 @@
+{
+  "extName": {
+    "message": "OriginTab - Salve suas abas"
+  },
+  "extDescription": {
+    "message": "Salve suas abas da forma mais simples."
+  },
+  "confirm": {
+    "message": "Confirmar"
+  },
+  "cancel": {
+    "message": "Cancelar"
+  },
+  "import": {
+    "message": "Importar"
+  },
+  "export": {
+    "message": "Exportar"
+  },
+  "clear": {
+    "message": "Limpar tudo"
+  },
+  "delete": {
+    "message": "Excluir"
+  },
+  "restore": {
+    "message": "Restaurar"
+  },
+  "restoreAndPreserve": {
+    "message": "Restaurar e preservar"
+  },
+  "settings": {
+    "message": "Configurações"
+  },
+  "reset": {
+    "message": "Redefinir"
+  },
+  "noSavedTabs": {
+    "message": "Nenhuma aba salva"
+  },
+  "emptyStateMessage": {
+    "message": "Clique no ícone do OriginTab na barra de ferramentas do navegador para salvar as abas da janela atual"
+  },
+  "newGroup": {
+    "message": "Novo grupo"
+  },
+  "groupNamePlaceholder": {
+    "message": "Nome do grupo"
+  },
+  "defaultGroupCannotBeCreated": {
+    "message": "O nome \"Default\" é reservado para o grupo padrão. Use outro nome"
+  },
+  "groupCreated": {
+    "message": "Grupo criado"
+  },
+  "failedToCreateGroup": {
+    "message": "Falha ao criar o grupo"
+  },
+  "clearAllConfirm": {
+    "message": "Tem certeza de que deseja limpar todas as abas salvas? Esta ação não pode ser desfeita."
+  },
+  "allTabsCleared": {
+    "message": "Todas as abas foram limpas"
+  },
+  "failedToClearAllTabs": {
+    "message": "Falha ao limpar todas as abas"
+  },
+  "deleteGroupConfirm": {
+    "message": "Excluir este grupo? As abas serão movidas para Default."
+  },
+  "groupDeleted": {
+    "message": "Grupo excluído; as abas foram movidas para Default"
+  },
+  "noTabsInGroup": {
+    "message": "Não há abas neste grupo"
+  },
+  "selectUserGroup": {
+    "message": "Selecionar grupo"
+  },
+  "allUserGroups": {
+    "message": "Todos os grupos"
+  },
+  "setAsDefaultGroup": {
+    "message": "Definir como grupo padrão"
+  },
+  "defaultGroup": {
+    "message": "Grupo padrão"
+  },
+  "defaultGroupSetTo": {
+    "message": "Grupo padrão definido como $1"
+  },
+  "setDefaultFailed": {
+    "message": "Falha ao definir o grupo padrão"
+  },
+  "deleteCollection": {
+    "message": "Excluir esta coleção?"
+  },
+  "collectionDeleted": {
+    "message": "Coleção de abas excluída"
+  },
+  "tabsRestored": {
+    "message": "Abas restauradas"
+  },
+  "restoreFailed": {
+    "message": "Falha ao restaurar as abas"
+  },
+  "tabRestored": {
+    "message": "Aba restaurada"
+  },
+  "deleteTabConfirm": {
+    "message": "Excluir esta aba?"
+  },
+  "deleteSelectedTabsConfirm": {
+    "message": "Excluir as abas selecionadas?"
+  },
+  "tabDeleted": {
+    "message": "Aba excluída"
+  },
+  "moveTo": {
+    "message": "Mover para"
+  },
+  "moveTabs": {
+    "message": "Mover abas"
+  },
+  "moveSelectedTabsTo": {
+    "message": "Mover a seleção ($1 $2) para"
+  },
+  "tabSingular": {
+    "message": "aba"
+  },
+  "tabPlural": {
+    "message": "abas"
+  },
+  "tabsMoved": {
+    "message": "Abas movidas"
+  },
+  "moveTabsFailed": {
+    "message": "Falha ao mover as abas"
+  },
+  "untitled": {
+    "message": "Sem título"
+  },
+  "editTitle": {
+    "message": "Editar título"
+  },
+  "tabTitleUpdated": {
+    "message": "Título da aba atualizado"
+  },
+  "tabTitleUpdateFailed": {
+    "message": "Falha ao atualizar o título da aba"
+  },
+  "exportedSuccessfully": {
+    "message": "Exportação concluída"
+  },
+  "exportFailed": {
+    "message": "Falha na exportação"
+  },
+  "pleaseEnterDataToImport": {
+    "message": "Insira os dados a serem importados"
+  },
+  "importedTabs": {
+    "message": "Número de abas importadas: $1"
+  },
+  "importedTabsWithErrors": {
+    "message": "Falha na importação. Verifique os dados importados"
+  },
+  "importFailed": {
+    "message": "Falha na importação"
+  },
+  "importTabs": {
+    "message": "Importar abas"
+  },
+  "importTargetGroup": {
+    "message": "Grupo de destino"
+  },
+  "importTargetGroupHint": {
+    "message": "Selecione um grupo para salvar as abas"
+  },
+  "importTargetGroupNotRequiredHint": {
+    "message": "O formato específico não exige a indicação de um grupo"
+  },
+  "importPlaceholder": {
+    "message": "Formato geral:\nhttps://example.com | Título de exemplo\nhttps://another.com | Outro título\n\nFormato específico do OriginTab:\nNome do grupo\n2026-04-23T12:00:00.000Z\nhttps://example.com | Título de exemplo\nhttps://another.com | Outro título"
+  },
+  "importFile": {
+    "message": "Importar arquivo"
+  },
+  "importFileHint": {
+    "message": "Envie um arquivo de texto no mesmo formato \"URL | Title\"; o conteúdo preencherá a área de texto abaixo. Você também pode colar os dados diretamente."
+  },
+  "failedToReadImportFile": {
+    "message": "Falha ao ler o arquivo de importação"
+  },
+  "preview": {
+    "message": "Prévia"
+  },
+  "noDataToExport": {
+    "message": "Não há dados para exportar"
+  },
+  "exportFormat": {
+    "message": "Formato de exportação"
+  },
+  "exportFormatOriginTab": {
+    "message": "Formato específico do OriginTab"
+  },
+  "exportFormatGeneral": {
+    "message": "Formato geral (somente URL | Title)"
+  },
+  "copyToClipboard": {
+    "message": "Copiar para a área de transferência"
+  },
+  "copied": {
+    "message": "Copiado!"
+  },
+  "openOriginTab": {
+    "message": "Abrir OriginTab"
+  },
+  "openOriginTabInSidePanel": {
+    "message": "Abrir OriginTab no painel lateral"
+  },
+  "returnOriginTab": {
+    "message": "Voltar ao OriginTab"
+  },
+  "saveAllTabs": {
+    "message": "Salvar todas as abas"
+  },
+  "saveCurrentTab": {
+    "message": "Salvar aba atual"
+  },
+  "save": {
+    "message": "Salvar"
+  },
+  "allTabs": {
+    "message": "todas as abas"
+  },
+  "currentTab": {
+    "message": "a aba atual"
+  },
+  "to": {
+    "message": "Para"
+  },
+  "saveAllTabsToGroup": {
+    "message": "Salvar todas as abas no grupo"
+  },
+  "saveCurrentTabToGroup": {
+    "message": "Salvar a aba atual no grupo"
+  },
+  "saveToTip": {
+    "message": "Clique para alterar o destino de salvamento"
+  },
+  "customizeOriginTab": {
+    "message": "Personalizar o comportamento do OriginTab"
+  },
+  "resetAllSettings": {
+    "message": "Redefinir todas as configurações para o padrão?"
+  },
+  "autoOpenOnStartup": {
+    "message": "Abrir automaticamente ao iniciar"
+  },
+  "autoOpenDescription": {
+    "message": "Abrir o OriginTab automaticamente ao iniciar o navegador"
+  },
+  "autoOpenTooltip": {
+    "message": "Se preferir abrir o OriginTab no painel lateral, desative esta opção (você pode abrir o OriginTab no painel lateral usando atalhos de teclado; consulte os atalhos acima)."
+  },
+  "confirmBeforeDelete": {
+    "message": "Confirmar antes de excluir"
+  },
+  "confirmDeleteDescription": {
+    "message": "Mostrar uma caixa de confirmação ao excluir abas ou grupos"
+  },
+  "iconClickAction": {
+    "message": "Ação ao clicar no ícone"
+  },
+  "clickActionDescription": {
+    "message": "Escolha o que acontece ao clicar no ícone da extensão"
+  },
+  "saveAll": {
+    "message": "Salvar todas as abas"
+  },
+  "saveAllDescription": {
+    "message": "Salvar todas as abas da janela atual no OriginTab"
+  },
+  "saveCurrent": {
+    "message": "Salvar somente a aba atual"
+  },
+  "saveCurrentDescription": {
+    "message": "Salvar somente a aba ativa no OriginTab"
+  },
+  "showPopup": {
+    "message": "Mostrar menu pop-up"
+  },
+  "showPopupDescription": {
+    "message": "Abrir uma janela pop-up com opções"
+  },
+  "urlDisplayMode": {
+    "message": "Modo de exibição de URL"
+  },
+  "urlDisplayDescription": {
+    "message": "Escolha como exibir URLs nas abas salvas"
+  },
+  "urlDisplayNone": {
+    "message": "Não exibir"
+  },
+  "urlDisplayNoneDescription": {
+    "message": "Ocultar URLs nas abas salvas"
+  },
+  "urlDisplayHostname": {
+    "message": "Somente nome do host"
+  },
+  "urlDisplayHostnameDescription": {
+    "message": "Exibir somente o nome do host (por exemplo, example.com)"
+  },
+  "urlDisplayFull": {
+    "message": "URL completa"
+  },
+  "urlDisplayFullDescription": {
+    "message": "Exibir a URL completa"
+  },
+  "restoreTabAction": {
+    "message": "Ação ao restaurar abas"
+  },
+  "restoreActionDescription": {
+    "message": "Escolha o que acontece ao restaurar abas"
+  },
+  "openWithoutJump": {
+    "message": "Abrir sem alternar"
+  },
+  "openWithoutJumpDescription": {
+    "message": "Abrir as abas sem alternar para elas"
+  },
+  "openAndJump": {
+    "message": "Abrir e alternar"
+  },
+  "openAndJumpDescription": {
+    "message": "Abrir as abas e alternar para elas (ao usar Ctrl/Command/Shift + clique, será seguido o comportamento padrão do navegador)"
+  },
+  "openGroupInNewWindow": {
+    "message": "Abrir grupo em"
+  },
+  "openGroupInNewWindowDescription": {
+    "message": "Escolha onde abrir os grupos de abas (aqui, o termo \"grupo\" se refere a uma ou mais coleções de abas salvas em momentos diferentes)"
+  },
+  "openInCurrentWindow": {
+    "message": "Janela atual"
+  },
+  "openInCurrentWindowDescription": {
+    "message": "Abrir os grupos de abas na janela atual"
+  },
+  "openInNewWindow": {
+    "message": "Nova janela"
+  },
+  "openInNewWindowDescription": {
+    "message": "Abrir os grupos de abas em uma nova janela"
+  },
+  "timeDisplayMode": {
+    "message": "Exibição de hora"
+  },
+  "timeDisplayDescription": {
+    "message": "Escolha como exibir o horário em que as abas foram salvas"
+  },
+  "timeDisplayRelative": {
+    "message": "Hora relativa"
+  },
+  "timeDisplayRelativeDescription": {
+    "message": "Exibir o horário em formato relativo (por exemplo, há 2 minutos)"
+  },
+  "timeDisplayAbsolute": {
+    "message": "Hora absoluta"
+  },
+  "timeDisplayAbsoluteDescription": {
+    "message": "Exibir o horário em formato absoluto (por exemplo, 16 de abr. de 2026, 12:30)"
+  },
+  "shortcuts": {
+    "message": "Atalhos"
+  },
+  "unset": {
+    "message": "Não definido"
+  },
+  "setShortcuts": {
+    "message": "Definir atalhos"
+  },
+  "setShortcutsFirefox": {
+    "message": "Acesse o Gerenciador de extensões para definir atalhos"
+  },
+  "aboutOriginTab": {
+    "message": "Sobre o OriginTab"
+  },
+  "aboutDescription": {
+    "message": "Acesse _a_ para saber mais sobre o OriginTab."
+  },
+  "feedbackDescription": {
+    "message": "Se encontrar algum problema ao usar o OriginTab, envie seu feedback por meio deste _a_."
+  },
+  "productPage": {
+    "message": "Página do produto"
+  },
+  "feedbackForm": {
+    "message": "formulário"
+  },
+  "failedToLoadSettings": {
+    "message": "Falha ao carregar as configurações"
+  },
+  "deleteFailed": {
+    "message": "Falha ao excluir. Tente novamente"
+  },
+  "justNow": {
+    "message": "Agora mesmo"
+  },
+  "deleteGroupTitle": {
+    "message": "Excluir grupo"
+  },
+  "deleteCollectionTitle": {
+    "message": "Excluir coleção"
+  },
+  "deleteTabTitle": {
+    "message": "Excluir aba"
+  },
+  "deleteSelectedTabsTitle": {
+    "message": "Excluir abas selecionadas"
+  },
+  "clearAllTitle": {
+    "message": "Limpar tudo"
+  },
+  "resetSettingsTitle": {
+    "message": "Redefinir configurações"
+  }
+}

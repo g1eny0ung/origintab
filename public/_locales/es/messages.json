@@ -1,0 +1,428 @@
+{
+  "extName": {
+    "message": "OriginTab - Guarda tus pestañas"
+  },
+  "extDescription": {
+    "message": "Guarda tus pestañas de la forma más sencilla."
+  },
+  "confirm": {
+    "message": "Confirmar"
+  },
+  "cancel": {
+    "message": "Cancelar"
+  },
+  "import": {
+    "message": "Importar"
+  },
+  "export": {
+    "message": "Exportar"
+  },
+  "clear": {
+    "message": "Borrar todo"
+  },
+  "delete": {
+    "message": "Eliminar"
+  },
+  "restore": {
+    "message": "Restaurar"
+  },
+  "restoreAndPreserve": {
+    "message": "Restaurar y conservar"
+  },
+  "settings": {
+    "message": "Configuración"
+  },
+  "reset": {
+    "message": "Restablecer"
+  },
+  "noSavedTabs": {
+    "message": "No hay pestañas guardadas"
+  },
+  "emptyStateMessage": {
+    "message": "Haz clic en el icono de OriginTab en la barra de herramientas del navegador para guardar las pestañas de la ventana actual"
+  },
+  "newGroup": {
+    "message": "Nuevo grupo"
+  },
+  "groupNamePlaceholder": {
+    "message": "Nombre del grupo"
+  },
+  "defaultGroupCannotBeCreated": {
+    "message": "El nombre «Default» está reservado para el grupo predeterminado. Usa otro nombre"
+  },
+  "groupCreated": {
+    "message": "Grupo creado"
+  },
+  "failedToCreateGroup": {
+    "message": "No se pudo crear el grupo"
+  },
+  "clearAllConfirm": {
+    "message": "¿Seguro que quieres borrar todas las pestañas guardadas? Esta acción no se puede deshacer."
+  },
+  "allTabsCleared": {
+    "message": "Se borraron todas las pestañas"
+  },
+  "failedToClearAllTabs": {
+    "message": "No se pudieron borrar todas las pestañas"
+  },
+  "deleteGroupConfirm": {
+    "message": "¿Eliminar este grupo? Las pestañas se moverán a Default."
+  },
+  "groupDeleted": {
+    "message": "Grupo eliminado; las pestañas se movieron a Default"
+  },
+  "noTabsInGroup": {
+    "message": "No hay pestañas en este grupo"
+  },
+  "selectUserGroup": {
+    "message": "Seleccionar grupo"
+  },
+  "allUserGroups": {
+    "message": "Todos los grupos"
+  },
+  "setAsDefaultGroup": {
+    "message": "Establecer como grupo predeterminado"
+  },
+  "defaultGroup": {
+    "message": "Grupo predeterminado"
+  },
+  "defaultGroupSetTo": {
+    "message": "Grupo predeterminado establecido en $1"
+  },
+  "setDefaultFailed": {
+    "message": "No se pudo establecer el grupo predeterminado"
+  },
+  "deleteCollection": {
+    "message": "¿Eliminar esta colección?"
+  },
+  "collectionDeleted": {
+    "message": "Colección de pestañas eliminada"
+  },
+  "tabsRestored": {
+    "message": "Pestañas restauradas"
+  },
+  "restoreFailed": {
+    "message": "No se pudieron restaurar las pestañas"
+  },
+  "tabRestored": {
+    "message": "Pestaña restaurada"
+  },
+  "deleteTabConfirm": {
+    "message": "¿Eliminar esta pestaña?"
+  },
+  "deleteSelectedTabsConfirm": {
+    "message": "¿Eliminar las pestañas seleccionadas?"
+  },
+  "tabDeleted": {
+    "message": "Pestaña eliminada"
+  },
+  "moveTo": {
+    "message": "Mover a"
+  },
+  "moveTabs": {
+    "message": "Mover pestañas"
+  },
+  "moveSelectedTabsTo": {
+    "message": "Mover la selección ($1 $2) a"
+  },
+  "tabSingular": {
+    "message": "pestaña"
+  },
+  "tabPlural": {
+    "message": "pestañas"
+  },
+  "tabsMoved": {
+    "message": "Pestañas movidas"
+  },
+  "moveTabsFailed": {
+    "message": "No se pudieron mover las pestañas"
+  },
+  "untitled": {
+    "message": "Sin título"
+  },
+  "editTitle": {
+    "message": "Editar título"
+  },
+  "tabTitleUpdated": {
+    "message": "Título de la pestaña actualizado"
+  },
+  "tabTitleUpdateFailed": {
+    "message": "No se pudo actualizar el título de la pestaña"
+  },
+  "exportedSuccessfully": {
+    "message": "Exportación completada"
+  },
+  "exportFailed": {
+    "message": "Error de exportación"
+  },
+  "pleaseEnterDataToImport": {
+    "message": "Introduce los datos que deseas importar"
+  },
+  "importedTabs": {
+    "message": "Número de pestañas importadas: $1"
+  },
+  "importedTabsWithErrors": {
+    "message": "La importación falló. Comprueba los datos importados"
+  },
+  "importFailed": {
+    "message": "Error de importación"
+  },
+  "importTabs": {
+    "message": "Importar pestañas"
+  },
+  "importTargetGroup": {
+    "message": "Grupo de destino"
+  },
+  "importTargetGroupHint": {
+    "message": "Selecciona un grupo para guardar las pestañas"
+  },
+  "importTargetGroupNotRequiredHint": {
+    "message": "El formato específico no requiere indicar un grupo"
+  },
+  "importPlaceholder": {
+    "message": "Formato general:\nhttps://example.com | Título de ejemplo\nhttps://another.com | Otro título\n\nFormato específico de OriginTab:\nNombre del grupo\n2026-04-23T12:00:00.000Z\nhttps://example.com | Título de ejemplo\nhttps://another.com | Otro título"
+  },
+  "importFile": {
+    "message": "Importar archivo"
+  },
+  "importFileHint": {
+    "message": "Sube un archivo de texto con el mismo formato \"URL | Title\" y su contenido se añadirá al área de texto de abajo. También puedes pegar los datos directamente."
+  },
+  "failedToReadImportFile": {
+    "message": "No se pudo leer el archivo de importación"
+  },
+  "preview": {
+    "message": "Vista previa"
+  },
+  "noDataToExport": {
+    "message": "No hay datos para exportar"
+  },
+  "exportFormat": {
+    "message": "Formato de exportación"
+  },
+  "exportFormatOriginTab": {
+    "message": "Formato específico de OriginTab"
+  },
+  "exportFormatGeneral": {
+    "message": "Formato general (solo URL | Title)"
+  },
+  "copyToClipboard": {
+    "message": "Copiar al portapapeles"
+  },
+  "copied": {
+    "message": "¡Copiado!"
+  },
+  "openOriginTab": {
+    "message": "Abrir OriginTab"
+  },
+  "openOriginTabInSidePanel": {
+    "message": "Abrir OriginTab en el panel lateral"
+  },
+  "returnOriginTab": {
+    "message": "Volver a OriginTab"
+  },
+  "saveAllTabs": {
+    "message": "Guardar todas las pestañas"
+  },
+  "saveCurrentTab": {
+    "message": "Guardar la pestaña actual"
+  },
+  "save": {
+    "message": "Guardar"
+  },
+  "allTabs": {
+    "message": "todas las pestañas"
+  },
+  "currentTab": {
+    "message": "la pestaña actual"
+  },
+  "to": {
+    "message": "En"
+  },
+  "saveAllTabsToGroup": {
+    "message": "Guardar todas las pestañas en el grupo"
+  },
+  "saveCurrentTabToGroup": {
+    "message": "Guardar la pestaña actual en el grupo"
+  },
+  "saveToTip": {
+    "message": "Haz clic para cambiar el destino de guardado"
+  },
+  "customizeOriginTab": {
+    "message": "Personalizar el comportamiento de OriginTab"
+  },
+  "resetAllSettings": {
+    "message": "¿Restablecer todos los ajustes a sus valores predeterminados?"
+  },
+  "autoOpenOnStartup": {
+    "message": "Abrir automáticamente al iniciar"
+  },
+  "autoOpenDescription": {
+    "message": "Abrir OriginTab automáticamente al iniciar el navegador"
+  },
+  "autoOpenTooltip": {
+    "message": "Si prefieres abrir OriginTab en el panel lateral, puedes desactivar esta opción (puedes abrir OriginTab en el panel lateral mediante atajos de teclado; consulta los atajos anteriores)."
+  },
+  "confirmBeforeDelete": {
+    "message": "Confirmar antes de eliminar"
+  },
+  "confirmDeleteDescription": {
+    "message": "Mostrar un diálogo de confirmación al eliminar pestañas o grupos"
+  },
+  "iconClickAction": {
+    "message": "Acción al hacer clic en el icono"
+  },
+  "clickActionDescription": {
+    "message": "Elige qué sucede al hacer clic en el icono de la extensión"
+  },
+  "saveAll": {
+    "message": "Guardar todas las pestañas"
+  },
+  "saveAllDescription": {
+    "message": "Guardar todas las pestañas de la ventana actual en OriginTab"
+  },
+  "saveCurrent": {
+    "message": "Guardar solo la pestaña actual"
+  },
+  "saveCurrentDescription": {
+    "message": "Guardar solo la pestaña activa en OriginTab"
+  },
+  "showPopup": {
+    "message": "Mostrar menú emergente"
+  },
+  "showPopupDescription": {
+    "message": "Abrir una ventana emergente con opciones"
+  },
+  "urlDisplayMode": {
+    "message": "Modo de visualización de URL"
+  },
+  "urlDisplayDescription": {
+    "message": "Elige cómo mostrar las URL en las pestañas guardadas"
+  },
+  "urlDisplayNone": {
+    "message": "No mostrar"
+  },
+  "urlDisplayNoneDescription": {
+    "message": "Ocultar las URL en las pestañas guardadas"
+  },
+  "urlDisplayHostname": {
+    "message": "Solo nombre de host"
+  },
+  "urlDisplayHostnameDescription": {
+    "message": "Mostrar solo el nombre de host (p. ej., example.com)"
+  },
+  "urlDisplayFull": {
+    "message": "URL completa"
+  },
+  "urlDisplayFullDescription": {
+    "message": "Mostrar la URL completa"
+  },
+  "restoreTabAction": {
+    "message": "Acción al restaurar pestañas"
+  },
+  "restoreActionDescription": {
+    "message": "Elige qué sucede al restaurar pestañas"
+  },
+  "openWithoutJump": {
+    "message": "Abrir sin cambiar"
+  },
+  "openWithoutJumpDescription": {
+    "message": "Abrir las pestañas sin cambiar a ellas"
+  },
+  "openAndJump": {
+    "message": "Abrir y cambiar"
+  },
+  "openAndJumpDescription": {
+    "message": "Abrir las pestañas y cambiar a ellas (al usar Ctrl/Command/Shift + clic, se seguirá el comportamiento predeterminado del navegador)"
+  },
+  "openGroupInNewWindow": {
+    "message": "Abrir grupo en"
+  },
+  "openGroupInNewWindowDescription": {
+    "message": "Elige dónde abrir los grupos de pestañas (aquí, \"grupo\" se refiere a una o más colecciones de pestañas guardadas en distintos momentos)"
+  },
+  "openInCurrentWindow": {
+    "message": "Ventana actual"
+  },
+  "openInCurrentWindowDescription": {
+    "message": "Abrir los grupos de pestañas en la ventana actual"
+  },
+  "openInNewWindow": {
+    "message": "Nueva ventana"
+  },
+  "openInNewWindowDescription": {
+    "message": "Abrir los grupos de pestañas en una ventana nueva"
+  },
+  "timeDisplayMode": {
+    "message": "Formato de hora"
+  },
+  "timeDisplayDescription": {
+    "message": "Elige cómo mostrar la hora de guardado de las pestañas"
+  },
+  "timeDisplayRelative": {
+    "message": "Hora relativa"
+  },
+  "timeDisplayRelativeDescription": {
+    "message": "Mostrar la hora en formato relativo (p. ej., hace 2 minutos)"
+  },
+  "timeDisplayAbsolute": {
+    "message": "Hora absoluta"
+  },
+  "timeDisplayAbsoluteDescription": {
+    "message": "Mostrar la hora en formato absoluto (p. ej., 16 abr 2026, 12:30 p. m.)"
+  },
+  "shortcuts": {
+    "message": "Atajos"
+  },
+  "unset": {
+    "message": "Sin asignar"
+  },
+  "setShortcuts": {
+    "message": "Configurar atajos"
+  },
+  "setShortcutsFirefox": {
+    "message": "Ve al Administrador de complementos para configurar los atajos"
+  },
+  "aboutOriginTab": {
+    "message": "Acerca de OriginTab"
+  },
+  "aboutDescription": {
+    "message": "Visita _a_ para obtener más información sobre OriginTab."
+  },
+  "feedbackDescription": {
+    "message": "Si tienes algún problema al usar OriginTab, puedes informarlo mediante este _a_."
+  },
+  "productPage": {
+    "message": "Página del producto"
+  },
+  "feedbackForm": {
+    "message": "formulario"
+  },
+  "failedToLoadSettings": {
+    "message": "No se pudieron cargar los ajustes"
+  },
+  "deleteFailed": {
+    "message": "No se pudo eliminar. Inténtalo de nuevo"
+  },
+  "justNow": {
+    "message": "Ahora mismo"
+  },
+  "deleteGroupTitle": {
+    "message": "Eliminar grupo"
+  },
+  "deleteCollectionTitle": {
+    "message": "Eliminar colección"
+  },
+  "deleteTabTitle": {
+    "message": "Eliminar pestaña"
+  },
+  "deleteSelectedTabsTitle": {
+    "message": "Eliminar pestañas seleccionadas"
+  },
+  "clearAllTitle": {
+    "message": "Borrar todo"
+  },
+  "resetSettingsTitle": {
+    "message": "Restablecer ajustes"
+  }
+}
