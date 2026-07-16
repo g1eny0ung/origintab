@@ -3,12 +3,17 @@
   themes: emerald --default;
 }
 
-.input:focus,
-.textarea:focus,
-.select:focus,
-.select:open,
-.file-input:focus {
-  @apply outline-1 outline-offset-0;
+.input,
+.textarea,
+.select,
+.file-input {
+  &:focus {
+    @apply border-base-content/60 outline-none ring-2 ring-base-300;
+  }
+}
+
+.select:open {
+  @apply border-base-content/60 outline-none ring-2 ring-base-300;
 }
 
 @utility alert {

@@ -1,8 +1,8 @@
 import { mount } from 'svelte'
 import { localizeLangAndTitle } from '~/utils/localize'
 
+import '../common.css'
 import App from './App.svelte'
-import './app.css'
 
 localizeLangAndTitle()
 

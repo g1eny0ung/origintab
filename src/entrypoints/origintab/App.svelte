@@ -435,10 +435,10 @@
 
 {#if selection.selectedCount > 0}
   <div
-    class="fixed bottom-8 left-1/2 z-40 px-4 space-y-2 -translate-x-1/2 transition-transform enter-screen"
+    class="fixed bottom-8 left-1/2 z-40 min-w-md px-4 space-y-2 -translate-x-1/2 transition-transform enter-screen"
   >
     <div
-      class="flex flex-wrap gap-1 bg-base-100 rounded-box border border-base-200 p-2 shadow-xl"
+      class="flex gap-2 bg-base-100 rounded-box border border-base-200 p-2 shadow-xl"
     >
       <button class="btn btn-sm btn-ghost" onclick={openSelectModal}>
         <FolderOutput size={14} />
