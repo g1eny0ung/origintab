@@ -55,6 +55,14 @@
     }
   }
 
+  function faviconUrl(tab: TabItem) {
+    if (tab.favicon) {
+      return tab.favicon
+    }
+
+    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(urlHostname(tab.url))}&sz=32`
+  }
+
   async function handleRestoreGroup(remove: boolean) {
     try {
       const active = settings.restoreAction === RestoreAction.OpenAndJump
@@ -334,16 +342,12 @@
           }}
         />
         <div class="favicon-container">
-          {#if tab.favicon}
-            <img
-              src={tab.favicon}
-              alt=""
-              onerror={(e) =>
-                ((e.target as HTMLImageElement).style.display = 'none')}
-            />
-          {:else}
-            <div class="w-4 h-4 rounded bg-base-300"></div>
-          {/if}
+          <img
+            src={faviconUrl(tab)}
+            alt=""
+            onerror={(e) =>
+              ((e.target as HTMLImageElement).style.display = 'none')}
+          />
         </div>
         {#if editingTabId === tab.id}
           <div class="flex-1 min-w-0">
