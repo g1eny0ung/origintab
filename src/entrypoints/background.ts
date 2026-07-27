@@ -1,4 +1,4 @@
-import { Settings, getSettings, initDefaultGroup } from '~/store'
+import { type Settings, getSettings, initDefaultGroup } from '~/store'
 import {
   createContextMenus,
   handleContextMenuClick,
