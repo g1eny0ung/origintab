@@ -52,7 +52,7 @@ describe('tabs module', () => {
     })
 
     it('should delete group when last tab is removed', async () => {
-      const tabs = [createSampleTabs()[0]]
+      const tabs = [createSampleTabs()[0]!]
       const group = await createTabGroupWithExistingTabs(tabs)
 
       await removeTabFromGroup(group.id, 'tab-1')
@@ -90,7 +90,7 @@ describe('tabs module', () => {
 
       expect(updatedGroup1?.tabs.length).toBe(2)
       expect(updatedGroup2?.tabs.length).toBe(2)
-      expect(updatedGroup2?.tabs[1].id).toBe('tab-2')
+      expect(updatedGroup2?.tabs[1]?.id).toBe('tab-2')
     })
   })
 
@@ -125,9 +125,9 @@ describe('tabs module', () => {
       await moveTabsBetweenGroups(group.id, group.id, ['tab-1', 'tab-3'], 0)
 
       const updatedGroup = await db.tabGroups.get(group.id)
-      expect(updatedGroup?.tabs[0].id).toBe('tab-1')
-      expect(updatedGroup?.tabs[1].id).toBe('tab-3')
-      expect(updatedGroup?.tabs[2].id).toBe('tab-2')
+      expect(updatedGroup?.tabs[0]?.id).toBe('tab-1')
+      expect(updatedGroup?.tabs[1]?.id).toBe('tab-3')
+      expect(updatedGroup?.tabs[2]?.id).toBe('tab-2')
     })
 
     it('should delete source group if all tabs are moved', async () => {
@@ -221,7 +221,7 @@ describe('tabs module', () => {
 
       const updatedGroup = await db.tabGroups.get(group.id)
       expect(updatedGroup?.tabs.length).toBe(1)
-      expect(updatedGroup?.tabs[0].id).toBe('tab-2')
+      expect(updatedGroup?.tabs[0]?.id).toBe('tab-2')
     })
 
     it('should delete group when all selected tabs are removed', async () => {

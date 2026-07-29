@@ -233,6 +233,12 @@
   "saveCurrentTab": {
     "message": "Save current tab"
   },
+  "saveCurrentAndLeftTabs": {
+    "message": "Save current and all tabs to the left"
+  },
+  "saveCurrentAndRightTabs": {
+    "message": "Save current and all tabs to the right"
+  },
   "save": {
     "message": "Save"
   },

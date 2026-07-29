@@ -227,6 +227,12 @@
   "saveCurrentTab": {
     "message": "Salvar aba atual"
   },
+  "saveCurrentAndLeftTabs": {
+    "message": "Salvar a aba atual e todas à esquerda"
+  },
+  "saveCurrentAndRightTabs": {
+    "message": "Salvar a aba atual e todas à direita"
+  },
   "save": {
     "message": "Salvar"
   },

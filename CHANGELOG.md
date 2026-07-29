@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-07-29
+
+### Added
+
+- Add popup and context menu actions to save the current tab together with all tabs to its left or right.
+
 ## [1.5.2] - 2026-07-24
 
 ### Changed

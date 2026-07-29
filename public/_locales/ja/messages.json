@@ -227,6 +227,12 @@
   "saveCurrentTab": {
     "message": "現在のタブを保存"
   },
+  "saveCurrentAndLeftTabs": {
+    "message": "現在のタブと左側のすべてのタブを保存"
+  },
+  "saveCurrentAndRightTabs": {
+    "message": "現在のタブと右側のすべてのタブを保存"
+  },
   "save": {
     "message": "保存"
   },

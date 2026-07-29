@@ -41,7 +41,7 @@
     "typescript": "^6.0.2",
     "vitest": "^4.1.2",
     "web-ext": "^10.5.0",
-    "wxt": "^0.21.1"
+    "wxt": "^0.21.2"
   },
   "dependencies": {
     "dexie": "^4.4.2",

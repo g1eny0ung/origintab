@@ -46,7 +46,7 @@ describe('dataManagement module', () => {
       const tabGroups = await db.tabGroups.toArray()
 
       expect(userGroups.length).toBe(1)
-      expect(userGroups[0].id).toBe(DEFAULT_GROUP_ID)
+      expect(userGroups[0]!.id).toBe(DEFAULT_GROUP_ID)
       expect(tabGroups.length).toBe(0)
     })
 
@@ -106,7 +106,7 @@ https://google.com | Google Search
 
       const tabGroups = await db.tabGroups.toArray()
       expect(tabGroups.length).toBe(1)
-      expect(tabGroups[0].tabs.length).toBe(2)
+      expect(tabGroups[0]!.tabs.length).toBe(2)
     })
 
     it('should collect errors for invalid lines', async () => {
@@ -130,7 +130,7 @@ missing-title |
       await importFromText(importText, { format: 'originTab' })
 
       const tabGroups = await db.tabGroups.toArray()
-      expect(tabGroups[0].userGroupId).not.toBe('default')
+      expect(tabGroups[0]!.userGroupId).not.toBe('default')
     })
 
     it('should handle empty input', async () => {
@@ -151,7 +151,7 @@ missing-title |
 
       const tabGroups = await db.tabGroups.toArray()
       expect(tabGroups.length).toBe(1)
-      expect(tabGroups[0].userGroupId).toBe(customGroup.id)
+      expect(tabGroups[0]!.userGroupId).toBe(customGroup.id)
     })
 
     it('should import old format to default group when no fallback specified', async () => {
@@ -162,7 +162,7 @@ missing-title |
 
       const tabGroups = await db.tabGroups.toArray()
       expect(tabGroups.length).toBe(1)
-      expect(tabGroups[0].userGroupId).toBe(DEFAULT_GROUP_ID)
+      expect(tabGroups[0]!.userGroupId).toBe(DEFAULT_GROUP_ID)
     })
 
     it('should import originTab format creating new user group from text', async () => {
@@ -177,7 +177,7 @@ missing-title |
 
       expect(tabGroups.length).toBe(1)
       expect(userGroups.length).toBe(2)
-      expect(tabGroups[0].userGroupId).not.toBe('default')
+      expect(tabGroups[0]!.userGroupId).not.toBe('default')
     })
 
     it('should import originTab format ignoring invalid lines as user group names', async () => {
@@ -196,7 +196,7 @@ invalid line without separator or pipe
 
       const tabGroups = await db.tabGroups.toArray()
       expect(tabGroups.length).toBe(1)
-      expect(tabGroups[0].tabs.length).toBe(1)
+      expect(tabGroups[0]!.tabs.length).toBe(1)
     })
 
     it('should handle empty input for originTab format', async () => {

@@ -70,21 +70,23 @@ export function openOriginTabInSidePanel() {
     browser.sidebarAction.toggle()
   } else {
     browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs.length > 0) {
-        const windowId = tabs[0].windowId
-
-        if (!sidePanelOpen) {
-          browser.sidePanel.open({
-            windowId,
-          })
-        } else {
-          browser.sidePanel.close({
-            windowId,
-          })
-        }
-
-        sidePanelOpen = !sidePanelOpen
+      const [activeTab] = tabs
+      if (!activeTab) {
+        return
       }
+
+      const { windowId } = activeTab
+      if (!sidePanelOpen) {
+        browser.sidePanel.open({
+          windowId,
+        })
+      } else {
+        browser.sidePanel.close({
+          windowId,
+        })
+      }
+
+      sidePanelOpen = !sidePanelOpen
     })
   }
 }

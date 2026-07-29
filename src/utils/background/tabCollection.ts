@@ -1,7 +1,9 @@
 import { createTabGroup, getLastUserGroup, getUserGroup } from '~/store'
 import { getLocalSettings } from '~/store/localSettings'
-import { findOriginTab, getOriginTabUrl } from '~/utils/helpers'
+import { findOriginTab } from '~/utils/helpers'
 import type { TabItem } from '~/utils/types'
+
+type TabCollectionDirection = 'left' | 'right'
 
 async function getTargetGroupId(userGroupId?: string) {
   if (userGroupId) {
@@ -19,6 +21,40 @@ async function getTargetGroupId(userGroupId?: string) {
   return (await getLastUserGroup())?.id
 }
 
+async function collectTabs(tabs: Browser.tabs.Tab[], userGroupId?: string) {
+  const existingOriginTabId = await findOriginTab()
+
+  const validTabs = tabs.filter((tab) => {
+    if (
+      !tab.id ||
+      !tab.url ||
+      tab.id === existingOriginTabId ||
+      tab.url === 'about:newtab' ||
+      tab.url === 'about:blank' ||
+      tab.pinned
+    ) {
+      return false
+    }
+    return true
+  })
+
+  if (validTabs.length === 0) {
+    return
+  }
+
+  const createdAt = Date.now()
+  const tabItems: TabItem[] = validTabs.map((tab) => ({
+    id: '',
+    title: tab.title || 'Untitled',
+    url: tab.url!,
+    favicon: tab.favIconUrl,
+    createdAt,
+  }))
+
+  await createTabGroup(tabItems, await getTargetGroupId(userGroupId))
+  await browser.tabs.remove(validTabs.map((tab) => tab.id!))
+}
+
 export async function collectCurrentTab(userGroupId?: string) {
   try {
     const [activeTab] = await browser.tabs.query({
@@ -31,31 +67,7 @@ export async function collectCurrentTab(userGroupId?: string) {
       return
     }
 
-    if (activeTab.url === getOriginTabUrl()) {
-      return
-    }
-
-    if (activeTab.url === 'about:newtab' || activeTab.url === 'about:blank') {
-      console.info('Cannot collect new tab page')
-      return
-    }
-
-    if (activeTab.pinned) {
-      console.info('Skip pinned tab')
-      return
-    }
-
-    const tabItem: TabItem = {
-      id: '',
-      title: activeTab.title || 'Untitled',
-      url: activeTab.url,
-      favicon: activeTab.favIconUrl,
-      createdAt: Date.now(),
-    }
-
-    await createTabGroup([tabItem], await getTargetGroupId(userGroupId))
-
-    await browser.tabs.remove(activeTab.id)
+    await collectTabs([activeTab], userGroupId)
   } catch (error) {
     console.error('Failed to collect current tab:', error)
   }
@@ -64,45 +76,34 @@ export async function collectCurrentTab(userGroupId?: string) {
 export async function collectAllTabs(userGroupId?: string) {
   try {
     const tabs = await browser.tabs.query({ currentWindow: true })
-    const existingOriginTabId = await findOriginTab()
+    await collectTabs(tabs, userGroupId)
+  } catch (error) {
+    console.error('Failed to collect tabs:', error)
+  }
+}
 
-    const validTabs = tabs.filter((tab) => {
-      if (
-        !tab.id ||
-        !tab.url ||
-        tab.id === existingOriginTabId ||
-        tab.url === 'about:newtab' ||
-        tab.url === 'about:blank' ||
-        tab.pinned
-      ) {
-        return false
-      }
-      return true
-    })
+export async function collectCurrentAndAdjacentTabs(
+  direction: TabCollectionDirection,
+  userGroupId?: string,
+) {
+  try {
+    const tabs = await browser.tabs.query({ currentWindow: true })
+    const activeTab = tabs.find((tab) => tab.active)
 
-    if (validTabs.length === 0) {
+    if (!activeTab) {
+      console.info('No active tab found')
       return
     }
 
-    const tabItems: TabItem[] = validTabs.map((tab) => ({
-      id: '',
-      title: tab.title || 'Untitled',
-      url: tab.url!,
-      favicon: tab.favIconUrl,
-      createdAt: Date.now(),
-    }))
+    const tabsToCollect = tabs.filter((tab) => {
+      if (direction === 'left') {
+        return tab.index <= activeTab.index
+      }
+      return tab.index >= activeTab.index
+    })
 
-    await createTabGroup(tabItems, await getTargetGroupId(userGroupId))
-
-    const collectedTabIds = validTabs.map((tab) => tab.id!)
-    const tabsToClose = existingOriginTabId
-      ? collectedTabIds.filter((id) => id !== existingOriginTabId)
-      : collectedTabIds
-
-    if (tabsToClose.length > 0) {
-      await browser.tabs.remove(tabsToClose)
-    }
+    await collectTabs(tabsToCollect, userGroupId)
   } catch (error) {
-    console.error('Failed to collect tabs:', error)
+    console.error(`Failed to collect current and ${direction} tabs:`, error)
   }
 }

@@ -1,5 +1,5 @@
 import tailwindcss from '@tailwindcss/vite'
-import { UserManifest, defineConfig } from 'wxt'
+import { type UserManifest, defineConfig } from 'wxt'
 
 export const commonPermissions = ['tabs', 'storage', 'contextMenus']
 export const manifest: UserManifest = {

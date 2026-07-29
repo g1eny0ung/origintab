@@ -227,6 +227,12 @@
   "saveCurrentTab": {
     "message": "현재 탭 저장"
   },
+  "saveCurrentAndLeftTabs": {
+    "message": "현재 탭과 왼쪽의 모든 탭 저장"
+  },
+  "saveCurrentAndRightTabs": {
+    "message": "현재 탭과 오른쪽의 모든 탭 저장"
+  },
   "save": {
     "message": "저장"
   },

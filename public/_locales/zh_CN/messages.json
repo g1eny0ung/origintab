@@ -233,6 +233,12 @@
   "saveCurrentTab": {
     "message": "保存当前标签页"
   },
+  "saveCurrentAndLeftTabs": {
+    "message": "保存当前及左侧所有标签页"
+  },
+  "saveCurrentAndRightTabs": {
+    "message": "保存当前及右侧所有标签页"
+  },
   "save": {
     "message": "保存"
   },

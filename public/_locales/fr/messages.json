@@ -227,6 +227,12 @@
   "saveCurrentTab": {
     "message": "Enregistrer l’onglet actuel"
   },
+  "saveCurrentAndLeftTabs": {
+    "message": "Enregistrer l’onglet actuel et tous ceux à gauche"
+  },
+  "saveCurrentAndRightTabs": {
+    "message": "Enregistrer l’onglet actuel et tous ceux à droite"
+  },
   "save": {
     "message": "Enregistrer"
   },

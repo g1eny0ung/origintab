@@ -1,6 +1,8 @@
 <script lang="ts">
   import {
     AppWindow,
+    ArrowLeftFromLine,
+    ArrowRightFromLine,
     ArrowUpDown,
     Bookmark,
     ListPlus,
@@ -18,7 +20,7 @@
   async function loadGroups() {
     try {
       userGroups = await getUserGroups()
-      selectedUserGroupId = userGroups[0].id
+      selectedUserGroupId = userGroups[0]?.id ?? ''
     } catch (error) {
       console.error('Failed to load groups:', error)
     }
@@ -35,6 +37,15 @@
     await browser.runtime.sendMessage({
       action: 'collectTabs',
       userGroupId,
+    })
+  }
+
+  async function collectCurrentAndAdjacentTabs(direction: 'left' | 'right') {
+    await browser.runtime.sendMessage({
+      action:
+        direction === 'left'
+          ? 'collectCurrentAndLeftTabs'
+          : 'collectCurrentAndRightTabs',
     })
   }
 
@@ -73,6 +84,18 @@
       <button onclick={() => collectCurrentTab()}>
         <Bookmark size={16} />
         {browser.i18n.getMessage('saveCurrentTab')}
+      </button>
+    </li>
+    <li>
+      <button onclick={() => collectCurrentAndAdjacentTabs('left')}>
+        <ArrowLeftFromLine size={16} />
+        {browser.i18n.getMessage('saveCurrentAndLeftTabs')}
+      </button>
+    </li>
+    <li>
+      <button onclick={() => collectCurrentAndAdjacentTabs('right')}>
+        <ArrowRightFromLine size={16} />
+        {browser.i18n.getMessage('saveCurrentAndRightTabs')}
       </button>
     </li>
   </ul>

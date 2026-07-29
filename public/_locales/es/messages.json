@@ -227,6 +227,12 @@
   "saveCurrentTab": {
     "message": "Guardar la pestaña actual"
   },
+  "saveCurrentAndLeftTabs": {
+    "message": "Guardar la pestaña actual y todas las de la izquierda"
+  },
+  "saveCurrentAndRightTabs": {
+    "message": "Guardar la pestaña actual y todas las de la derecha"
+  },
   "save": {
     "message": "Guardar"
   },

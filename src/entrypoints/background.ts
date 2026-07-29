@@ -6,6 +6,7 @@ import {
 } from '~/utils/background/contextMenus'
 import {
   collectAllTabs,
+  collectCurrentAndAdjacentTabs,
   collectCurrentTab,
 } from '~/utils/background/tabCollection'
 import {
@@ -98,6 +99,12 @@ async function handleRuntimeMessage(
       return { ok: true }
     case 'collectCurrentTab':
       await collectCurrentTab(message.userGroupId)
+      return { ok: true }
+    case 'collectCurrentAndLeftTabs':
+      await collectCurrentAndAdjacentTabs('left', message.userGroupId)
+      return { ok: true }
+    case 'collectCurrentAndRightTabs':
+      await collectCurrentAndAdjacentTabs('right', message.userGroupId)
       return { ok: true }
     case 'refreshContextMenus':
       await refreshContextMenus()

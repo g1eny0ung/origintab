@@ -227,6 +227,12 @@
   "saveCurrentTab": {
     "message": "Сохранить текущую вкладку"
   },
+  "saveCurrentAndLeftTabs": {
+    "message": "Сохранить текущую вкладку и все вкладки слева"
+  },
+  "saveCurrentAndRightTabs": {
+    "message": "Сохранить текущую вкладку и все вкладки справа"
+  },
   "save": {
     "message": "Сохранить"
   },

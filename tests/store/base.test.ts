@@ -25,7 +25,7 @@ describe('base module', () => {
       const id = generateId()
       const parts = id.split('-')
       expect(parts.length).toBeGreaterThan(1)
-      expect(parts[0].length).toBeGreaterThan(10)
+      expect(parts[0]!.length).toBeGreaterThan(10)
     })
   })
 

@@ -64,8 +64,8 @@ describe('tabGroups module', () => {
   describe('createTabGroupWithExistingTabs', () => {
     it('should create tab group without modifying tab IDs', async () => {
       const group = await createTabGroupWithExistingTabs(sampleTabs)
-      expect(group.tabs[0].id).toBe('tab-1')
-      expect(group.tabs[1].id).toBe('tab-2')
+      expect(group.tabs[0]!.id).toBe('tab-1')
+      expect(group.tabs[1]!.id).toBe('tab-2')
     })
 
     it('should throw error when no tabs provided', async () => {

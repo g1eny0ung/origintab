@@ -53,9 +53,9 @@ describe('userGroups module', () => {
 
       const groups = await getUserGroups()
       expect(groups.length).toBe(3)
-      expect(groups[0].id).toBe(group3.id)
-      expect(groups[1].id).toBe(group2.id)
-      expect(groups[2].id).toBe(group1.id)
+      expect(groups[0]!.id).toBe(group3.id)
+      expect(groups[1]!.id).toBe(group2.id)
+      expect(groups[2]!.id).toBe(group1.id)
     })
 
     it('should return empty array when no groups exist', async () => {

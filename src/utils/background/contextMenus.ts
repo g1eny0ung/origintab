@@ -1,10 +1,16 @@
 import { getUserGroups } from '~/store'
 
-import { collectAllTabs, collectCurrentTab } from './tabCollection'
+import {
+  collectAllTabs,
+  collectCurrentAndAdjacentTabs,
+  collectCurrentTab,
+} from './tabCollection'
 
 const MENU_ROOT = 'origintab-root'
 const MENU_SAVE_ALL = 'save-all-tabs'
 const MENU_SAVE_CURRENT = 'save-current-tab'
+const MENU_SAVE_CURRENT_AND_LEFT = 'save-current-and-left-tabs'
+const MENU_SAVE_CURRENT_AND_RIGHT = 'save-current-and-right-tabs'
 const MENU_SEPARATOR = 'separator-1'
 const MENU_SAVE_ALL_TO_GROUP = 'save-all-to-group'
 const MENU_SAVE_CURRENT_TO_GROUP = 'save-current-to-group'
@@ -35,6 +41,20 @@ function createStaticMenus() {
     id: MENU_SAVE_CURRENT,
     parentId: MENU_ROOT,
     title: browser.i18n.getMessage('saveCurrentTab'),
+    contexts: ['page'],
+  })
+
+  browser.contextMenus.create({
+    id: MENU_SAVE_CURRENT_AND_LEFT,
+    parentId: MENU_ROOT,
+    title: browser.i18n.getMessage('saveCurrentAndLeftTabs'),
+    contexts: ['page'],
+  })
+
+  browser.contextMenus.create({
+    id: MENU_SAVE_CURRENT_AND_RIGHT,
+    parentId: MENU_ROOT,
+    title: browser.i18n.getMessage('saveCurrentAndRightTabs'),
     contexts: ['page'],
   })
 }
@@ -138,6 +158,10 @@ export async function handleContextMenuClick(info: {
     await collectAllTabs()
   } else if (menuItemId === MENU_SAVE_CURRENT) {
     await collectCurrentTab()
+  } else if (menuItemId === MENU_SAVE_CURRENT_AND_LEFT) {
+    await collectCurrentAndAdjacentTabs('left')
+  } else if (menuItemId === MENU_SAVE_CURRENT_AND_RIGHT) {
+    await collectCurrentAndAdjacentTabs('right')
   } else if (typeof menuItemId === 'string') {
     if (menuItemId.startsWith(`${MENU_SAVE_ALL_TO_GROUP}:`)) {
       await collectAllTabs(menuItemId.split(':')[1])

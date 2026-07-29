@@ -160,12 +160,9 @@
   }
 
   function openSelectModal() {
-    if (
-      !selection.moveTargetUserGroupId &&
-      $userGroups &&
-      $userGroups.length > 0
-    ) {
-      selection.setMoveTargetUserGroupId($userGroups[0].id)
+    const [firstUserGroup] = $userGroups
+    if (!selection.moveTargetUserGroupId && firstUserGroup) {
+      selection.setMoveTargetUserGroupId(firstUserGroup.id)
     }
 
     const dialog = document.getElementById(selectModalId) as HTMLDialogElement
