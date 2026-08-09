@@ -1,7 +1,12 @@
 import tailwindcss from '@tailwindcss/vite'
 import { type UserManifest, defineConfig } from 'wxt'
 
-export const commonPermissions = ['tabs', 'storage', 'contextMenus']
+export const commonPermissions = [
+  'tabs',
+  'tabGroups',
+  'storage',
+  'contextMenus',
+]
 export const manifest: UserManifest = {
   name: '__MSG_extName__',
   description: '__MSG_extDescription__',

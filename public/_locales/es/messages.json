@@ -29,6 +29,15 @@
   "restoreAndPreserve": {
     "message": "Restaurar y conservar"
   },
+  "browserTabGroup": {
+    "message": "Grupo de pestañas del navegador"
+  },
+  "restoreBrowserTabGroup": {
+    "message": "Restaurar grupo del navegador"
+  },
+  "restoreBrowserTabGroupAndPreserve": {
+    "message": "Restaurar y conservar el grupo del navegador"
+  },
   "settings": {
     "message": "Configuración"
   },
@@ -76,6 +85,9 @@
   },
   "selectUserGroup": {
     "message": "Seleccionar grupo"
+  },
+  "selectTab": {
+    "message": "Seleccionar $1"
   },
   "allUserGroups": {
     "message": "Todos los grupos"
@@ -418,6 +430,15 @@
   },
   "deleteCollectionTitle": {
     "message": "Eliminar colección"
+  },
+  "deleteBrowserTabGroupTitle": {
+    "message": "Eliminar grupo de pestañas del navegador"
+  },
+  "deleteBrowserTabGroupConfirm": {
+    "message": "¿Eliminar este grupo de pestañas del navegador y sus pestañas guardadas?"
+  },
+  "browserTabGroupDeleted": {
+    "message": "Grupo de pestañas del navegador eliminado"
   },
   "deleteTabTitle": {
     "message": "Eliminar pestaña"

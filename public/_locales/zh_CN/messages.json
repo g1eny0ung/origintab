@@ -30,6 +30,15 @@
   "restoreAndPreserve": {
     "message": "恢复并保留"
   },
+  "browserTabGroup": {
+    "message": "浏览器标签组"
+  },
+  "restoreBrowserTabGroup": {
+    "message": "恢复浏览器标签组"
+  },
+  "restoreBrowserTabGroupAndPreserve": {
+    "message": "恢复浏览器标签组并保留"
+  },
   "settings": {
     "message": "设置"
   },
@@ -79,6 +88,9 @@
   },
   "selectUserGroup": {
     "message": "选择分组"
+  },
+  "selectTab": {
+    "message": "选择$1"
   },
   "allUserGroups": {
     "message": "全部分组"
@@ -427,6 +439,15 @@
   },
   "deleteCollectionTitle": {
     "message": "删除集合"
+  },
+  "deleteBrowserTabGroupTitle": {
+    "message": "删除浏览器标签组"
+  },
+  "deleteBrowserTabGroupConfirm": {
+    "message": "删除此浏览器标签组及其中保存的标签页？"
+  },
+  "browserTabGroupDeleted": {
+    "message": "浏览器标签组已删除"
   },
   "deleteTabTitle": {
     "message": "删除标签页"

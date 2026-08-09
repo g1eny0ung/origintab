@@ -29,6 +29,15 @@
   "restoreAndPreserve": {
     "message": "Restaurar e preservar"
   },
+  "browserTabGroup": {
+    "message": "Grupo de abas do navegador"
+  },
+  "restoreBrowserTabGroup": {
+    "message": "Restaurar grupo do navegador"
+  },
+  "restoreBrowserTabGroupAndPreserve": {
+    "message": "Restaurar e preservar grupo do navegador"
+  },
   "settings": {
     "message": "Configurações"
   },
@@ -76,6 +85,9 @@
   },
   "selectUserGroup": {
     "message": "Selecionar grupo"
+  },
+  "selectTab": {
+    "message": "Selecionar $1"
   },
   "allUserGroups": {
     "message": "Todos os grupos"
@@ -418,6 +430,15 @@
   },
   "deleteCollectionTitle": {
     "message": "Excluir coleção"
+  },
+  "deleteBrowserTabGroupTitle": {
+    "message": "Excluir grupo de abas do navegador"
+  },
+  "deleteBrowserTabGroupConfirm": {
+    "message": "Excluir este grupo de abas do navegador e suas abas salvas?"
+  },
+  "browserTabGroupDeleted": {
+    "message": "Grupo de abas do navegador excluído"
   },
   "deleteTabTitle": {
     "message": "Excluir aba"

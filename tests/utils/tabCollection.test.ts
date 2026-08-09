@@ -10,6 +10,7 @@ import { findOriginTab } from '../../src/utils/helpers'
 
 vi.mock('../../src/store', () => ({
   createTabGroup: vi.fn(),
+  generateId: vi.fn(() => 'saved-browser-group'),
   getLastUserGroup: vi.fn(async () => ({ id: 'default' })),
   getUserGroup: vi.fn(),
 }))
@@ -94,6 +95,7 @@ describe('tab collection ranges', () => {
         expect.objectContaining({ title: 'Current' }),
       ],
       'default',
+      [],
     )
     expect(fakeBrowser.tabs.remove).toHaveBeenCalledWith([2, 3])
   })
@@ -107,6 +109,7 @@ describe('tab collection ranges', () => {
         expect.objectContaining({ title: 'Right' }),
       ],
       'work',
+      [],
     )
     expect(fakeBrowser.tabs.remove).toHaveBeenCalledWith([3, 4])
   })
@@ -131,5 +134,123 @@ describe('tab collection ranges', () => {
 
     expect(createTabGroup).not.toHaveBeenCalled()
     expect(fakeBrowser.tabs.remove).not.toHaveBeenCalled()
+  })
+
+  it('saves browser tab group metadata before closing grouped tabs', async () => {
+    const groupedTabs = [
+      createBrowserTab({
+        id: 6,
+        index: 0,
+        groupId: 42,
+        title: 'Grouped one',
+        url: 'https://grouped-one.example',
+      }),
+      createBrowserTab({
+        active: true,
+        id: 7,
+        index: 1,
+        groupId: 42,
+        title: 'Grouped two',
+        url: 'https://grouped-two.example',
+      }),
+    ]
+
+    vi.mocked(fakeBrowser.tabs.query).mockResolvedValue(groupedTabs as never)
+    vi.spyOn(fakeBrowser.tabGroups, 'get').mockResolvedValue({
+      id: 42,
+      title: 'Research',
+      color: 'blue',
+      collapsed: true,
+      shared: false,
+      windowId: 1,
+    } as never)
+
+    await collectCurrentAndAdjacentTabs('left')
+
+    expect(fakeBrowser.tabGroups.get).toHaveBeenCalledWith(42)
+    expect(createTabGroup).toHaveBeenCalledWith(
+      [
+        expect.objectContaining({
+          title: 'Grouped one',
+          browserTabGroupId: 'saved-browser-group',
+        }),
+        expect.objectContaining({
+          title: 'Grouped two',
+          browserTabGroupId: 'saved-browser-group',
+        }),
+      ],
+      'default',
+      [
+        {
+          id: 'saved-browser-group',
+          title: 'Research',
+          color: 'blue',
+          collapsed: true,
+        },
+      ],
+    )
+    expect(fakeBrowser.tabs.remove).toHaveBeenCalledWith([6, 7])
+  })
+
+  it('saves grouped tabs as plain tabs when the browser group API is unavailable', async () => {
+    const groupedTab = createBrowserTab({
+      active: true,
+      id: 6,
+      index: 0,
+      groupId: 42,
+      title: 'Grouped',
+      url: 'https://grouped.example',
+    })
+    const originalGet = fakeBrowser.tabGroups.get
+
+    vi.mocked(fakeBrowser.tabs.query).mockResolvedValue([groupedTab] as never)
+    Object.defineProperty(fakeBrowser.tabGroups, 'get', {
+      configurable: true,
+      value: undefined,
+    })
+
+    try {
+      await collectCurrentAndAdjacentTabs('left')
+
+      expect(createTabGroup).toHaveBeenCalledWith(
+        [
+          expect.objectContaining({
+            title: 'Grouped',
+            browserTabGroupId: undefined,
+          }),
+        ],
+        'default',
+        [],
+      )
+      expect(fakeBrowser.tabs.remove).toHaveBeenCalledWith([6])
+    } finally {
+      Object.defineProperty(fakeBrowser.tabGroups, 'get', {
+        configurable: true,
+        value: originalGet,
+      })
+    }
+  })
+
+  it('keeps tabs open when browser group metadata cannot be read', async () => {
+    const groupedTab = createBrowserTab({
+      active: true,
+      id: 6,
+      index: 0,
+      groupId: 42,
+      title: 'Grouped',
+      url: 'https://grouped.example',
+    })
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    vi.mocked(fakeBrowser.tabs.query).mockResolvedValue([groupedTab] as never)
+    vi.spyOn(fakeBrowser.tabGroups, 'get').mockRejectedValue(
+      new Error('group disappeared'),
+    )
+
+    await collectCurrentAndAdjacentTabs('left')
+
+    expect(createTabGroup).not.toHaveBeenCalled()
+    expect(fakeBrowser.tabs.remove).not.toHaveBeenCalled()
+    consoleError.mockRestore()
   })
 })

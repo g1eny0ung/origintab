@@ -9,7 +9,12 @@
   } from '~/store'
   import type { Settings } from '~/store/settings'
   import { openConfirm } from '~/utils/confirm.svelte'
-  import { clearDraggedTabState, getDraggedTabState } from '~/utils/tabDrag'
+  import {
+    clearDraggedTabState,
+    getDraggedTabState,
+    markDraggedTabDropHandledExternally,
+    runWithTabMovePending,
+  } from '~/utils/tabDrag'
   import { showToast } from '~/utils/toast.svelte'
   import type { TabGroup, UserGroup } from '~/utils/types'
 
@@ -78,14 +83,27 @@
     sourceGroupId: string,
     tabIds: string[],
   ) {
-    const firstTabGroup = tabGroups[0]
+    await runWithTabMovePending(async () => {
+      const firstTabGroup = tabGroups[0]
 
-    if (firstTabGroup) {
-      await moveTabsBetweenGroups(sourceGroupId, firstTabGroup.id, tabIds, 0)
-      return
-    }
+      if (firstTabGroup) {
+        await moveTabsBetweenGroups(
+          sourceGroupId,
+          firstTabGroup.id,
+          tabIds,
+          0,
+          null,
+        )
+        return
+      }
 
-    await moveTabsToNewGroupInUserGroup(sourceGroupId, userGroup.id, tabIds)
+      await moveTabsToNewGroupInUserGroup(
+        sourceGroupId,
+        userGroup.id,
+        tabIds,
+        null,
+      )
+    })
   }
 
   function resolveDropTarget(target: EventTarget | null) {
@@ -151,15 +169,23 @@
     }
 
     event.preventDefault()
-    await handleDropToUserGroup(draggedTab.sourceGroupId, draggedTab.tabIds)
-    clearDraggedTabState()
-    activeDropTarget = null
+    // The same drop can also reach Sortable's callbacks. Claim it synchronously
+    // so only this outer user-group operation is persisted.
+    markDraggedTabDropHandledExternally()
+
+    try {
+      await handleDropToUserGroup(draggedTab.sourceGroupId, draggedTab.tabIds)
+    } catch {
+      showToast(browser.i18n.getMessage('moveTabsFailed'), 'error')
+    } finally {
+      clearDraggedTabState()
+      activeDropTarget = null
+    }
   }
 </script>
 
 <div
   class="card border border-base-200 shadow-sm overflow-hidden"
-  ondragenter={expandForDrag}
   ondragleave={handleDragLeave}
   ondragover={handleDragOver}
   ondrop={handleDrop}
@@ -168,58 +194,63 @@
 >
   <div
     class={[
-      'group card-body p-4 hover:bg-base-200/30 cursor-pointer focus-visible:outline-none',
+      'group card-body p-4 hover:bg-base-200/40',
       activeDropTarget === 'header' && 'bg-primary/10',
     ]}
     data-header-drop-zone
-    onclick={handleExpand}
-    role="button"
-    tabindex="0"
-    onkeydown={(e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault()
-        handleExpand()
-      }
-    }}
-    aria-expanded={isExpanded}
   >
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-2">
+    <div class="flex items-center justify-between gap-2">
+      <button
+        type="button"
+        class="flex min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-field text-start focus-visible:ring-2 focus-visible:ring-primary"
+        onclick={handleExpand}
+        aria-expanded={isExpanded}
+      >
         {#if isExpanded}
-          <ChevronDown size={20} class="text-base-content/60" />
+          <ChevronDown
+            size={20}
+            class="shrink-0 text-base-content/60"
+            aria-hidden="true"
+          />
         {:else}
-          <ChevronRight size={20} class="text-base-content/60" />
+          <ChevronRight
+            size={20}
+            class="shrink-0 text-base-content/60"
+            aria-hidden="true"
+          />
         {/if}
-        <Folder size={20} />
-        <span class="font-medium">{userGroup.name}</span>
-        <span class="text-sm text-base-content/80">{tabCount} tabs</span>
-      </div>
+        <Folder size={20} class="shrink-0" aria-hidden="true" />
+        <span class="truncate font-medium">{userGroup.name}</span>
+        <span class="shrink-0 text-sm text-base-content/80">
+          {tabCount}
+          {browser.i18n.getMessage(
+            tabCount === 1 ? 'tabSingular' : 'tabPlural',
+          )}
+        </span>
+      </button>
       {#if !isDefault}
-        <div class="flex items-center gap-1">
+        <div class="flex shrink-0 items-center gap-1">
           {#if isDefaultUserGroup}
             <span class="badge badge-primary badge-sm badge-soft">
               {browser.i18n.getMessage('defaultGroup')}
             </span>
           {:else}
             <button
-              class="hidden group-hover:inline-flex btn btn-ghost btn-xs"
-              onclick={(e) => {
-                e.stopPropagation()
-                handleSetDefault()
-              }}
+              type="button"
+              class="btn btn-ghost btn-xs hidden group-hover:inline-flex group-focus-within:inline-flex"
+              onclick={handleSetDefault}
             >
               {browser.i18n.getMessage('setAsDefaultGroup')}
             </button>
           {/if}
           <button
-            class="btn btn-ghost btn-xs btn-square hover:btn-error hover:text-white"
-            onclick={(e) => {
-              e.stopPropagation()
-              handleDelete()
-            }}
+            type="button"
+            class="btn btn-ghost btn-xs btn-square hover:btn-error hover:text-error-content"
+            onclick={handleDelete}
             title={browser.i18n.getMessage('delete')}
+            aria-label={browser.i18n.getMessage('delete')}
           >
-            <X size={16} />
+            <X size={16} aria-hidden="true" />
           </button>
         </div>
       {/if}

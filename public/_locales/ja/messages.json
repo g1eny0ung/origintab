@@ -29,6 +29,15 @@
   "restoreAndPreserve": {
     "message": "復元して保持"
   },
+  "browserTabGroup": {
+    "message": "ブラウザーのタブグループ"
+  },
+  "restoreBrowserTabGroup": {
+    "message": "ブラウザーグループを復元"
+  },
+  "restoreBrowserTabGroupAndPreserve": {
+    "message": "ブラウザーグループを復元して保持"
+  },
   "settings": {
     "message": "設定"
   },
@@ -76,6 +85,9 @@
   },
   "selectUserGroup": {
     "message": "グループを選択"
+  },
+  "selectTab": {
+    "message": "$1を選択"
   },
   "allUserGroups": {
     "message": "すべてのグループ"
@@ -418,6 +430,15 @@
   },
   "deleteCollectionTitle": {
     "message": "コレクションを削除"
+  },
+  "deleteBrowserTabGroupTitle": {
+    "message": "ブラウザーのタブグループを削除"
+  },
+  "deleteBrowserTabGroupConfirm": {
+    "message": "このブラウザーのタブグループと保存済みタブを削除しますか？"
+  },
+  "browserTabGroupDeleted": {
+    "message": "ブラウザーのタブグループを削除しました"
   },
   "deleteTabTitle": {
     "message": "タブを削除"

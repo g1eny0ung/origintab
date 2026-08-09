@@ -29,6 +29,15 @@
   "restoreAndPreserve": {
     "message": "복원 후 보관"
   },
+  "browserTabGroup": {
+    "message": "브라우저 탭 그룹"
+  },
+  "restoreBrowserTabGroup": {
+    "message": "브라우저 그룹 복원"
+  },
+  "restoreBrowserTabGroupAndPreserve": {
+    "message": "브라우저 그룹 복원 및 유지"
+  },
   "settings": {
     "message": "설정"
   },
@@ -76,6 +85,9 @@
   },
   "selectUserGroup": {
     "message": "그룹 선택"
+  },
+  "selectTab": {
+    "message": "$1 선택"
   },
   "allUserGroups": {
     "message": "모든 그룹"
@@ -418,6 +430,15 @@
   },
   "deleteCollectionTitle": {
     "message": "컬렉션 삭제"
+  },
+  "deleteBrowserTabGroupTitle": {
+    "message": "브라우저 탭 그룹 삭제"
+  },
+  "deleteBrowserTabGroupConfirm": {
+    "message": "이 브라우저 탭 그룹과 저장된 탭을 삭제할까요?"
+  },
+  "browserTabGroupDeleted": {
+    "message": "브라우저 탭 그룹이 삭제되었습니다"
   },
   "deleteTabTitle": {
     "message": "탭 삭제"

@@ -29,6 +29,15 @@
   "restoreAndPreserve": {
     "message": "Restaurer et conserver"
   },
+  "browserTabGroup": {
+    "message": "Groupe d’onglets du navigateur"
+  },
+  "restoreBrowserTabGroup": {
+    "message": "Restaurer le groupe du navigateur"
+  },
+  "restoreBrowserTabGroupAndPreserve": {
+    "message": "Restaurer et conserver le groupe du navigateur"
+  },
   "settings": {
     "message": "Paramètres"
   },
@@ -76,6 +85,9 @@
   },
   "selectUserGroup": {
     "message": "Sélectionner un groupe"
+  },
+  "selectTab": {
+    "message": "Sélectionner $1"
   },
   "allUserGroups": {
     "message": "Tous les groupes"
@@ -418,6 +430,15 @@
   },
   "deleteCollectionTitle": {
     "message": "Supprimer la collection"
+  },
+  "deleteBrowserTabGroupTitle": {
+    "message": "Supprimer le groupe d’onglets du navigateur"
+  },
+  "deleteBrowserTabGroupConfirm": {
+    "message": "Supprimer ce groupe d’onglets du navigateur et ses onglets enregistrés ?"
+  },
+  "browserTabGroupDeleted": {
+    "message": "Groupe d’onglets du navigateur supprimé"
   },
   "deleteTabTitle": {
     "message": "Supprimer l’onglet"

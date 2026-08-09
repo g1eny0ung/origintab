@@ -29,6 +29,15 @@
   "restoreAndPreserve": {
     "message": "Восстановить и сохранить"
   },
+  "browserTabGroup": {
+    "message": "Группа вкладок браузера"
+  },
+  "restoreBrowserTabGroup": {
+    "message": "Восстановить группу браузера"
+  },
+  "restoreBrowserTabGroupAndPreserve": {
+    "message": "Восстановить и сохранить группу браузера"
+  },
   "settings": {
     "message": "Настройки"
   },
@@ -76,6 +85,9 @@
   },
   "selectUserGroup": {
     "message": "Выбрать группу"
+  },
+  "selectTab": {
+    "message": "Выбрать $1"
   },
   "allUserGroups": {
     "message": "Все группы"
@@ -418,6 +430,15 @@
   },
   "deleteCollectionTitle": {
     "message": "Удалить коллекцию"
+  },
+  "deleteBrowserTabGroupTitle": {
+    "message": "Удалить группу вкладок браузера"
+  },
+  "deleteBrowserTabGroupConfirm": {
+    "message": "Удалить эту группу вкладок браузера и сохранённые в ней вкладки?"
+  },
+  "browserTabGroupDeleted": {
+    "message": "Группа вкладок браузера удалена"
   },
   "deleteTabTitle": {
     "message": "Удалить вкладку"
