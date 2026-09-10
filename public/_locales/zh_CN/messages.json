@@ -12,6 +12,24 @@
   "cancel": {
     "message": "取消"
   },
+  "changelog": {
+    "message": "更新日志"
+  },
+  "dismissChangelog": {
+    "message": "关闭更新日志"
+  },
+  "recentChanges": {
+    "message": "近期改动"
+  },
+  "changelogContent": {
+    "message": "支持保存和恢复浏览器标签组。\n支持保存当前标签页及其左侧或右侧的全部标签页。"
+  },
+  "failedToDismissChangelog": {
+    "message": "关闭更新日志失败，请重试。"
+  },
+  "menu": {
+    "message": "菜单"
+  },
   "import": {
     "message": "导入"
   },
@@ -32,6 +50,9 @@
   },
   "browserTabGroup": {
     "message": "浏览器标签组"
+  },
+  "dragBrowserTabGroup": {
+    "message": "拖动以调整整个浏览器标签组的顺序"
   },
   "restoreBrowserTabGroup": {
     "message": "恢复浏览器标签组"

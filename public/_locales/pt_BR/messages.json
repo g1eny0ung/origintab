@@ -11,6 +11,24 @@
   "cancel": {
     "message": "Cancelar"
   },
+  "changelog": {
+    "message": "Novidades"
+  },
+  "dismissChangelog": {
+    "message": "Ocultar novidades"
+  },
+  "recentChanges": {
+    "message": "Alterações recentes"
+  },
+  "changelogContent": {
+    "message": "Salve e restaure grupos de abas do navegador.\nSalve a aba atual junto com todas as abas à esquerda ou à direita."
+  },
+  "failedToDismissChangelog": {
+    "message": "Não foi possível ocultar as novidades. Tente novamente."
+  },
+  "menu": {
+    "message": "Menu"
+  },
   "import": {
     "message": "Importar"
   },

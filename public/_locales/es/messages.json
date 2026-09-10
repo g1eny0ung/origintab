@@ -11,6 +11,24 @@
   "cancel": {
     "message": "Cancelar"
   },
+  "changelog": {
+    "message": "Novedades"
+  },
+  "dismissChangelog": {
+    "message": "Ocultar novedades"
+  },
+  "recentChanges": {
+    "message": "Cambios recientes"
+  },
+  "changelogContent": {
+    "message": "Guarda y restaura grupos de pestañas del navegador.\nGuarda la pestaña actual junto con todas las pestañas a su izquierda o derecha."
+  },
+  "failedToDismissChangelog": {
+    "message": "No se pudieron ocultar las novedades. Inténtalo de nuevo."
+  },
+  "menu": {
+    "message": "Menú"
+  },
   "import": {
     "message": "Importar"
   },

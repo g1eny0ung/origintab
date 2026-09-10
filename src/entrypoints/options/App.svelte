@@ -115,7 +115,7 @@
       .getMessage(messageName)
       .replace(
         '_a_',
-        `<a href="${href}" class="underline" target="_blank">${linkText}</a>`,
+        `<a href="${href}" class="text-primary underline" target="_blank">${linkText}</a>`,
       )
   }
 </script>

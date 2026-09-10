@@ -11,6 +11,24 @@
   "cancel": {
     "message": "Отмена"
   },
+  "changelog": {
+    "message": "Что нового"
+  },
+  "dismissChangelog": {
+    "message": "Скрыть список изменений"
+  },
+  "recentChanges": {
+    "message": "Последние изменения"
+  },
+  "changelogContent": {
+    "message": "Сохраняйте и восстанавливайте группы вкладок браузера.\nСохраняйте текущую вкладку вместе со всеми вкладками слева или справа от неё."
+  },
+  "failedToDismissChangelog": {
+    "message": "Не удалось скрыть список изменений. Попробуйте ещё раз."
+  },
+  "menu": {
+    "message": "Меню"
+  },
   "import": {
     "message": "Импорт"
   },

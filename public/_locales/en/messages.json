@@ -12,6 +12,24 @@
   "cancel": {
     "message": "Cancel"
   },
+  "changelog": {
+    "message": "What’s new"
+  },
+  "dismissChangelog": {
+    "message": "Dismiss changelog"
+  },
+  "recentChanges": {
+    "message": "Recent changes"
+  },
+  "changelogContent": {
+    "message": "Save and restore browser tab groups.\nSave the current tab together with all tabs to its left or right."
+  },
+  "failedToDismissChangelog": {
+    "message": "Failed to dismiss changelog. Please try again."
+  },
+  "menu": {
+    "message": "Menu"
+  },
   "import": {
     "message": "Import"
   },
@@ -32,6 +50,9 @@
   },
   "browserTabGroup": {
     "message": "Browser tab group"
+  },
+  "dragBrowserTabGroup": {
+    "message": "Drag to reorder this browser group"
   },
   "restoreBrowserTabGroup": {
     "message": "Restore browser group"
