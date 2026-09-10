@@ -40,12 +40,6 @@ export interface TabGroup {
   userGroupId: string // Which user group this belongs to
 }
 
-// Storage data structure
-export interface StorageData {
-  userGroups: UserGroup[]
-  tabGroups: TabGroup[]
-}
-
 // Click action setting type
 export enum ClickAction {
   SaveAll = 'saveAll',

@@ -5,7 +5,6 @@
   interface Props {
     browserTabGroup: BrowserTabGroup
     tabCount: number
-    showTopDivider: boolean
     disabled?: boolean
     onRestoreAndRemove: () => void
     onRestoreAndPreserve: () => void
@@ -15,7 +14,6 @@
   let {
     browserTabGroup,
     tabCount,
-    showTopDivider,
     disabled = false,
     onRestoreAndRemove,
     onRestoreAndPreserve,
@@ -36,67 +34,55 @@
   }
 </script>
 
-<!--
-  This is a Sortable target so tabs can be placed around it. It deliberately
-  has no drag handle, which prevents the header itself from being dragged.
--->
-<li
-  class={['group bg-base-100', showTopDivider && 'border-t border-base-200']}
-  data-sortable-item
-  data-browser-tab-group-header-id={browserTabGroup.id}
->
-  <div class="flex items-center gap-3 p-2">
-    <div class="flex min-w-0 flex-1 items-center gap-2">
-      <span
-        class={[
-          'size-2.5 shrink-0 rounded-full',
-          colorClasses[browserTabGroup.color],
-        ]}
-        aria-hidden="true"
-      ></span>
-      <span class="truncate text-sm font-semibold">
-        {browserTabGroup.title || browser.i18n.getMessage('browserTabGroup')}
-      </span>
-      <span class="badge badge-ghost badge-sm shrink-0">
-        {tabCount}
-        {browser.i18n.getMessage(tabCount === 1 ? 'tabSingular' : 'tabPlural')}
-      </span>
-    </div>
-    <div
-      class="flex items-center gap-1 opacity-0 transition-opacity motion-reduce:transition-none group-hover:opacity-100 group-focus-within:opacity-100"
-    >
-      <button
-        type="button"
-        class="btn btn-ghost btn-xs btn-square"
-        {disabled}
-        onclick={onRestoreAndRemove}
-        title={browser.i18n.getMessage('restoreBrowserTabGroup')}
-        aria-label={browser.i18n.getMessage('restoreBrowserTabGroup')}
-      >
-        <RotateCcw size={14} aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        class="btn btn-ghost btn-xs btn-square"
-        {disabled}
-        onclick={onRestoreAndPreserve}
-        title={browser.i18n.getMessage('restoreBrowserTabGroupAndPreserve')}
-        aria-label={browser.i18n.getMessage(
-          'restoreBrowserTabGroupAndPreserve',
-        )}
-      >
-        <ExternalLink size={14} aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        class="btn btn-ghost btn-xs btn-square hover:btn-error hover:text-error-content"
-        {disabled}
-        onclick={onDelete}
-        title={browser.i18n.getMessage('deleteBrowserTabGroupTitle')}
-        aria-label={browser.i18n.getMessage('deleteBrowserTabGroupTitle')}
-      >
-        <Trash2 size={14} aria-hidden="true" />
-      </button>
-    </div>
+<div class="flex items-center gap-3 p-2">
+  <div class="flex min-w-0 flex-1 items-center gap-2">
+    <span
+      class={[
+        'size-2.5 shrink-0 rounded-full',
+        colorClasses[browserTabGroup.color],
+      ]}
+      aria-hidden="true"
+    ></span>
+    <span class="truncate text-sm font-semibold">
+      {browserTabGroup.title || browser.i18n.getMessage('browserTabGroup')}
+    </span>
+    <span class="badge badge-ghost badge-sm shrink-0">
+      {tabCount}
+      {browser.i18n.getMessage(tabCount === 1 ? 'tabSingular' : 'tabPlural')}
+    </span>
   </div>
-</li>
+  <div
+    class="flex items-center gap-1 opacity-0 transition-opacity motion-reduce:transition-none group-hover:opacity-100 group-focus-within:opacity-100"
+  >
+    <button
+      type="button"
+      class="btn btn-ghost btn-xs btn-square"
+      {disabled}
+      onclick={onRestoreAndRemove}
+      title={browser.i18n.getMessage('restoreBrowserTabGroup')}
+      aria-label={browser.i18n.getMessage('restoreBrowserTabGroup')}
+    >
+      <RotateCcw size={14} aria-hidden="true" />
+    </button>
+    <button
+      type="button"
+      class="btn btn-ghost btn-xs btn-square"
+      {disabled}
+      onclick={onRestoreAndPreserve}
+      title={browser.i18n.getMessage('restoreBrowserTabGroupAndPreserve')}
+      aria-label={browser.i18n.getMessage('restoreBrowserTabGroupAndPreserve')}
+    >
+      <ExternalLink size={14} aria-hidden="true" />
+    </button>
+    <button
+      type="button"
+      class="btn btn-ghost btn-xs btn-square hover:btn-error hover:text-error-content"
+      {disabled}
+      onclick={onDelete}
+      title={browser.i18n.getMessage('deleteBrowserTabGroupTitle')}
+      aria-label={browser.i18n.getMessage('deleteBrowserTabGroupTitle')}
+    >
+      <Trash2 size={14} aria-hidden="true" />
+    </button>
+  </div>
+</div>

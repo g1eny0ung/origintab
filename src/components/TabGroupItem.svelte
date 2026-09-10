@@ -717,44 +717,54 @@
   </div>
 
   <ul bind:this={tabsContainer} data-tab-group-id={tabGroup.id}>
+    <!-- Keep one root element per keyed item so Sortable moves the entire
+         Svelte node boundary, including any conditional content inside it. -->
     {#each tabGroupListItems as item (item.key)}
-      {#if item.type === 'browserTabGroupHeader'}
-        {@const browserTabGroup = item.browserTabGroup}
-        <BrowserTabGroupHeader
-          {browserTabGroup}
-          tabCount={browserTabGroupTabCount(browserTabGroup.id)}
-          showTopDivider={item.firstTabIndex > 0}
-          disabled={actionPending}
-          onRestoreAndRemove={() =>
-            handleRestoreBrowserTabGroup(browserTabGroup.id, true)}
-          onRestoreAndPreserve={() =>
-            handleRestoreBrowserTabGroup(browserTabGroup.id, false)}
-          onDelete={() => handleDeleteBrowserTabGroup(browserTabGroup.id)}
-        />
-      {:else}
-        {@const tab = item.tab}
-        {@const index = item.index}
-        {@const browserTabGroup = item.browserTabGroup}
-        <li
-          class={[
-            'group rounded-none bg-base-100',
-            index > 0 &&
-              (!browserTabGroup ||
-                !isFirstTabInBrowserGroup(index, browserTabGroup.id)) &&
-              'border-t border-base-200',
-          ]}
-          data-sortable-item
-          data-tab-id={tab.id}
-          data-browser-tab-group-id={browserTabGroup?.id}
-          data-browser-tab-group-first={browserTabGroup &&
-          isFirstTabInBrowserGroup(index, browserTabGroup.id)
-            ? 'true'
-            : undefined}
-          data-browser-tab-group-last={browserTabGroup &&
-          isLastTabInBrowserGroup(index, browserTabGroup.id)
-            ? 'true'
-            : undefined}
-        >
+      {@const browserTabGroup = item.browserTabGroup}
+      {@const index = item.type === 'tab' ? item.index : item.firstTabIndex}
+      <li
+        class={[
+          'group rounded-none bg-base-100',
+          index > 0 &&
+            (item.type === 'browserTabGroupHeader' ||
+              !browserTabGroup ||
+              !isFirstTabInBrowserGroup(index, browserTabGroup.id)) &&
+            'border-t border-base-200',
+        ]}
+        data-sortable-item
+        data-browser-tab-group-header-id={item.type === 'browserTabGroupHeader'
+          ? browserTabGroup?.id
+          : undefined}
+        data-tab-id={item.type === 'tab' ? item.tab.id : undefined}
+        data-browser-tab-group-id={item.type === 'tab'
+          ? browserTabGroup?.id
+          : undefined}
+        data-browser-tab-group-first={item.type === 'tab' &&
+        browserTabGroup &&
+        isFirstTabInBrowserGroup(index, browserTabGroup.id)
+          ? 'true'
+          : undefined}
+        data-browser-tab-group-last={item.type === 'tab' &&
+        browserTabGroup &&
+        isLastTabInBrowserGroup(index, browserTabGroup.id)
+          ? 'true'
+          : undefined}
+      >
+        {#if item.type === 'browserTabGroupHeader'}
+          <!-- Headers remain drop targets, but have no handle to drag them. -->
+          <BrowserTabGroupHeader
+            browserTabGroup={item.browserTabGroup}
+            tabCount={browserTabGroupTabCount(item.browserTabGroup.id)}
+            disabled={actionPending}
+            onRestoreAndRemove={() =>
+              handleRestoreBrowserTabGroup(item.browserTabGroup.id, true)}
+            onRestoreAndPreserve={() =>
+              handleRestoreBrowserTabGroup(item.browserTabGroup.id, false)}
+            onDelete={() =>
+              handleDeleteBrowserTabGroup(item.browserTabGroup.id)}
+          />
+        {:else}
+          {@const tab = item.tab}
           <div
             class={[
               'grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-3 py-2.5 pe-2',
@@ -871,8 +881,8 @@
               </button>
             </div>
           </div>
-        </li>
-      {/if}
+        {/if}
+      </li>
     {/each}
   </ul>
 </div>
