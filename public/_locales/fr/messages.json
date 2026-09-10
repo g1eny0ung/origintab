@@ -11,6 +11,24 @@
   "cancel": {
     "message": "Annuler"
   },
+  "changelog": {
+    "message": "Nouveautés"
+  },
+  "dismissChangelog": {
+    "message": "Masquer les nouveautés"
+  },
+  "recentChanges": {
+    "message": "Modifications récentes"
+  },
+  "changelogContent": {
+    "message": "Enregistrez et restaurez les groupes d’onglets du navigateur.\nEnregistrez l’onglet actif avec tous les onglets à sa gauche ou à sa droite."
+  },
+  "failedToDismissChangelog": {
+    "message": "Impossible de masquer les nouveautés. Réessayez."
+  },
+  "menu": {
+    "message": "Menu"
+  },
   "import": {
     "message": "Importer"
   },
@@ -28,6 +46,15 @@
   },
   "restoreAndPreserve": {
     "message": "Restaurer et conserver"
+  },
+  "browserTabGroup": {
+    "message": "Groupe d’onglets du navigateur"
+  },
+  "restoreBrowserTabGroup": {
+    "message": "Restaurer le groupe du navigateur"
+  },
+  "restoreBrowserTabGroupAndPreserve": {
+    "message": "Restaurer et conserver le groupe du navigateur"
   },
   "settings": {
     "message": "Paramètres"
@@ -76,6 +103,9 @@
   },
   "selectUserGroup": {
     "message": "Sélectionner un groupe"
+  },
+  "selectTab": {
+    "message": "Sélectionner $1"
   },
   "allUserGroups": {
     "message": "Tous les groupes"
@@ -418,6 +448,15 @@
   },
   "deleteCollectionTitle": {
     "message": "Supprimer la collection"
+  },
+  "deleteBrowserTabGroupTitle": {
+    "message": "Supprimer le groupe d’onglets du navigateur"
+  },
+  "deleteBrowserTabGroupConfirm": {
+    "message": "Supprimer ce groupe d’onglets du navigateur et ses onglets enregistrés ?"
+  },
+  "browserTabGroupDeleted": {
+    "message": "Groupe d’onglets du navigateur supprimé"
   },
   "deleteTabTitle": {
     "message": "Supprimer l’onglet"

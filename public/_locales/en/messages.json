@@ -12,6 +12,24 @@
   "cancel": {
     "message": "Cancel"
   },
+  "changelog": {
+    "message": "What’s new"
+  },
+  "dismissChangelog": {
+    "message": "Dismiss changelog"
+  },
+  "recentChanges": {
+    "message": "Recent changes"
+  },
+  "changelogContent": {
+    "message": "Save and restore browser tab groups.\nSave the current tab together with all tabs to its left or right."
+  },
+  "failedToDismissChangelog": {
+    "message": "Failed to dismiss changelog. Please try again."
+  },
+  "menu": {
+    "message": "Menu"
+  },
   "import": {
     "message": "Import"
   },
@@ -29,6 +47,18 @@
   },
   "restoreAndPreserve": {
     "message": "Restore & Preserve"
+  },
+  "browserTabGroup": {
+    "message": "Browser tab group"
+  },
+  "dragBrowserTabGroup": {
+    "message": "Drag to reorder this browser group"
+  },
+  "restoreBrowserTabGroup": {
+    "message": "Restore browser group"
+  },
+  "restoreBrowserTabGroupAndPreserve": {
+    "message": "Restore browser group & preserve"
   },
   "settings": {
     "message": "Settings"
@@ -79,6 +109,9 @@
   },
   "selectUserGroup": {
     "message": "Select Group"
+  },
+  "selectTab": {
+    "message": "Select $1"
   },
   "allUserGroups": {
     "message": "All Groups"
@@ -427,6 +460,15 @@
   },
   "deleteCollectionTitle": {
     "message": "Delete Collection"
+  },
+  "deleteBrowserTabGroupTitle": {
+    "message": "Delete Browser Tab Group"
+  },
+  "deleteBrowserTabGroupConfirm": {
+    "message": "Delete this browser tab group and its saved tabs?"
+  },
+  "browserTabGroupDeleted": {
+    "message": "Browser tab group deleted"
   },
   "deleteTabTitle": {
     "message": "Delete Tab"

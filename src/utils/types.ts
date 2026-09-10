@@ -8,6 +8,15 @@ export interface TabItem {
   url: string
   favicon?: string
   createdAt: number
+  browserTabGroupId?: string
+}
+
+// Snapshot of a browser-native tab group saved inside an OriginTab collection.
+export interface BrowserTabGroup {
+  id: string
+  title?: string
+  color: Browser.tabGroups.TabGroup['color']
+  collapsed: boolean
 }
 
 export interface SelectedTabRef {
@@ -26,14 +35,9 @@ export interface UserGroup {
 export interface TabGroup {
   id: string
   tabs: TabItem[]
+  browserTabGroups?: BrowserTabGroup[]
   createdAt: number
   userGroupId: string // Which user group this belongs to
-}
-
-// Storage data structure
-export interface StorageData {
-  userGroups: UserGroup[]
-  tabGroups: TabGroup[]
 }
 
 // Click action setting type

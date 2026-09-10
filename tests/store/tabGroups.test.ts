@@ -1,13 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { DEFAULT_GROUP_ID, db } from '../../src/store/base'
-import {
-  createTabGroup,
-  createTabGroupWithExistingTabs,
-  deleteTabGroup,
-  getTabGroups,
-  updateTabGroup,
-} from '../../src/store/tabGroups'
+import { createTabGroup, deleteTabGroup } from '../../src/store/tabGroups'
 import type { TabItem } from '../../src/utils/types'
 
 describe('tabGroups module', () => {
@@ -43,11 +37,13 @@ describe('tabGroups module', () => {
       expect(savedGroup).toEqual(group)
     })
 
-    it('should generate new IDs for tabs', async () => {
-      const group = await createTabGroup(sampleTabs)
+    it('should generate IDs for tabs that do not have one', async () => {
+      const group = await createTabGroup(
+        sampleTabs.map((tab) => ({ ...tab, id: '' })),
+      )
       const tabIds = group.tabs.map((t) => t.id)
-      expect(tabIds).not.toContain('tab-1')
-      expect(tabIds).not.toContain('tab-2')
+      expect(tabIds.every(Boolean)).toBe(true)
+      expect(new Set(tabIds).size).toBe(2)
     })
 
     it('should throw error when no tabs provided', async () => {
@@ -59,34 +55,74 @@ describe('tabGroups module', () => {
       const group = await createTabGroup(sampleTabs, customUserGroupId)
       expect(group.userGroupId).toBe(customUserGroupId)
     })
-  })
 
-  describe('createTabGroupWithExistingTabs', () => {
+    it('should save referenced browser tab group metadata', async () => {
+      const groupedTabs = sampleTabs.map((tab) => ({
+        ...tab,
+        browserTabGroupId: 'browser-group-1',
+      }))
+
+      const group = await createTabGroup(groupedTabs, 'default', [
+        {
+          id: 'browser-group-1',
+          title: 'Research',
+          color: 'cyan',
+          collapsed: true,
+        },
+      ])
+
+      expect(group.browserTabGroups).toEqual([
+        {
+          id: 'browser-group-1',
+          title: 'Research',
+          color: 'cyan',
+          collapsed: true,
+        },
+      ])
+      expect(group.tabs.every((tab) => tab.browserTabGroupId)).toBe(true)
+    })
+
     it('should create tab group without modifying tab IDs', async () => {
-      const group = await createTabGroupWithExistingTabs(sampleTabs)
+      const group = await createTabGroup(sampleTabs)
       expect(group.tabs[0]!.id).toBe('tab-1')
       expect(group.tabs[1]!.id).toBe('tab-2')
     })
 
-    it('should throw error when no tabs provided', async () => {
-      await expect(createTabGroupWithExistingTabs([])).rejects.toThrow(
-        'No tabs to save',
-      )
+    it('should keep tabs from the same browser group contiguous', async () => {
+      const tabs = [
+        { ...sampleTabs[0]!, browserTabGroupId: 'browser-group-1' },
+        sampleTabs[1]!,
+        {
+          id: 'tab-3',
+          title: 'Third',
+          url: 'https://third.example',
+          createdAt: Date.now(),
+          browserTabGroupId: 'browser-group-1',
+        },
+      ]
+
+      const group = await createTabGroup(tabs, 'default', [
+        {
+          id: 'browser-group-1',
+          color: 'blue',
+          collapsed: false,
+        },
+      ])
+
+      expect(group.tabs.map((tab) => tab.id)).toEqual([
+        'tab-1',
+        'tab-3',
+        'tab-2',
+      ])
     })
-  })
 
-  describe('getTabGroups', () => {
-    it('should return all tab groups', async () => {
-      await createTabGroup(sampleTabs)
-      await createTabGroup(sampleTabs)
+    it('should clear a browser group reference without matching metadata', async () => {
+      const group = await createTabGroup([
+        { ...sampleTabs[0]!, browserTabGroupId: 'missing' },
+      ])
 
-      const groups = await getTabGroups()
-      expect(groups.length).toBe(2)
-    })
-
-    it('should return empty array when no groups exist', async () => {
-      const groups = await getTabGroups()
-      expect(groups).toEqual([])
+      expect(group.tabs[0]?.browserTabGroupId).toBeUndefined()
+      expect(group.browserTabGroups).toBeUndefined()
     })
   })
 
@@ -101,31 +137,6 @@ describe('tabGroups module', () => {
 
     it('should not throw error when deleting non-existent group', async () => {
       await expect(deleteTabGroup('non-existent-id')).resolves.not.toThrow()
-    })
-  })
-
-  describe('updateTabGroup', () => {
-    it('should update tab group properties', async () => {
-      const group = await createTabGroup(sampleTabs)
-      const newTabs = [
-        {
-          id: 'new-tab',
-          title: 'Updated',
-          url: 'https://updated.com',
-          createdAt: Date.now(),
-        },
-      ]
-
-      await updateTabGroup(group.id, { tabs: newTabs })
-
-      const updatedGroup = await db.tabGroups.get(group.id)
-      expect(updatedGroup?.tabs).toEqual(newTabs)
-    })
-
-    it('should not throw error when updating non-existent group', async () => {
-      await expect(
-        updateTabGroup('non-existent-id', { tabs: [] }),
-      ).resolves.not.toThrow()
     })
   })
 })

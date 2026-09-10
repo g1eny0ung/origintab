@@ -11,6 +11,24 @@
   "cancel": {
     "message": "キャンセル"
   },
+  "changelog": {
+    "message": "更新履歴"
+  },
+  "dismissChangelog": {
+    "message": "更新履歴を非表示にする"
+  },
+  "recentChanges": {
+    "message": "最近の変更"
+  },
+  "changelogContent": {
+    "message": "ブラウザーのタブグループの保存と復元に対応しました。\n現在のタブと、その左側または右側のすべてのタブをまとめて保存できます。"
+  },
+  "failedToDismissChangelog": {
+    "message": "更新履歴を非表示にできませんでした。もう一度お試しください。"
+  },
+  "menu": {
+    "message": "メニュー"
+  },
   "import": {
     "message": "インポート"
   },
@@ -28,6 +46,15 @@
   },
   "restoreAndPreserve": {
     "message": "復元して保持"
+  },
+  "browserTabGroup": {
+    "message": "ブラウザーのタブグループ"
+  },
+  "restoreBrowserTabGroup": {
+    "message": "ブラウザーグループを復元"
+  },
+  "restoreBrowserTabGroupAndPreserve": {
+    "message": "ブラウザーグループを復元して保持"
   },
   "settings": {
     "message": "設定"
@@ -76,6 +103,9 @@
   },
   "selectUserGroup": {
     "message": "グループを選択"
+  },
+  "selectTab": {
+    "message": "$1を選択"
   },
   "allUserGroups": {
     "message": "すべてのグループ"
@@ -418,6 +448,15 @@
   },
   "deleteCollectionTitle": {
     "message": "コレクションを削除"
+  },
+  "deleteBrowserTabGroupTitle": {
+    "message": "ブラウザーのタブグループを削除"
+  },
+  "deleteBrowserTabGroupConfirm": {
+    "message": "このブラウザーのタブグループと保存済みタブを削除しますか？"
+  },
+  "browserTabGroupDeleted": {
+    "message": "ブラウザーのタブグループを削除しました"
   },
   "deleteTabTitle": {
     "message": "タブを削除"

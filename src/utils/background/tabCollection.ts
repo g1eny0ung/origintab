@@ -1,9 +1,66 @@
-import { createTabGroup, getLastUserGroup, getUserGroup } from '~/store'
+import {
+  createTabGroup,
+  generateId,
+  getLastUserGroup,
+  getUserGroup,
+} from '~/store'
 import { getLocalSettings } from '~/store/localSettings'
+import { canReadBrowserTabGroups } from '~/utils/browserTabGroups'
 import { findOriginTab } from '~/utils/helpers'
-import type { TabItem } from '~/utils/types'
+import type { BrowserTabGroup, TabItem } from '~/utils/types'
 
 type TabCollectionDirection = 'left' | 'right'
+type CollectableTab = Browser.tabs.Tab & { id: number; url: string }
+
+async function snapshotBrowserTabGroups(tabs: Browser.tabs.Tab[]) {
+  const browserTabGroups: BrowserTabGroup[] = []
+  const savedGroupIdByBrowserGroupId = new Map<number, string>()
+
+  const browserGroupIds = [
+    ...new Set(
+      tabs
+        .map((tab) => tab.groupId)
+        .filter((groupId) => groupId !== undefined && groupId !== -1),
+    ),
+  ]
+
+  if (browserGroupIds.length === 0) {
+    return { browserTabGroups, savedGroupIdByBrowserGroupId }
+  }
+
+  if (!canReadBrowserTabGroups()) {
+    // Older browsers expose groupId on tabs inconsistently or not at all.
+    // Save every tab normally and simply omit native-group metadata.
+    return { browserTabGroups, savedGroupIdByBrowserGroupId }
+  }
+
+  const snapshots = await Promise.all(
+    browserGroupIds.map(async (browserGroupId) => {
+      const browserGroup = await browser.tabGroups.get(browserGroupId)
+      const savedGroupId = generateId()
+
+      return {
+        browserGroupId,
+        browserTabGroup: {
+          id: savedGroupId,
+          title: browserGroup.title,
+          color: browserGroup.color,
+          collapsed: browserGroup.collapsed,
+        },
+      }
+    }),
+  )
+
+  for (const snapshot of snapshots) {
+    browserTabGroups.push(snapshot.browserTabGroup)
+    savedGroupIdByBrowserGroupId.set(
+      snapshot.browserGroupId,
+      snapshot.browserTabGroup.id,
+    )
+  }
+
+  return { browserTabGroups, savedGroupIdByBrowserGroupId }
+}
 
 async function getTargetGroupId(userGroupId?: string) {
   if (userGroupId) {
@@ -24,9 +81,9 @@ async function getTargetGroupId(userGroupId?: string) {
 async function collectTabs(tabs: Browser.tabs.Tab[], userGroupId?: string) {
   const existingOriginTabId = await findOriginTab()
 
-  const validTabs = tabs.filter((tab) => {
+  const validTabs = tabs.filter((tab): tab is CollectableTab => {
     if (
-      !tab.id ||
+      tab.id === undefined ||
       !tab.url ||
       tab.id === existingOriginTabId ||
       tab.url === 'about:newtab' ||
@@ -42,17 +99,27 @@ async function collectTabs(tabs: Browser.tabs.Tab[], userGroupId?: string) {
     return
   }
 
+  const { browserTabGroups, savedGroupIdByBrowserGroupId } =
+    await snapshotBrowserTabGroups(validTabs)
   const createdAt = Date.now()
   const tabItems: TabItem[] = validTabs.map((tab) => ({
     id: '',
     title: tab.title || 'Untitled',
-    url: tab.url!,
+    url: tab.url,
     favicon: tab.favIconUrl,
     createdAt,
+    browserTabGroupId:
+      tab.groupId === undefined
+        ? undefined
+        : savedGroupIdByBrowserGroupId.get(tab.groupId),
   }))
 
-  await createTabGroup(tabItems, await getTargetGroupId(userGroupId))
-  await browser.tabs.remove(validTabs.map((tab) => tab.id!))
+  await createTabGroup(
+    tabItems,
+    await getTargetGroupId(userGroupId),
+    browserTabGroups,
+  )
+  await browser.tabs.remove(validTabs.map((tab) => tab.id))
 }
 
 export async function collectCurrentTab(userGroupId?: string) {
@@ -62,7 +129,7 @@ export async function collectCurrentTab(userGroupId?: string) {
       currentWindow: true,
     })
 
-    if (!activeTab || !activeTab.id || !activeTab.url) {
+    if (!activeTab || activeTab.id === undefined || !activeTab.url) {
       console.info('No active tab found')
       return
     }

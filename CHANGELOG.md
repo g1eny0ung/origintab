@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support saving and restoring browser tab groups.
+- Add a changelog dropdown to the main navigation.
+
 ## [1.6.0] - 2026-07-29
 
 ### Added

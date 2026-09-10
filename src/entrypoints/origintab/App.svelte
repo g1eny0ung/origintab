@@ -6,6 +6,7 @@
     Download,
     ExternalLink,
     FolderOutput,
+    Menu,
     Plus,
     RotateCcw,
     SettingsIcon,
@@ -18,6 +19,7 @@
   import ExportModal from '~/components/ExportModal.svelte'
   import ImportModal from '~/components/ImportModal.svelte'
   import UserGroupList from '~/components/UserGroupList.svelte'
+  import Changelog from '~/components/ui/Changelog.svelte'
   import ConfirmDialog from '~/components/ui/ConfirmDialog.svelte'
   import Dialog from '~/components/ui/Dialog.svelte'
   import {
@@ -49,6 +51,25 @@
   )
 
   let settings = $state(defaultSettings)
+
+  const navActions = $derived([
+    { key: 'import' as const, icon: Upload, run: handleOpenImportModal },
+    ...($tabGroups?.length
+      ? [
+          {
+            key: 'export' as const,
+            icon: Download,
+            run: handleOpenExportModal,
+          },
+          { key: 'clear' as const, icon: Trash2, run: handleClearAll },
+        ]
+      : []),
+    {
+      key: 'settings' as const,
+      icon: SettingsIcon,
+      run: () => browser.runtime.openOptionsPage(),
+    },
+  ])
 
   // Import modal
   let importModalId = 'import-modal'
@@ -146,6 +167,11 @@
         }
       },
     })
+  }
+
+  function handleOpenImportModal() {
+    const dialog = document.getElementById(importModalId) as HTMLDialogElement
+    dialog.showModal()
   }
 
   // Export tabs - open modal
@@ -253,68 +279,73 @@
   })
 </script>
 
+{#snippet navigationItems(inMenu: boolean)}
+  {#each navActions as action (action.key)}
+    <li>
+      <button
+        class={[
+          !inMenu && 'btn btn-ghost btn-sm',
+          action.key === 'clear' && 'hover:bg-warning',
+        ]}
+        aria-label={browser.i18n.getMessage(action.key)}
+        title={browser.i18n.getMessage(action.key)}
+        onclick={() => {
+          if (inMenu && document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur()
+          }
+          action.run()
+        }}
+      >
+        <action.icon size={16} />
+        <span class={inMenu ? undefined : 'hidden md:inline'}>
+          {browser.i18n.getMessage(action.key)}
+        </span>
+      </button>
+    </li>
+  {/each}
+{/snippet}
+
 <div class="min-h-screen">
   <!-- Header -->
   <header
     class="sticky top-0 z-40 bg-base-100/80 backdrop-blur border-b border-base-200"
   >
     <div class="max-w-5xl mx-auto p-4">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between gap-2">
         <div class="flex items-center gap-2">
-          <img src="/origintab.svg" alt="OriginTab" class="w-12 h-12" />
+          <img
+            src="/origintab.svg"
+            alt="OriginTab"
+            class="w-7 h-7 sm:w-12 sm:h-12"
+          />
           <div>
-            <h1 class="text-xl font-bold">OriginTab</h1>
+            <h1 class="text-sm sm:text-xl font-bold">OriginTab</h1>
             <p class="text-sm text-base-content/60 hidden sm:block">
               {browser.i18n.getMessage('extDescription')}
             </p>
           </div>
         </div>
-        <div class="flex items-center gap-2">
-          <button
-            class="btn btn-ghost btn-sm"
-            onclick={() => {
-              const dialog = document.getElementById(
-                importModalId,
-              ) as HTMLDialogElement
-              dialog.showModal()
-            }}
-          >
-            <Upload size={16} />
-            <span class="hidden sm:inline">
-              {browser.i18n.getMessage('import')}
-            </span>
-          </button>
-          {#if $tabGroups && $tabGroups.length > 0}
+        <div class="flex items-center gap-1 sm:gap-2">
+          <Changelog />
+          <ul class="hidden items-center gap-2 sm:flex">
+            {@render navigationItems(false)}
+          </ul>
+          <div class="dropdown dropdown-hover dropdown-end sm:hidden">
             <button
-              class="btn btn-ghost btn-sm"
-              onclick={handleOpenExportModal}
+              class="btn btn-ghost btn-sm btn-square"
+              aria-label={browser.i18n.getMessage('menu')}
+              aria-controls="nav-menu"
             >
-              <Download size={16} />
-              <span class="hidden sm:inline">
-                {browser.i18n.getMessage('export')}
-              </span>
+              <Menu size={16} />
             </button>
-            <button
-              class="btn btn-ghost btn-sm hover:btn-warning"
-              onclick={handleClearAll}
+            <ul
+              id="nav-menu"
+              tabindex="-1"
+              class="dropdown-content menu menu-sm w-max p-2 rounded-box bg-base-100 shadow-sm border border-base-200 z-10"
             >
-              <Trash2 size={16} />
-              <span class="hidden sm:inline">
-                {browser.i18n.getMessage('clear')}
-              </span>
-            </button>
-          {/if}
-          <button
-            class="btn btn-ghost btn-sm"
-            onclick={() => {
-              browser.runtime.openOptionsPage()
-            }}
-          >
-            <SettingsIcon size={16} />
-            <span class="hidden sm:inline">
-              {browser.i18n.getMessage('settings')}
-            </span>
-          </button>
+              {@render navigationItems(true)}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
