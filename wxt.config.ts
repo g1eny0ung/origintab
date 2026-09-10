@@ -10,7 +10,7 @@ export const commonPermissions = [
 export const manifest: UserManifest = {
   name: '__MSG_extName__',
   description: '__MSG_extDescription__',
-  version: '1.6.0',
+  version: '1.7.0',
   default_locale: 'en',
   commands: {
     open: {
