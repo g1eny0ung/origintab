@@ -411,6 +411,50 @@ describe('tabs module', () => {
       expect(updatedGroup?.tabs[2]?.id).toBe('tab-2')
     })
 
+    it.each([
+      [0, ['a1', 'a2', 'u0', 'u1', 'b1', 'b2', 'u2']],
+      [2, ['u0', 'u1', 'a1', 'a2', 'b1', 'b2', 'u2']],
+      [4, ['u0', 'u1', 'b1', 'b2', 'a1', 'a2', 'u2']],
+      [5, ['u0', 'u1', 'b1', 'b2', 'u2', 'a1', 'a2']],
+    ])(
+      'should persist a whole browser group at index %i without changing its contents',
+      async (targetIndex, expectedIds) => {
+        const tabs = ['u0', 'a1', 'a2', 'u1', 'b1', 'b2', 'u2'].map((id) => ({
+          id,
+          title: id,
+          url: `https://example.com/${id}`,
+          createdAt: 1,
+          browserTabGroupId: id.startsWith('u') ? undefined : id[0],
+        }))
+        const browserTabGroups = [
+          {
+            id: 'a',
+            title: 'Research',
+            color: 'blue' as const,
+            collapsed: false,
+          },
+          { id: 'b', title: 'Work', color: 'red' as const, collapsed: true },
+        ]
+        const group = await createTabGroup(tabs, 'default', browserTabGroups)
+
+        await moveTabsBetweenGroups(
+          group.id,
+          group.id,
+          ['a1', 'a2'],
+          targetIndex,
+        )
+
+        const saved = await db.tabGroups.get(group.id)
+        expect(saved?.tabs.map((tab) => tab.id)).toEqual(expectedIds)
+        expect(saved?.tabs).toEqual(
+          expectedIds.map((id) => tabs.find((tab) => tab.id === id)),
+        )
+        expect(saved?.browserTabGroups).toEqual(browserTabGroups)
+        expect(saved?.createdAt).toBe(group.createdAt)
+        expect(saved?.userGroupId).toBe(group.userGroupId)
+      },
+    )
+
     it('should delete source group if all tabs are moved', async () => {
       const tabs = createSampleTabs()
       const group1 = await createTabGroup(tabs)
@@ -497,6 +541,69 @@ describe('tabs module', () => {
       expect(movedGroup?.tabs[0]?.browserTabGroupId).toBeUndefined()
       expect(movedGroup?.browserTabGroups).toBeUndefined()
     })
+  })
+
+  describe('moving whole browser groups to a user group', () => {
+    it.each([
+      [false, 1, false],
+      [false, 2, true],
+      [true, 1, true],
+      [true, 2, false],
+    ])(
+      'preserves the group with existing target=%s, tab count=%i, remaining source=%s',
+      async (hasTargetCollection, tabCount, hasRemainingTabs) => {
+        const browserTabGroup = {
+          id: 'browser-group-1',
+          title: 'Research',
+          color: 'purple' as const,
+          collapsed: true,
+        }
+        const movedTabs = createSampleTabs()
+          .slice(0, tabCount)
+          .map((tab) => ({ ...tab, browserTabGroupId: browserTabGroup.id }))
+        const remainingTabs = hasRemainingTabs ? [createSampleTabs()[2]!] : []
+        const source = await createTabGroup(
+          [...movedTabs, ...remainingTabs],
+          'default',
+          [browserTabGroup],
+        )
+        const targetTabs = [{ ...createSampleTabs()[0]!, id: 'target-tab' }]
+
+        if (hasTargetCollection) {
+          const target = await createTabGroup(targetTabs, 'custom-user-group')
+          await moveTabsBetweenGroups(
+            source.id,
+            target.id,
+            movedTabs.map((tab) => tab.id),
+            0,
+          )
+        } else {
+          await moveTabsToNewGroupInUserGroup(
+            source.id,
+            'custom-user-group',
+            movedTabs.map((tab) => tab.id),
+          )
+        }
+
+        const targets = await db.tabGroups
+          .where('userGroupId')
+          .equals('custom-user-group')
+          .toArray()
+        expect(targets).toHaveLength(1)
+        expect(targets[0]?.tabs).toEqual([
+          ...movedTabs,
+          ...(hasTargetCollection ? targetTabs : []),
+        ])
+        expect(targets[0]?.browserTabGroups).toEqual([browserTabGroup])
+        const savedSource = await db.tabGroups.get(source.id)
+        if (hasRemainingTabs) {
+          expect(savedSource?.tabs).toEqual(remainingTabs)
+          expect(savedSource?.browserTabGroups).toBeUndefined()
+        } else {
+          expect(savedSource).toBeUndefined()
+        }
+      },
+    )
   })
 
   describe('moveSelectedTabsToUserGroup', () => {

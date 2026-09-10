@@ -7,6 +7,7 @@
   import {
     deleteTabGroup,
     moveTabBetweenGroups,
+    moveTabsBetweenGroups,
     removeBrowserTabGroup,
     removeTabFromGroup,
     restoreAndDeleteBrowserTabGroup,
@@ -51,8 +52,10 @@
 
   let tabsContainer: HTMLUListElement
   let sortable: Sortable | null = null
+  let browserTabGroupPreview: HTMLUListElement | null = null
   let shiftKeyPressed = $state(false)
   let draggedTabId = $state<string | null>(null)
+  let draggedBrowserTabGroupId = $state<string | null>(null)
   let previewBrowserTabGroupId = $state<string | null>(null)
   let actionPending = $state(false)
   const selection = getTabSelectionContext()
@@ -486,6 +489,180 @@
       : undefined
   }
 
+  function setBrowserTabGroupSortPreview(
+    draggedHeader: HTMLElement,
+    dropTarget: HTMLElement,
+    targetList: HTMLElement,
+    willInsertAfter: boolean,
+    originalEvent: Event,
+  ) {
+    delete draggedHeader.dataset.browserTabGroupDropBefore
+    const targetBrowserTabGroupId =
+      dropTarget.dataset.browserTabGroupHeaderId ??
+      dropTarget.dataset.browserTabGroupId
+
+    if (!targetBrowserTabGroupId) {
+      return
+    }
+
+    if (
+      targetBrowserTabGroupId === draggedHeader.dataset.browserTabGroupHeaderId
+    ) {
+      return false
+    }
+
+    const groupElements = Array.from(targetList.children).filter(
+      (child): child is HTMLElement =>
+        child instanceof HTMLElement &&
+        (child.dataset.browserTabGroupHeaderId === targetBrowserTabGroupId ||
+          child.dataset.browserTabGroupId === targetBrowserTabGroupId),
+    )
+    const firstElement = groupElements[0]
+    const lastElement = groupElements.at(-1)
+
+    if (!firstElement || !lastElement) {
+      return false
+    }
+
+    // A whole group can only land before or after another group. Treat its
+    // header and all tab rows as one drop target so groups never interleave.
+    const pointer = getPointerCoordinates(originalEvent)
+    const insertAfter = pointer
+      ? pointer.clientY >=
+        (firstElement.getBoundingClientRect().top +
+          lastElement.getBoundingClientRect().bottom) /
+          2
+      : willInsertAfter
+    let anchor = insertAfter ? lastElement.nextElementSibling : firstElement
+
+    while (
+      anchor === draggedHeader ||
+      (anchor instanceof HTMLElement && anchor.hidden)
+    ) {
+      anchor = anchor.nextElementSibling
+    }
+
+    draggedHeader.dataset.browserTabGroupDropBefore =
+      anchor instanceof HTMLElement ? (anchor.dataset.sortableKey ?? '') : ''
+
+    // Let Sortable insert and animate the preview in either list. onChange
+    // snaps it to the whole-group boundary before that animation starts.
+    return insertAfter ? 1 : -1
+  }
+
+  function prepareBrowserTabGroupPreview(header: HTMLElement) {
+    const browserTabGroupId = header.dataset.browserTabGroupHeaderId
+    if (!browserTabGroupId) {
+      return
+    }
+
+    const preview = document.createElement('ul')
+    preview.dataset.browserTabGroupPreview = ''
+    preview.className = 'pointer-events-none'
+    preview.inert = true
+    preview.setAttribute('aria-hidden', 'true')
+
+    for (const child of Array.from(tabsContainer.children)) {
+      if (
+        child instanceof HTMLElement &&
+        child.dataset.tabId &&
+        child.dataset.browserTabGroupId === browserTabGroupId
+      ) {
+        const row = child.cloneNode(true) as HTMLElement
+        for (const attribute of Array.from(row.attributes)) {
+          if (attribute.name.startsWith('data-')) {
+            row.removeAttribute(attribute.name)
+          }
+        }
+        row.dataset.previewTabId = child.dataset.tabId
+        row.hidden = false
+        preview.appendChild(row)
+      }
+    }
+
+    // Build the whole block before native dragstart captures its drag image.
+    // Original keyed rows stay in their list until the saved data is updated.
+    header.appendChild(preview)
+    browserTabGroupPreview = preview
+    draggedBrowserTabGroupId = browserTabGroupId
+  }
+
+  function clearBrowserTabGroupPreview() {
+    browserTabGroupPreview?.remove()
+    browserTabGroupPreview = null
+    draggedBrowserTabGroupId = null
+  }
+
+  function alignBrowserTabGroupPreview(event: Sortable.SortableEvent) {
+    const beforeKey = event.item.dataset.browserTabGroupDropBefore
+    if (beforeKey === undefined) {
+      return
+    }
+
+    const anchor = Array.from(event.to.children).find(
+      (child) =>
+        child instanceof HTMLElement && child.dataset.sortableKey === beforeKey,
+    )
+    if (beforeKey && !anchor) {
+      return
+    }
+
+    event.to.insertBefore(event.item, anchor ?? null)
+  }
+
+  function finishBrowserTabGroupSort(event: Sortable.SortableEvent) {
+    const browserTabGroupId = event.item.dataset.browserTabGroupHeaderId
+    const sourceGroupId = event.from.dataset.tabGroupId
+    const targetGroupId = event.to.dataset.tabGroupId
+    const originalChildIndex = getOriginalChildIndex(event.item)
+    const children = Array.from(event.to.children)
+    const targetIndex = children
+      .slice(0, children.indexOf(event.item))
+      .filter(
+        (child) =>
+          child instanceof HTMLElement &&
+          child.dataset.tabId !== undefined &&
+          (event.from !== event.to ||
+            child.dataset.browserTabGroupId !== browserTabGroupId),
+      ).length
+    const originalIndex = browserTabGroupId
+      ? browserTabGroupStatsById.get(browserTabGroupId)?.firstIndex
+      : undefined
+    const shouldMove =
+      browserTabGroupId &&
+      sourceGroupId &&
+      targetGroupId &&
+      !isDraggedTabDropHandledExternally() &&
+      originalIndex !== undefined &&
+      (event.from !== event.to || targetIndex !== originalIndex) &&
+      wasDroppedInsideList(event, event.to)
+
+    // Put Sortable's preview back before Svelte applies the persisted order.
+    // This also rolls back a cancelled drag or a failed database write.
+    restoreDraggedElement(event.item, event.from, originalChildIndex)
+    clearBrowserTabGroupPreview()
+    delete event.item.dataset.originalChildIndex
+    delete event.item.dataset.browserTabGroupDropBefore
+    clearDraggedTabState()
+
+    if (shouldMove) {
+      const tabIds = tabGroup.tabs
+        .filter((tab) => tab.browserTabGroupId === browserTabGroupId)
+        .map((tab) => tab.id)
+
+      runWithTabMovePending(() =>
+        moveTabsBetweenGroups(
+          sourceGroupId,
+          targetGroupId,
+          tabIds,
+          targetIndex,
+        ),
+      ).catch(() => {
+        showToast(browser.i18n.getMessage('moveTabsFailed'), 'error')
+      })
+    }
+  }
+
   function isTabDisplayedInBrowserTabGroup(
     tab: TabItem,
     browserTabGroup: BrowserTabGroup | undefined,
@@ -531,14 +708,40 @@
           event.target instanceof Element ? event.target : null,
         ),
       preventOnFilter: false,
+      onChoose: (e) => prepareBrowserTabGroupPreview(e.item),
+      onUnchoose: () => {
+        if (!Sortable.active) {
+          clearBrowserTabGroupPreview()
+        }
+      },
+      onChange: (e) => {
+        if (e.item.dataset.browserTabGroupHeaderId) {
+          alignBrowserTabGroupPreview(e)
+        }
+      },
       onStart: (e) => {
+        e.item.dataset.originalChildIndex = String(
+          Array.from(e.from.children).indexOf(e.item),
+        )
+
+        if (e.item.dataset.browserTabGroupHeaderId) {
+          draggedBrowserTabGroupId = e.item.dataset.browserTabGroupHeaderId
+          setDraggedTabState({
+            sourceGroupId: tabGroup.id,
+            tabIds: tabGroup.tabs
+              .filter(
+                (tab) => tab.browserTabGroupId === draggedBrowserTabGroupId,
+              )
+              .map((tab) => tab.id),
+            browserTabGroupId: draggedBrowserTabGroupId,
+          })
+          return
+        }
+
         const tabId = e.item.dataset.tabId
         const browserTabGroupId = e.item.dataset.browserTabGroupId
 
         e.item.dataset.dropBrowserTabGroupId = browserTabGroupId ?? ''
-        e.item.dataset.originalChildIndex = String(
-          Array.from(e.from.children).indexOf(e.item),
-        )
         delete e.item.dataset.tabMoveHandled
         draggedTabId = tabId ?? null
         previewBrowserTabGroupId = browserTabGroupId ?? null
@@ -551,6 +754,10 @@
         }
       },
       onAdd: (e) => {
+        if (e.item.dataset.browserTabGroupHeaderId) {
+          return
+        }
+
         const sourceGroupId = e.from.dataset.tabGroupId
         const targetGroupId = e.to.dataset.tabGroupId
         const tabId = e.item.dataset.tabId
@@ -581,6 +788,10 @@
         }
       },
       onUpdate: (e) => {
+        if (e.item.dataset.browserTabGroupHeaderId) {
+          return
+        }
+
         const targetGroupId = e.from.dataset.tabGroupId
         const tabId = e.item.dataset.tabId
         const targetTabIndex = getTabElementIndex(e.to, e.item)
@@ -605,6 +816,16 @@
         }
       },
       onMove: (e, originalEvent) => {
+        if (e.dragged.dataset.browserTabGroupHeaderId) {
+          return setBrowserTabGroupSortPreview(
+            e.dragged,
+            e.related,
+            e.to,
+            e.willInsertAfter === true,
+            originalEvent,
+          )
+        }
+
         return setDropBrowserTabGroup(
           e.dragged,
           e.related,
@@ -614,6 +835,11 @@
         )
       },
       onEnd: (e) => {
+        if (e.item.dataset.browserTabGroupHeaderId) {
+          finishBrowserTabGroupSort(e)
+          return
+        }
+
         const sourceGroupId = e.from.dataset.tabGroupId
         const targetGroupId = e.to.dataset.tabGroupId
         const tabId = e.item.dataset.tabId
@@ -664,6 +890,7 @@
       if (getDraggedTabState()?.sourceGroupId === tabGroup.id) {
         clearDraggedTabState()
       }
+      clearBrowserTabGroupPreview()
     }
   })
 </script>
@@ -723,6 +950,8 @@
       {@const browserTabGroup = item.browserTabGroup}
       {@const index = item.type === 'tab' ? item.index : item.firstTabIndex}
       <li
+        hidden={item.type === 'tab' &&
+          browserTabGroup?.id === draggedBrowserTabGroupId}
         class={[
           'group rounded-none bg-base-100',
           index > 0 &&
@@ -732,6 +961,7 @@
             'border-t border-base-200',
         ]}
         data-sortable-item
+        data-sortable-key={item.key}
         data-browser-tab-group-header-id={item.type === 'browserTabGroupHeader'
           ? browserTabGroup?.id
           : undefined}
@@ -751,11 +981,11 @@
           : undefined}
       >
         {#if item.type === 'browserTabGroupHeader'}
-          <!-- Headers remain drop targets, but have no handle to drag them. -->
           <BrowserTabGroupHeader
             browserTabGroup={item.browserTabGroup}
             tabCount={browserTabGroupTabCount(item.browserTabGroup.id)}
             disabled={actionPending}
+            draggable={selection.selectedCount === 0}
             onRestoreAndRemove={() =>
               handleRestoreBrowserTabGroup(item.browserTabGroup.id, true)}
             onRestoreAndPreserve={() =>

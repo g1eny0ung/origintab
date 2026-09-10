@@ -155,6 +155,26 @@ describe('tab move pending state', () => {
 })
 
 describe('external tab drops', () => {
+  it.each([['tab-1'], ['tab-1', 'tab-2']])(
+    'keeps whole-group identity when an external drop claims %s',
+    (...tabIds) => {
+      setDraggedTabState({
+        sourceGroupId: 'source',
+        tabIds,
+        browserTabGroupId: 'browser-group-1',
+      })
+      markDraggedTabDropHandledExternally()
+      expect(getDraggedTabState()).toEqual({
+        sourceGroupId: 'source',
+        tabIds,
+        browserTabGroupId: 'browser-group-1',
+        handledByExternalDrop: true,
+      })
+      clearDraggedTabState()
+      expect(getDraggedTabState()).toBeNull()
+    },
+  )
+
   it('claims the current drag until its state is cleared', () => {
     setDraggedTabState({ sourceGroupId: 'source', tabIds: ['tab-1'] })
 

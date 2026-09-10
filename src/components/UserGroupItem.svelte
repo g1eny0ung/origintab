@@ -82,17 +82,21 @@
   async function handleDropToUserGroup(
     sourceGroupId: string,
     tabIds: string[],
+    preserveBrowserTabGroup: boolean,
+    targetTabGroupId?: string,
   ) {
     await runWithTabMovePending(async () => {
-      const firstTabGroup = tabGroups[0]
+      const targetTabGroup =
+        tabGroups.find((group) => group.id === targetTabGroupId) ?? tabGroups[0]
+      const targetBrowserTabGroupId = preserveBrowserTabGroup ? undefined : null
 
-      if (firstTabGroup) {
+      if (targetTabGroup) {
         await moveTabsBetweenGroups(
           sourceGroupId,
-          firstTabGroup.id,
+          targetTabGroup.id,
           tabIds,
           0,
-          null,
+          targetBrowserTabGroupId,
         )
         return
       }
@@ -101,13 +105,13 @@
         sourceGroupId,
         userGroup.id,
         tabIds,
-        null,
+        targetBrowserTabGroupId,
       )
     })
   }
 
   function resolveDropTarget(target: EventTarget | null) {
-    if (!(target instanceof HTMLElement)) {
+    if (!(target instanceof Element)) {
       return null
     }
 
@@ -123,13 +127,32 @@
       return 'header'
     }
 
+    const draggedTab = getDraggedTabState()
+    const targetTabGroupId = target.closest<HTMLElement>('[data-tab-group-id]')
+      ?.dataset.tabGroupId
+
+    // All list drops belong to Sortable, including whole browser groups.
+    // Intercepting them here would replace the insertion preview with a
+    // user-group highlight and discard the position chosen by the user.
+    if (targetTabGroupId) {
+      return null
+    }
+
+    // Dropping on another user group's padding uses its first collection.
+    if (
+      draggedTab?.browserTabGroupId &&
+      !tabGroups.some((group) => group.id === draggedTab.sourceGroupId)
+    ) {
+      return 'header'
+    }
+
     return null
   }
 
   function handleDragOver(event: DragEvent) {
     const draggedTab = getDraggedTabState()
 
-    if (!draggedTab || draggedTab.tabIds.length !== 1) {
+    if (!draggedTab || draggedTab.tabIds.length === 0) {
       return
     }
 
@@ -159,7 +182,7 @@
 
   async function handleDrop(event: DragEvent) {
     const draggedTab = getDraggedTabState()
-    if (!draggedTab || draggedTab.tabIds.length !== 1) {
+    if (!draggedTab || draggedTab.tabIds.length === 0) {
       return
     }
 
@@ -174,7 +197,18 @@
     markDraggedTabDropHandledExternally()
 
     try {
-      await handleDropToUserGroup(draggedTab.sourceGroupId, draggedTab.tabIds)
+      const targetTabGroupId =
+        event.target instanceof Element
+          ? event.target.closest<HTMLElement>('[data-tab-group-id]')?.dataset
+              .tabGroupId
+          : undefined
+
+      await handleDropToUserGroup(
+        draggedTab.sourceGroupId,
+        draggedTab.tabIds,
+        draggedTab.browserTabGroupId !== undefined,
+        targetTabGroupId,
+      )
     } catch {
       showToast(browser.i18n.getMessage('moveTabsFailed'), 'error')
     } finally {

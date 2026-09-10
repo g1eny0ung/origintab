@@ -6,6 +6,7 @@
     browserTabGroup: BrowserTabGroup
     tabCount: number
     disabled?: boolean
+    draggable?: boolean
     onRestoreAndRemove: () => void
     onRestoreAndPreserve: () => void
     onDelete: () => void
@@ -15,6 +16,7 @@
     browserTabGroup,
     tabCount,
     disabled = false,
+    draggable = false,
     onRestoreAndRemove,
     onRestoreAndPreserve,
     onDelete,
@@ -34,7 +36,13 @@
   }
 </script>
 
-<div class="flex items-center gap-3 p-2">
+<div
+  class={[
+    'flex items-center gap-3 p-2',
+    draggable && 'drag-handle cursor-grab active:cursor-grabbing',
+  ]}
+  title={draggable ? browser.i18n.getMessage('dragBrowserTabGroup') : undefined}
+>
   <div class="flex min-w-0 flex-1 items-center gap-2">
     <span
       class={[

@@ -1,6 +1,7 @@
 interface DraggedTabState {
   sourceGroupId: string
   tabIds: string[]
+  browserTabGroupId?: string
   handledByExternalDrop: boolean
 }
 
