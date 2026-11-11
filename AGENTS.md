@@ -1,111 +1,26 @@
-# OriginTab - Agent Guide
-
-## Project Overview
-
-OriginTab is a browser extension for managing tabs. Users can save tabs into groups, and restore them later.
-
-## Tech Stack
-
-- **Framework**: [WXT](https://wxt.dev/) - Browser extension framework
-- **Frontend**: Svelte 5 + TypeScript
-- **Styling**: TailwindCSS 4 + DaisyUI
-- **Package Manager**: Bun
-- **Date/Time**: Luxon
+# Repository Guidelines
 
 ## Project Structure
 
-```txt
-src/
-├── entrypoints/
-│   ├── background.ts       # Service worker (tab collection, messaging)
-│   ├── origintab/          # Main management page
-│   │   ├── ...
-│   │   └── selection.svelte.ts  # Global selection state management
-│   ├── popup/              # Extension popup
-│   │   └── ...
-│   └── options/            # Settings page
-│       └── ...
-├── components/             # Shared Svelte components
-│   ├── ...
-├── store/                  # State management (Dexie + WXT storage)
-│   ├── base.ts             # DB setup, DEFAULT_GROUP_ID, generateId
-│   ├── dataManagement.ts   # Import/export data
-│   ├── index.ts            # Re-exports all store modules
-│   ├── restore.ts          # Tab restoration logic
-│   ├── settings.ts         # Settings management
-│   ├── tabGroups.ts        # Tab group CRUD operations
-│   ├── tabs.ts             # Tab operations
-│   └── userGroups.ts       # User group CRUD operations
-├── utils/
-│   ├── background/
-│   │   ├── contextMenus.ts  # Context menu handlers
-│   │   └── tabCollection.ts # Tab collection logic
-│   ├── helpers.ts          # Utility functions
-│   ├── localize.ts         # i18n localization
-│   ├── tabDrag.ts          # Drag and drop utilities
-│   └── types.ts            # TypeScript interfaces
-public/                     # Static assets
-    └── _locales/           # i18n messages (en, zh)
-```
+OriginTab is a browser extension for saving and restoring tabs, built with WXT, Svelte 5, and TypeScript. `src/entrypoints/` contains the background worker, main tab manager, popup, and options page. Shared Svelte components live in `src/components/`. `src/store/` handles persistence and tab operations, and `src/utils/` contains browser helpers, including background tab collection and context menus. Tests live in `tests/store/` and `tests/utils/`. Extension icons and translations live in `public/` and `public/_locales/`, respectively. Store listing images live in `images/`.
 
-## Coding Guidelines
+## Build, Test, and Development
 
-### Svelte 5
+- `bun install` installs dependencies from `bun.lock` and prepares WXT. Reuse Bun’s shared download cache across worktrees.
+- `bun run dev` starts Chromium development. Use `bun run dev:firefox` for Firefox.
+- `bun run build` and `bun run build:firefox` write browser-specific builds to `dist/`. `bun run zip:all` packages both builds.
+- `bun run check` runs Svelte and TypeScript checks. `bun run test` runs the unit suite once, and `bun run test:watch` reruns it during development.
 
-- Use `$state()` for reactive state
-- Use `$effect()` carefully - prefer `onMount` for initialization
-- Use standard event handlers (`onclick`) not `on:click` (Svelte 5 syntax)
+## Coding Style and Architecture
 
-### Storage
+Use two spaces, single quotes, and Prettier’s configured import ordering. Omit semicolons and use braces for `if` and `else` blocks. Name Svelte components in PascalCase and TypeScript helpers in camelCase. Use Svelte 5 runes and event attributes such as `onclick`, with Tailwind utilities and the daisyUI `emerald` theme.
 
-- **Dexie.js** for main data (userGroups, tabGroups) - configured in `src/store/base.ts`
-- `storage` from `@wxt-dev/storage` for settings only
-- Data structure: Dexie tables with `userGroups` and `tabGroups`
-- Default group ID: `"default"` (defined in `src/store/base.ts`)
-- **Best Practice**: Use `storage.defineItem().watch()` to react to storage changes instead of manual callback functions - see https://wxt.dev/storage.html#watchers
+Keep saved tabs and groups in Dexie and preferences in WXT storage. Use Dexie’s `liveQuery` for reactive tab and group lists and WXT storage watchers for preference changes. Treat `.wxt/` and `dist/` as generated output.
 
-### Background Script
+## Testing Guidelines
 
-- Tab collection: save first, then notify UI via `browser.runtime.sendMessage`
-- Do NOT open origintab.html after collecting tabs (silent update)
-- Use `notifyOriginTabUpdate()` to trigger UI refresh
+Place focused Vitest regressions in `tests/` as `<module>.test.ts`, following the source module layout. Use WXT’s `fakeBrowser` for extension APIs and the configured `fake-indexeddb` for Dexie. `bun run test:coverage` reports V8 coverage for `src/store/`. The configuration sets no coverage threshold.
 
-### CSS
+## Commits and Pull Requests
 
-- Use Tailwind utility classes
-- DaisyUI theme: `emerald`
-- Keep popup width at `300px`
-
-## Commands
-
-```bash
-# Development
-bun run dev
-bun run dev:firefox
-
-# Build
-bun run build
-bun run build:firefox
-
-# Type check
-bun run check
-```
-
-## Key Files
-
-- `src/utils/types.ts` - Type definitions (TabItem, UserGroup, TabGroup, enums)
-- `src/store/base.ts` - Dexie database setup, DEFAULT_GROUP_ID, generateId
-- `src/store/settings.ts` - Settings management
-- `src/store/tabGroups.ts` - Tab group CRUD operations
-- `src/store/userGroups.ts` - User group CRUD operations
-- `src/store/dataManagement.ts` - Import/export data operations
-- `src/entrypoints/background.ts` - Background logic
-
-## Notes
-
-- Always run `bun run check` before committing
-- Keep lang="en" in all HTML files
-- Prefer simple, direct solutions over complex ones
-- All `if` `else` statements should have curly braces
-- Do NOT modify the `.wxt/` folder - it is auto-generated by WXT
-- Do NOT add return type to functions unless it is particularly important
+Use short, imperative subjects with the prefixes used in Git history, such as `feat: support browser tab groups` or `fix: reset selectedUserGroupId`. Run `bun run check` before committing. The Husky hook runs tests and formats staged TypeScript, Svelte, HTML, and CSS with Prettier. In pull requests, explain the behavior change, summarize validation, link relevant issues, and include screenshots for visible UI changes.
