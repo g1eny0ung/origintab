@@ -19,6 +19,8 @@ Keep saved tabs and groups in Dexie and preferences in WXT storage. Use Dexie’
 
 ## Testing Guidelines
 
+Use ego Lite (`ego-browser`) whenever browser testing is needed.
+
 Place focused Vitest regressions in `tests/` as `<module>.test.ts`, following the source module layout. Use WXT’s `fakeBrowser` for extension APIs and the configured `fake-indexeddb` for Dexie. `bun run test:coverage` reports V8 coverage for `src/store/`. The configuration sets no coverage threshold.
 
 ## Commits and Pull Requests
