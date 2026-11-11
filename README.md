@@ -12,11 +12,17 @@ Go to <https://products.g1en.site/origintab> to install OriginTab for different 
 
 If you want a simple and straightforward way to save your browser tabs and restore them when needed in the future, then OriginTab is designed for you.
 
-This is a Vibe coding product of mine, designed to replicate the original [OneTab](https://www.one-tab.com/), removed all complex features of the current version of OneTab. OriginTab focuses solely on saving and restoring, without any other complicated concepts.
+This is a Vibe coding product of mine, designed to replicate the original [OneTab](https://www.one-tab.com/), removed all complex features of the current version of OneTab. OriginTab focuses on saving and restoring tabs.
 
 While you can create multiple groups within OriginTab, this isn't necessary, as all groups will create subgroups based on their save time. After OriginTab is installed, it creates a default group that you can use directly.
 
-OriginTab settings are synced across browsers, but tabs are only saved locally. You can import and export them at any time.
+OriginTab uses your browser's sync feature for general settings. Saved tabs and the group you choose as the default stay local. You can import and export saved tabs at any time.
+
+## Main features
+
+- **Choose which tabs to save.** Use the extension popup or the page context menu to save the current tab, the current tab and eligible tabs to its left or right, or all eligible tabs in the current window.
+- **Save and restore native browser tab groups.** OriginTab preserves group names and colors when your browser supports the required APIs. Browsers without those APIs can still save and restore individual tabs.
+- **Search saved tabs.** Search across groups by title or URL. From the results, restore a tab, restore it and keep the saved copy, or delete it. You can change the default restore action in Settings.
 
 ## Why create this, instead of using OneTab
 
@@ -38,7 +44,7 @@ That's why I created OriginTab.
 - OriginTab allows duplicate tabs (most of the time, you don't care about duplicates).
 - OriginTab doesn't save fixed tabs (it assumes they are permanent).
 - OriginTab will save tabs to the most recently created group by default (you can manually specify a default group in the group tab, only saved locally).
-- When restoring tab groups, OriginTab freezes them to reduce memory usage.
+- When restoring tabs in a batch, OriginTab tries to freeze them to reduce memory use.
 
 ## Shortcuts
 
@@ -49,7 +55,7 @@ That's why I created OriginTab.
 
 ## Development
 
-Please refer to the [AGENT.md](AGENT.md) for development details.
+See [AGENTS.md](AGENTS.md) for development details.
 
 ## License
 
