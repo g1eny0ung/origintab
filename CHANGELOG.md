@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-11-11
+
 ### Added
 
 - Search saved tabs by title or URL. Restore, restore and preserve, or delete tabs from the search results. Choose the default restore action in Settings.
