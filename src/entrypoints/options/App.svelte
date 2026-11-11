@@ -7,6 +7,7 @@
     Link,
     MousePointerClick,
     RotateCcw,
+    Search,
     Settings,
   } from '@lucide/svelte'
   import { onMount } from 'svelte'
@@ -82,6 +83,12 @@
   function onRestoreActionChange(action: RestoreAction) {
     settings.restoreAction = action
     updateSettings({ restoreAction: action })
+  }
+
+  function onSearchRestoreChange(value: string) {
+    const preserveTabOnSearchRestore = value === 'true'
+    settings.preserveTabOnSearchRestore = preserveTabOnSearchRestore
+    updateSettings({ preserveTabOnSearchRestore })
   }
 
   function onOpenGroupInNewWindowChange(value: string) {
@@ -312,6 +319,36 @@
           value={settings.restoreAction}
           checkedValue={RestoreAction.OpenAndJump}
           onChange={onRestoreActionChange}
+        />
+      </SettingItemRadioCard>
+
+      <SettingItemRadioCard
+        Icon={Search}
+        title={browser.i18n.getMessage('searchResultAction')}
+        description={browser.i18n.getMessage('searchResultActionDescription')}
+      >
+        <SettingItemRadio
+          id="preserveTabOnSearchRestore-false"
+          name="preserveTabOnSearchRestore"
+          title={browser.i18n.getMessage('restore')}
+          description={browser.i18n.getMessage(
+            'searchResultRestoreDescription',
+          )}
+          value={settings.preserveTabOnSearchRestore.toString()}
+          checkedValue="false"
+          onChange={onSearchRestoreChange}
+        />
+
+        <SettingItemRadio
+          id="preserveTabOnSearchRestore-true"
+          name="preserveTabOnSearchRestore"
+          title={browser.i18n.getMessage('restoreAndPreserve')}
+          description={browser.i18n.getMessage(
+            'searchResultRestoreAndPreserveDescription',
+          )}
+          value={settings.preserveTabOnSearchRestore.toString()}
+          checkedValue="true"
+          onChange={onSearchRestoreChange}
         />
       </SettingItemRadioCard>
 

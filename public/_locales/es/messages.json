@@ -21,7 +21,7 @@
     "message": "Cambios recientes"
   },
   "changelogContent": {
-    "message": "Guarda y restaura grupos de pestañas del navegador.\nGuarda la pestaña actual junto con todas las pestañas a su izquierda o derecha."
+    "message": "Busca pestañas guardadas por título o URL. Restaura o elimina pestañas desde los resultados.\nGuarda y restaura grupos de pestañas del navegador.\nGuarda la pestaña actual junto con todas las pestañas a su izquierda o derecha."
   },
   "failedToDismissChangelog": {
     "message": "No se pudieron ocultar las novedades. Inténtalo de nuevo."
@@ -67,6 +67,24 @@
   },
   "emptyStateMessage": {
     "message": "Haz clic en el icono de OriginTab en la barra de herramientas del navegador para guardar las pestañas de la ventana actual"
+  },
+  "searchSavedTabs": {
+    "message": "Buscar pestañas guardadas"
+  },
+  "noTabSearchResults": {
+    "message": "No hay pestañas que coincidan"
+  },
+  "searchResultAction": {
+    "message": "Acción al hacer clic en un resultado"
+  },
+  "searchResultActionDescription": {
+    "message": "Elige qué ocurre al hacer clic en un resultado de búsqueda."
+  },
+  "searchResultRestoreDescription": {
+    "message": "Abre la pestaña y quítala de las pestañas guardadas."
+  },
+  "searchResultRestoreAndPreserveDescription": {
+    "message": "Abre la pestaña y mantenla entre las pestañas guardadas."
   },
   "newGroup": {
     "message": "Nuevo grupo"

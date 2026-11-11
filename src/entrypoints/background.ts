@@ -26,14 +26,6 @@ interface BackgroundResponse {
   ok: boolean
 }
 
-async function notifyOriginTabUpdate() {
-  const originTabId = await findOriginTab()
-
-  if (originTabId) {
-    await browser.tabs.sendMessage(originTabId, { action: 'dataUpdated' })
-  }
-}
-
 async function updateActionBehavior() {
   try {
     const clickAction = (await getSettings()).clickAction
@@ -78,15 +70,6 @@ async function initializeBackground() {
     await createContextMenus()
   } catch (error) {
     console.error('Failed to initialize background:', error)
-  }
-}
-
-async function handleSettingsChange() {
-  try {
-    await updateActionBehavior()
-    await notifyOriginTabUpdate()
-  } catch (error) {
-    console.error('Failed to handle settings change:', error)
   }
 }
 
@@ -140,7 +123,7 @@ export default defineBackground(() => {
   browser.commands.onCommand.addListener(handleCommand)
   browser.contextMenus.onClicked.addListener(handleContextMenuClick)
 
-  storage.watch<Settings>('sync:settings', handleSettingsChange)
+  storage.watch<Settings>('sync:settings', updateActionBehavior)
 
   browser.runtime.onMessage.addListener(handleRuntimeMessage)
 

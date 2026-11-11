@@ -21,7 +21,7 @@
     "message": "最近の変更"
   },
   "changelogContent": {
-    "message": "ブラウザーのタブグループの保存と復元に対応しました。\n現在のタブと、その左側または右側のすべてのタブをまとめて保存できます。"
+    "message": "保存済みのタブをタイトルや URL で検索し、検索結果から復元や削除ができます。\nブラウザーのタブグループの保存と復元に対応しました。\n現在のタブと、その左側または右側のすべてのタブをまとめて保存できます。"
   },
   "failedToDismissChangelog": {
     "message": "更新履歴を非表示にできませんでした。もう一度お試しください。"
@@ -67,6 +67,24 @@
   },
   "emptyStateMessage": {
     "message": "ブラウザのツールバーにあるOriginTabアイコンをクリックして、現在のウィンドウのタブを保存します"
+  },
+  "searchSavedTabs": {
+    "message": "保存済みタブを検索"
+  },
+  "noTabSearchResults": {
+    "message": "一致するタブがありません"
+  },
+  "searchResultAction": {
+    "message": "検索結果をクリックしたときの動作"
+  },
+  "searchResultActionDescription": {
+    "message": "検索結果をクリックしたときの動作を選びます。"
+  },
+  "searchResultRestoreDescription": {
+    "message": "タブを開き、保存済みの一覧から削除します。"
+  },
+  "searchResultRestoreAndPreserveDescription": {
+    "message": "タブを開き、保存済みの一覧にも残します。"
   },
   "newGroup": {
     "message": "新しいグループ"

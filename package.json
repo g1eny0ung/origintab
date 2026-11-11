@@ -46,7 +46,8 @@
   "dependencies": {
     "dexie": "^4.4.2",
     "luxon": "^3.7.2",
-    "sortablejs": "^1.15.7"
+    "sortablejs": "^1.15.7",
+    "svelte-fuse": "^0.1.0"
   },
   "lint-staged": {
     "*.{ts,svelte,html,css}": [

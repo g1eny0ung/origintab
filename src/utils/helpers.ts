@@ -4,6 +4,14 @@ export function clampIndex(index: number, length: number) {
   return Math.max(0, Math.min(index, length))
 }
 
+export function urlHostname(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '')
+  } catch {
+    return url
+  }
+}
+
 // Get OriginTab page URL
 export function getOriginTabUrl(): string {
   return browser.runtime.getURL('/origintab.html')

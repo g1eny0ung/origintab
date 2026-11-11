@@ -15,9 +15,10 @@
     X,
   } from '@lucide/svelte'
   import { liveQuery } from 'dexie'
-  import { onDestroy, onMount } from 'svelte'
+  import { onMount } from 'svelte'
   import ExportModal from '~/components/ExportModal.svelte'
   import ImportModal from '~/components/ImportModal.svelte'
+  import TabSearch from '~/components/TabSearch.svelte'
   import UserGroupList from '~/components/UserGroupList.svelte'
   import Changelog from '~/components/ui/Changelog.svelte'
   import ConfirmDialog from '~/components/ui/ConfirmDialog.svelte'
@@ -31,6 +32,7 @@
     moveSelectedTabsToUserGroup,
     removeSelectedTabs,
     restoreSelectedTabs,
+    watchSettings,
   } from '~/store'
   import { db } from '~/store/base'
   import { openConfirm } from '~/utils/confirm.svelte'
@@ -262,20 +264,9 @@
     importTargetGroupId = DEFAULT_GROUP_ID
   }
 
-  // Listen for messages from background (settings changes)
-  function handleMessage(message: any) {
-    if (message.action === 'dataUpdated') {
-      loadSettings()
-    }
-  }
-
   onMount(() => {
     loadSettings()
-    browser.runtime.onMessage.addListener(handleMessage)
-  })
-
-  onDestroy(() => {
-    browser.runtime.onMessage.removeListener(handleMessage)
+    return watchSettings((value) => (settings = value))
   })
 </script>
 
@@ -372,12 +363,17 @@
       </div>
     {:else}
       <!-- New Group Input -->
-      <div class="mb-4">
+      <div
+        class={[
+          'mb-4 flex items-center justify-between gap-2',
+          showNewGroupInput && 'max-sm:flex-wrap',
+        ]}
+      >
         {#if showNewGroupInput}
-          <div class="flex items-center gap-2">
+          <div class="flex min-w-0 flex-1 items-center gap-2 max-sm:basis-full">
             <input
               type="text"
-              class="input input-sm flex-1 max-w-xs"
+              class="input input-sm min-w-0 flex-1 max-w-xs"
               placeholder={browser.i18n.getMessage('groupNamePlaceholder')}
               bind:value={newGroupName}
               bind:this={newGroupInputRef}
@@ -395,13 +391,14 @@
           </div>
         {:else}
           <button
-            class="btn btn-ghost btn-sm"
+            class="btn btn-ghost btn-sm shrink-0"
             onclick={() => (showNewGroupInput = true)}
           >
             <Plus size={16} />
             {browser.i18n.getMessage('newGroup')}
           </button>
         {/if}
+        <TabSearch tabGroups={orderedTabGroupsByPage} {settings} />
       </div>
 
       <UserGroupList

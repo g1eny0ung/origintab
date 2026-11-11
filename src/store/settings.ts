@@ -11,6 +11,7 @@ export interface Settings {
   clickAction: ClickAction
   urlDisplayMode: UrlDisplayMode
   restoreAction: RestoreAction
+  preserveTabOnSearchRestore: boolean
   openGroupInNewWindow: boolean
   timeDisplayMode: TimeDisplayMode
 }
@@ -23,16 +24,25 @@ export const defaultSettings: Settings = {
   clickAction: ClickAction.ShowPopup,
   urlDisplayMode: UrlDisplayMode.None,
   restoreAction: RestoreAction.OpenWithoutJump,
+  preserveTabOnSearchRestore: false,
   openGroupInNewWindow: true,
   timeDisplayMode: TimeDisplayMode.Relative,
 }
 
-const settings = storage.defineItem<Settings>(SETTINGS_KEY, {
+const settings = storage.defineItem<Partial<Settings>>(SETTINGS_KEY, {
   fallback: defaultSettings,
 })
 
 export async function getSettings() {
-  return settings.getValue()
+  return withDefaults(await settings.getValue())
+}
+
+export function watchSettings(onChange: (settings: Settings) => void) {
+  return settings.watch((value) => onChange(withDefaults(value)))
+}
+
+function withDefaults(value: Partial<Settings>) {
+  return { ...defaultSettings, ...value }
 }
 
 export async function updateSettings(updates: Partial<Settings>) {

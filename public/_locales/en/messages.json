@@ -22,7 +22,7 @@
     "message": "Recent changes"
   },
   "changelogContent": {
-    "message": "Save and restore browser tab groups.\nSave the current tab together with all tabs to its left or right."
+    "message": "Search saved tabs by title or URL. Restore or delete tabs from the results.\nSave and restore browser tab groups.\nSave the current tab together with all tabs to its left or right."
   },
   "failedToDismissChangelog": {
     "message": "Failed to dismiss changelog. Please try again."
@@ -72,6 +72,24 @@
   },
   "emptyStateMessage": {
     "message": "Click the OriginTab icon in the browser toolbar to save tabs in the current window"
+  },
+  "searchSavedTabs": {
+    "message": "Search saved tabs"
+  },
+  "noTabSearchResults": {
+    "message": "No matching tabs"
+  },
+  "searchResultAction": {
+    "message": "Search result action"
+  },
+  "searchResultActionDescription": {
+    "message": "Choose what happens when you click a search result."
+  },
+  "searchResultRestoreDescription": {
+    "message": "Open the tab and remove it from your saved tabs."
+  },
+  "searchResultRestoreAndPreserveDescription": {
+    "message": "Open the tab and keep it in your saved tabs."
   },
   "newGroup": {
     "message": "New Group"

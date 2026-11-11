@@ -21,7 +21,7 @@
     "message": "Alterações recentes"
   },
   "changelogContent": {
-    "message": "Salve e restaure grupos de abas do navegador.\nSalve a aba atual junto com todas as abas à esquerda ou à direita."
+    "message": "Busque abas salvas por título ou URL. Restaure ou exclua abas nos resultados.\nSalve e restaure grupos de abas do navegador.\nSalve a aba atual junto com todas as abas à esquerda ou à direita."
   },
   "failedToDismissChangelog": {
     "message": "Não foi possível ocultar as novidades. Tente novamente."
@@ -67,6 +67,24 @@
   },
   "emptyStateMessage": {
     "message": "Clique no ícone do OriginTab na barra de ferramentas do navegador para salvar as abas da janela atual"
+  },
+  "searchSavedTabs": {
+    "message": "Buscar abas salvas"
+  },
+  "noTabSearchResults": {
+    "message": "Nenhuma aba correspondente"
+  },
+  "searchResultAction": {
+    "message": "Ação ao clicar em um resultado"
+  },
+  "searchResultActionDescription": {
+    "message": "Escolha o que acontece ao clicar em um resultado da busca."
+  },
+  "searchResultRestoreDescription": {
+    "message": "Abra a aba e remova-a das abas salvas."
+  },
+  "searchResultRestoreAndPreserveDescription": {
+    "message": "Abra a aba e mantenha-a entre as abas salvas."
   },
   "newGroup": {
     "message": "Novo grupo"

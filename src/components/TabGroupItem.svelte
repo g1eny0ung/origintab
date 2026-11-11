@@ -24,6 +24,7 @@
     getTabGroupListItems,
   } from '~/utils/browserTabGroups'
   import { openConfirm } from '~/utils/confirm.svelte'
+  import { urlHostname } from '~/utils/helpers'
   import {
     clearDraggedTabState,
     getDraggedTabState,
@@ -42,6 +43,7 @@
   import { RestoreAction, TimeDisplayMode, UrlDisplayMode } from '~/utils/types'
 
   import BrowserTabGroupHeader from './BrowserTabGroupHeader.svelte'
+  import TabFavicon from './TabFavicon.svelte'
 
   interface Props {
     tabGroup: TabGroup
@@ -78,22 +80,6 @@
     }
 
     return time.toRelative()
-  }
-
-  function urlHostname(url: string) {
-    try {
-      return new URL(url).hostname.replace(/^www\./, '')
-    } catch {
-      return url
-    }
-  }
-
-  function faviconUrl(tab: TabItem) {
-    if (tab.favicon) {
-      return tab.favicon
-    }
-
-    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(urlHostname(tab.url))}&sz=32`
   }
 
   async function runPendingAction(
@@ -1029,17 +1015,7 @@
                 )
               }}
             />
-            <div class="favicon-container">
-              <img
-                src={faviconUrl(tab)}
-                alt=""
-                width="16"
-                height="16"
-                loading="lazy"
-                onerror={(e) =>
-                  ((e.target as HTMLImageElement).style.display = 'none')}
-              />
-            </div>
+            <TabFavicon {tab} />
             {#if editingTabId === tab.id}
               <div class="min-w-0">
                 <input

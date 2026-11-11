@@ -21,7 +21,7 @@
     "message": "Modifications récentes"
   },
   "changelogContent": {
-    "message": "Enregistrez et restaurez les groupes d’onglets du navigateur.\nEnregistrez l’onglet actif avec tous les onglets à sa gauche ou à sa droite."
+    "message": "Recherchez les onglets enregistrés par titre ou par URL. Restaurez ou supprimez des onglets depuis les résultats.\nEnregistrez et restaurez les groupes d’onglets du navigateur.\nEnregistrez l’onglet actif avec tous les onglets à sa gauche ou à sa droite."
   },
   "failedToDismissChangelog": {
     "message": "Impossible de masquer les nouveautés. Réessayez."
@@ -67,6 +67,24 @@
   },
   "emptyStateMessage": {
     "message": "Cliquez sur l’icône OriginTab dans la barre d’outils du navigateur pour enregistrer les onglets de la fenêtre actuelle"
+  },
+  "searchSavedTabs": {
+    "message": "Rechercher dans les onglets enregistrés"
+  },
+  "noTabSearchResults": {
+    "message": "Aucun onglet correspondant"
+  },
+  "searchResultAction": {
+    "message": "Action au clic sur un résultat"
+  },
+  "searchResultActionDescription": {
+    "message": "Choisissez ce qui se passe lorsque vous cliquez sur un résultat de recherche."
+  },
+  "searchResultRestoreDescription": {
+    "message": "Ouvrez l’onglet et retirez-le des onglets enregistrés."
+  },
+  "searchResultRestoreAndPreserveDescription": {
+    "message": "Ouvrez l’onglet et conservez-le parmi les onglets enregistrés."
   },
   "newGroup": {
     "message": "Nouveau groupe"
