@@ -15,11 +15,12 @@
     title?: string
     message?: string
     confirmDisabled?: boolean
-    onConfirm?: () => void
+    onConfirm?: () => void | null | Promise<void | null>
     onClose?: () => void
   } = $props()
 
   let dialog: HTMLDialogElement
+  let confirming = $state(false)
 
   $effect(() => {
     if (!dialog) {
@@ -36,7 +37,18 @@
   })
 </script>
 
-<dialog {id} class="modal" bind:this={dialog} onclose={onClose}>
+<dialog
+  {id}
+  class="modal"
+  bind:this={dialog}
+  closedby={confirming ? 'none' : 'closerequest'}
+  onclose={onClose}
+  oncancel={(event) => {
+    if (confirming) {
+      event.preventDefault()
+    }
+  }}
+>
   <div class="modal-box max-w-xl">
     {#if title}
       <h2 class="text-lg font-semibold">{title}</h2>
@@ -50,6 +62,7 @@
     <div class="modal-action">
       <button
         class="btn btn-ghost"
+        disabled={confirming}
         onclick={() => {
           dialog.close()
         }}
@@ -58,14 +71,21 @@
       </button>
       <button
         class="btn btn-primary"
-        disabled={confirmDisabled}
-        onclick={() => {
-          const result = onConfirm?.()
-          if (result === null) {
+        disabled={confirmDisabled || confirming}
+        onclick={async () => {
+          if (confirming) {
             return
           }
 
-          dialog.close()
+          confirming = true
+          try {
+            const result = await onConfirm?.()
+            if (result !== null) {
+              dialog.close()
+            }
+          } finally {
+            confirming = false
+          }
         }}
       >
         {browser.i18n.getMessage('confirm')}
@@ -73,6 +93,6 @@
     </div>
   </div>
   <form method="dialog" class="modal-backdrop">
-    <button>close</button>
+    <button disabled={confirming}>close</button>
   </form>
 </dialog>

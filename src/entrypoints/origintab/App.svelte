@@ -83,6 +83,7 @@
   let selectedUserGroupId = $state('')
 
   let selectModalId = 'select-tabs-modal'
+  let moveError = $state('')
 
   // New group input
   let showNewGroupInput = $state(false)
@@ -188,6 +189,7 @@
   }
 
   function openSelectModal() {
+    moveError = ''
     const [firstUserGroup] = $userGroups
     if (!selection.moveTargetUserGroupId && firstUserGroup) {
       selection.setMoveTargetUserGroupId(firstUserGroup.id)
@@ -198,6 +200,7 @@
   }
 
   async function handleMoveSelectedTabs() {
+    moveError = ''
     const orderedSelection = selection.getOrderedSelection(
       orderedTabGroupsByPage,
     )
@@ -214,7 +217,7 @@
       selection.clear()
       showToast(browser.i18n.getMessage('tabsMoved'))
     } catch {
-      showToast(browser.i18n.getMessage('moveTabsFailed'), 'error')
+      moveError = browser.i18n.getMessage('moveTabsFailed')
       return null
     }
   }
@@ -455,15 +458,19 @@
         <option value={group.id}>{group.name}</option>
       {/each}
     </select>
+
+    {#if moveError}
+      <p role="alert" class="text-sm text-error">{moveError}</p>
+    {/if}
   </div>
 </Dialog>
 
 {#if selection.selectedCount > 0}
   <div
-    class="fixed bottom-8 left-1/2 z-40 min-w-md px-4 space-y-2 -translate-x-1/2 transition-transform enter-screen"
+    class="fixed bottom-8 left-1/2 z-40 w-max max-w-full px-4 space-y-2 -translate-x-1/2 transition-transform enter-screen"
   >
     <div
-      class="flex gap-2 bg-base-100 rounded-box border border-base-200 p-2 shadow-xl"
+      class="flex gap-2 overflow-x-auto overscroll-x-contain bg-base-100 rounded-box border border-base-200 p-2 shadow-xl [&>*]:shrink-0"
     >
       <button class="btn btn-sm btn-ghost" onclick={openSelectModal}>
         <FolderOutput size={14} />
@@ -494,14 +501,14 @@
         {browser.i18n.getMessage('delete')}
       </button>
 
-      <div class="tooltip" data-tip={browser.i18n.getMessage('cancel')}>
-        <button
-          class="btn btn-sm btn-ghost btn-square"
-          onclick={selection.clear}
-        >
-          <X size={14} />
-        </button>
-      </div>
+      <button
+        class="btn btn-sm btn-ghost btn-square"
+        aria-label={browser.i18n.getMessage('cancel')}
+        title={browser.i18n.getMessage('cancel')}
+        onclick={selection.clear}
+      >
+        <X size={14} />
+      </button>
     </div>
   </div>
 {/if}
